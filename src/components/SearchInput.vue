@@ -4,6 +4,7 @@
       solo
       append-outer-icon="search"
       @click:append-outer="onSearch()"
+      @keyup.enter="onSearch()"
       single-line
       :placeholder="placeholder"
       class="search-input"

@@ -9,7 +9,11 @@
       justify-center>
         <v-layout column>
           <v-flex xs6>
-            <logo pos="home"></logo>
+          <img
+          class="logo-home"
+          src="../assets/logo.webp"
+          @click="$router.push('/')"
+          >
           </v-flex>
           <v-flex xs6 class="mt-5">
             <search-input></search-input>
@@ -35,5 +39,8 @@ export default {
   border-radius: 30px !important;
   box-shadow: 0 5px 15px #ff525b17 !important;
   border: 1px solid #ff525b56;
+}
+.logo-home {
+  height: 75px;
 }
 </style>
