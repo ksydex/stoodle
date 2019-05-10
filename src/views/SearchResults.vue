@@ -1,5 +1,5 @@
 <template>
-  <v-container class="mx-0 px-0 pt-0 pa-0">
+  <v-container fluid class="mx-0 px-0 pt-0 pa-0">
     <v-layout column>
       <v-layout row >
         <v-flex xs0 sm0 md2 xl1></v-flex>
@@ -63,19 +63,9 @@ export default {
             "https://i.mycdn.me/i?r=AzGBqNaF5OQp2lMpnhRx4DEF706jHoH1H2CXoquhh2AuTaLFvi7hJtcHqXO0a8CV9Zo"
         }
       ]
-    };
+    }
   },
   computed: {},
   methods: {}
 };
 </script>
-
-<style scoped>
-.search-card {
-  border-radius: 10px;
-  box-shadow: none;
-}
-.search-card:hover {
-  box-shadow: 0px 10px 20px #40405412;
-}
-</style>

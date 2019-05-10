@@ -18,6 +18,7 @@
 </template>
 
 <script>
+import { setTimeout } from 'timers';
 export default {
   data () {
     return {
@@ -38,12 +39,20 @@ export default {
         'Программирование ФВТ...'
       ]
       return placeholder[Math.floor(Math.random() * placeholder.length)]
+    },
+    query () {
+      return this.$route.params.searchQuery
     }
   },
   methods: {
     onSearch () {
       this.$router.push('/search/' + this.search)
-    }
+    },
+  },
+  created () {
+    setTimeout(() => {
+      this.search = this.query
+    }, 1);
   }
 }
 </script>

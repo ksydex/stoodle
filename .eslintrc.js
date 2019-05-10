@@ -1,20 +1,11 @@
 module.exports = {
-  'env': {
-    'browser': true,
-    'es6': true
-  },
-  'extends': 'standard',
-  'globals': {
-    'Atomics': 'readonly',
-    'SharedArrayBuffer': 'readonly'
-  },
-  'parserOptions': {
-    'ecmaVersion': 2018,
-    'sourceType': 'module'
-  },
-  'plugins': [
-    'vue'
+  extends: [
+    // add more generic rulesets here, such as:
+    // 'eslint:recommended',
+    'plugin:vue/recommended'
   ],
-  'rules': {
+  rules: {
+    // override/add rules settings here, such as:
+    // 'vue/no-unused-vars': 'error'
   }
 }
