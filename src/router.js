@@ -3,6 +3,8 @@ import Router from 'vue-router'
 import Home from '@/views/Home'
 import SearchResults from '@/views/SearchResults'
 import Software from '@/views/Software'
+import Subject from '@/views/Subject'
+import Faculty from '@/views/Faculty'
 
 Vue.use(Router)
 
@@ -13,20 +15,31 @@ export default new Router({
     {
       path: '/',
       name: 'home',
-      component: Home
-
+      component: Home,
     },
     {
       path: '/search/:searchQuery',
       name: 'SearchResults',
       component: SearchResults,
-      props: true
+      props: true,
     },
     {
-      path: '/software/:id',
+      path: '/software/:name',
       name: 'Software',
       component: Software,
-      props: true
+      props: true,
     },
-  ]
+    {
+      path: '/subject/:name',
+      name: 'Subject',
+      component: Subject,
+      props: true,
+    },
+    {
+      path: '/faculty/:name',
+      name: 'Faculty',
+      component: Faculty,
+      props: true,
+    },
+  ],
 })

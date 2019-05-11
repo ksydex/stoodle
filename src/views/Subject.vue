@@ -8,23 +8,8 @@
       >
         <v-flex
           xs12
-          sm5
-          md3
-          xl2
-          mx-4
-          mb-4
-          :mt-4="!$vuetify.breakpoint.xs"
-        >
-          <v-img
-            :src="soft.img"
-            height="200px"
-            contain
-          ></v-img>
-        </v-flex>
-        <v-flex
-          xs12
           md7
-          lg5
+          lg7
         >
           <v-layout
             row
@@ -33,11 +18,11 @@
             mb-3
             justify-space-between
           >
-            <h1 class="display-1 text-main--text">{{soft.name}}</h1>
+            <h1 class="display-1 text-main--text">{{subject.name}}</h1>
             <v-btn
               flat
               class="blue--text text--darken-1 px-2 mx-0"
-              @click="searchGoogle(soft.name)"
+              @click="searchGoogle(subject.name)"
             >
               Поиск в Google
               <v-icon
@@ -46,12 +31,12 @@
               >search</v-icon>
             </v-btn>
           </v-layout>
-          <v-layout row></v-layout>
-          <h2 class="title text-main--text text--lighten-2 mb-1">{{`${soft.card_type} - ${soft.type}`}}</h2>
-          <h2 class="title text-main--text text--lighten-2 mb-1">{{`Год - ${soft.year}`}}</h2>
-          <h2 class="title text-main--text text--lighten-2 mb-2">{{`Тип лицензии - ${soft.license}`}}</h2>
-
-          <p class="subheading text-main--text">{{soft.description}}</p>
+          <h2 class="title text-main--text text--lighten-2 mb-2">{{`Дисциплина - ${subject.discipline}`}}</h2>
+          <h2
+            class="title text-main--text text--lighten-2 mb-1"
+            @click="$router.push('/faculty/'+subject.faculty)"
+            id="link"
+          >{{subject.faculty}}</h2>
         </v-flex>
         <v-flex lg1></v-flex>
       </v-layout>
@@ -62,12 +47,25 @@
         justify-center
       >
         <v-flex
-          sm5
           md6
           lg5
           xl4
         >
-          <h1 class="headline text-main--text mb-3">Используется на учебных программах</h1>
+          <h1 class="headline text-main--text mb-3">Используемое ПО</h1>
+          <search-card
+            v-for="(soft, index) in software"
+            :key="index"
+            :soft="soft"
+            color="transparent"
+            class="text-main--text mb-3 search-card"
+          />
+        </v-flex>
+        <v-flex
+          md6
+          lg5
+          xl4
+        >
+          <h1 class="headline text-main--text mb-3">Похожие учебные программы</h1>
           <v-list>
             <v-list-tile
               v-for="subject in subjects"
@@ -76,29 +74,18 @@
             >
               <v-list-tile-content>
                 <v-list-tile-title
+                  @click="$router.push('/subject/'+subject.name)"
                   id="link"
                   v-text="subject.name"
-                  @click="$router.push('/subject/'+subject.name)"
                 ></v-list-tile-title>
-                <v-list-tile-sub-title v-text="subject.faculty"></v-list-tile-sub-title>
+                <v-list-tile-sub-title
+                  @click="$router.push('/faculty/'+subject.faculty)"
+                  id="link"
+                  v-text="subject.faculty"
+                ></v-list-tile-sub-title>
               </v-list-tile-content>
             </v-list-tile>
           </v-list>
-        </v-flex>
-        <v-flex
-          sm6
-          md6
-          lg5
-          xl4
-        >
-          <h1 class="headline text-main--text mb-3">Похожее программное обеспечение</h1>
-          <search-card
-            v-for="(soft, index) in software"
-            :key="index"
-            :soft="soft"
-            color="transparent"
-            class="text-main--text mb-3 search-card"
-          />
         </v-flex>
       </v-layout>
     </v-layout>
@@ -135,7 +122,6 @@ export default {
           name: 'VS code',
           type: 'IDE',
           year: '2019',
-          license: 'Freeware',
           card_type: 'Программное обеспечение',
           description:
             'Visual Studio Code - легкий редактор кода, разработанный корпорацией Microsoft на движке Electron с использваонием веб-технологий. Прямым конкурентом является Atom, PhpStorm, SublimeText, но VS code уже несколько лет удерживает первые позиции в топах пользователей.',
@@ -145,7 +131,6 @@ export default {
         {
           name: 'XAMMP',
           type: 'Web-server',
-          license: 'Freeware',
           year: '2017',
           card_type: 'Программное обеспечение',
           description:
@@ -156,7 +141,6 @@ export default {
         {
           name: 'КонсультантПлюс',
           type: 'Справочная система',
-          license: 'Commercial',
           year: '2019',
           card_type: 'Программное обеспечение',
           img:
@@ -166,8 +150,8 @@ export default {
     }
   },
   computed: {
-    soft() {
-      return this.software.find(item => item.name == this.name)
+    subject() {
+      return this.subjects.find(item => item.name == this.name)
     }
   },
   methods: {

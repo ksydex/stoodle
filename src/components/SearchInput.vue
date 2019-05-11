@@ -18,17 +18,17 @@
 </template>
 
 <script>
-import { setTimeout } from 'timers';
+import { setTimeout } from 'timers'
 export default {
-  data () {
+  data() {
     return {
       model: null,
       search: 's',
-      states: ["Alama", "bas", "sdsdssd", "sdsdsds"]
+      states: ['Alama', 'bas', 'sdsdssd', 'sdsdsds']
     }
   },
   computed: {
-    placeholder () {
+    placeholder() {
       let placeholder = [
         'Что будем искать?',
         'Нуу... Что на этот раз?',
@@ -40,25 +40,26 @@ export default {
       ]
       return placeholder[Math.floor(Math.random() * placeholder.length)]
     },
-    query () {
+    query() {
       return this.$route.params.searchQuery
     }
   },
   methods: {
-    onSearch () {
-      this.$router.push('/search/' + this.search)
-    },
+    onSearch() {
+      if (this.search !== undefined && this.search !== '')
+        this.$router.push('/search/' + this.search)
+    }
   },
-  created () {
+  created() {
     setTimeout(() => {
       this.search = this.query
-    }, 1);
+    }, 1)
   }
 }
 </script>
 
 <style lang="scss">
-.v-menu__content{
+.v-menu__content {
   border-radius: 30px !important;
   box-shadow: rgba(255, 82, 91, 0.09) 0px 5px 15px !important;
   border: 1px solid rgba(255, 82, 91, 0.337) !important;
@@ -66,6 +67,5 @@ export default {
 .v-input__slot {
   margin-bottom: 0;
 }
-
 </style>
 

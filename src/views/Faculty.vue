@@ -7,6 +7,7 @@
         :wrap="$vuetify.breakpoint.xs"
       >
         <v-flex
+          align-center
           xs12
           sm5
           md3
@@ -16,7 +17,7 @@
           :mt-4="!$vuetify.breakpoint.xs"
         >
           <v-img
-            :src="soft.img"
+            :src="faculty.img"
             height="200px"
             contain
           ></v-img>
@@ -33,11 +34,11 @@
             mb-3
             justify-space-between
           >
-            <h1 class="display-1 text-main--text">{{soft.name}}</h1>
+            <h1 class="display-1 text-main--text">{{faculty.name}}</h1>
             <v-btn
               flat
               class="blue--text text--darken-1 px-2 mx-0"
-              @click="searchGoogle(soft.name)"
+              @click="searchGoogle(faculty.name)"
             >
               Поиск в Google
               <v-icon
@@ -46,12 +47,19 @@
               >search</v-icon>
             </v-btn>
           </v-layout>
-          <v-layout row></v-layout>
-          <h2 class="title text-main--text text--lighten-2 mb-1">{{`${soft.card_type} - ${soft.type}`}}</h2>
-          <h2 class="title text-main--text text--lighten-2 mb-1">{{`Год - ${soft.year}`}}</h2>
-          <h2 class="title text-main--text text--lighten-2 mb-2">{{`Тип лицензии - ${soft.license}`}}</h2>
+          <v-layout
+            row
+            class="mb-2"
+          >
+            <h2 class="title text-main--text text--lighten-2 mr-2">Веб-сайт -</h2>
+            <a
+              class="title primary--text"
+              target="_blank"
+              :href="faculty.web_site"
+            >{{faculty.web_site.replace(/https:\/\/|http:\/\//gi,'')}}</a>
+          </v-layout>
 
-          <p class="subheading text-main--text">{{soft.description}}</p>
+          <p class="subheading text-main--text">{{faculty.description}}</p>
         </v-flex>
         <v-flex lg1></v-flex>
       </v-layout>
@@ -62,12 +70,25 @@
         justify-center
       >
         <v-flex
-          sm5
           md6
           lg5
           xl4
         >
-          <h1 class="headline text-main--text mb-3">Используется на учебных программах</h1>
+          <h1 class="headline text-main--text mb-3">Используемое ПО</h1>
+          <search-card
+            v-for="(soft, index) in software"
+            :key="index"
+            :soft="soft"
+            color="transparent"
+            class="text-main--text mb-3 search-card"
+          />
+        </v-flex>
+        <v-flex
+          md6
+          lg5
+          xl4
+        >
+          <h1 class="headline text-main--text mb-3">Учебные программы</h1>
           <v-list>
             <v-list-tile
               v-for="subject in subjects"
@@ -76,29 +97,14 @@
             >
               <v-list-tile-content>
                 <v-list-tile-title
+                  @click="$router.push('/subject/'+subject.name)"
                   id="link"
                   v-text="subject.name"
-                  @click="$router.push('/subject/'+subject.name)"
                 ></v-list-tile-title>
                 <v-list-tile-sub-title v-text="subject.faculty"></v-list-tile-sub-title>
               </v-list-tile-content>
             </v-list-tile>
           </v-list>
-        </v-flex>
-        <v-flex
-          sm6
-          md6
-          lg5
-          xl4
-        >
-          <h1 class="headline text-main--text mb-3">Похожее программное обеспечение</h1>
-          <search-card
-            v-for="(soft, index) in software"
-            :key="index"
-            :soft="soft"
-            color="transparent"
-            class="text-main--text mb-3 search-card"
-          />
         </v-flex>
       </v-layout>
     </v-layout>
@@ -110,6 +116,16 @@ export default {
   props: ['name'],
   data() {
     return {
+      faculties: [
+        {
+          name: 'Факультет вычислительной техники',
+          short_name: 'ФВТ',
+          description:
+            'На ФВТ сосредоточена подготовка специалистов в области компьютерной техники, ее проектирования, эксплуатации, разработки программного обеспечения и применения новых информационных технологий во всех сферах деятельности, в том числе и в сфере управления.',
+          web_site: 'https://fvt.pnzgu.ru',
+          img: 'https://pp.userapi.com/c846021/v846021055/5cf17/rVTeUKKIirk.jpg'
+        }
+      ],
       subjects: [
         {
           name: 'Информационные технологии в практической деятельности',
@@ -135,7 +151,6 @@ export default {
           name: 'VS code',
           type: 'IDE',
           year: '2019',
-          license: 'Freeware',
           card_type: 'Программное обеспечение',
           description:
             'Visual Studio Code - легкий редактор кода, разработанный корпорацией Microsoft на движке Electron с использваонием веб-технологий. Прямым конкурентом является Atom, PhpStorm, SublimeText, но VS code уже несколько лет удерживает первые позиции в топах пользователей.',
@@ -145,7 +160,6 @@ export default {
         {
           name: 'XAMMP',
           type: 'Web-server',
-          license: 'Freeware',
           year: '2017',
           card_type: 'Программное обеспечение',
           description:
@@ -156,7 +170,6 @@ export default {
         {
           name: 'КонсультантПлюс',
           type: 'Справочная система',
-          license: 'Commercial',
           year: '2019',
           card_type: 'Программное обеспечение',
           img:
@@ -166,8 +179,8 @@ export default {
     }
   },
   computed: {
-    soft() {
-      return this.software.find(item => item.name == this.name)
+    faculty() {
+      return this.faculties.find(item => item.name == this.name)
     }
   },
   methods: {

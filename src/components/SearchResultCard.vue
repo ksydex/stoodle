@@ -1,22 +1,17 @@
 <template>
   <v-card
-  class="search-card"
-  flat>
+    class="search-card"
+    flat
+  >
     <v-layout>
-      <v-flex mr-4 ml-2 xs2 md1 d-flex align-center
-      id="software-link"
-      @click="$router.push('/software/'+soft.name)"
-      >
-        <v-img :src="soft.img" height="70px" contain></v-img>
-      </v-flex>
       <v-flex>
         <v-card-title>
           <div>
             <v-flex d-inline-flex>
               <div
-              id="software-link"
-              class="headline mr-3"
-              @click="$router.push('/software/'+soft.name)"
+                id="link"
+                class="headline mr-3"
+                @click="$router.push('/software/'+soft.name)"
               >{{ soft.name }}</div>
               <v-spacer></v-spacer>
               <div class="text-main--text text--lighten-2 headline mr-3">{{ soft.year }}</div>
@@ -29,23 +24,33 @@
           </div>
         </v-card-title>
       </v-flex>
+      <v-flex
+        mr-4
+        ml-3
+        xs2
+        md1
+        d-flex
+        align-center
+        id="software-link"
+        @click="$router.push('/software/'+soft.name)"
+      >
+        <v-img
+          :src="soft.img"
+          height="70px"
+          contain
+        ></v-img>
+      </v-flex>
     </v-layout>
   </v-card>
 </template>
 
 <script>
 export default {
-  props: ["soft"]
+  props: ['soft']
 }
 </script>
 
 <style lang="scss" scoped>
-#software-link {
-  cursor: pointer;
-  &:hover {
-    text-decoration: underline;
-  }
-}
 .search-card {
   border-radius: 10px;
   box-shadow: none;
