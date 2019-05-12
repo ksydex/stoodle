@@ -106,7 +106,7 @@
             v-for="soft in similarSoftware"
             :key="soft.name"
             :data="soft"
-            cardType="software"
+            card-type="software"
             color="transparent"
             class="text-main--text mb-3 search-card"
           />

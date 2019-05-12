@@ -66,7 +66,7 @@
                   v-for="subItem in result[item.type]"
                   :key="subItem.name"
                   :data="subItem"
-                  :cardType="item.type"
+                  :card-type="item.type"
                   class="mb-2 search-card"
                 />
               </v-layout>
