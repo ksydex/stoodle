@@ -71,20 +71,20 @@
           </h1>
           <v-list>
             <v-list-tile
-              v-for="subject in similarSubjects"
-              :key="subject.name"
+              v-for="subjectItem in similarSubjects"
+              :key="subjectItem.name"
               class="mb-2"
             >
               <v-list-tile-content>
                 <v-list-tile-title
                   class="link text-main--text"
-                  @click="$router.push('/subject/'+subject.name)"
-                  v-text="subject.name"
+                  @click="$router.push('/subject/'+subjectItem.name)"
+                  v-text="subjectItem.name"
                 />
                 <v-list-tile-sub-title
                   class="link text-main--text text--lighten-2"
-                  @click="$router.push('/faculty/'+subject.faculty)"
-                  v-text="subject.faculty"
+                  @click="$router.push('/faculty/'+subjectItem.faculty)"
+                  v-text="subjectItem.faculty"
                 />
               </v-list-tile-content>
             </v-list-tile>
@@ -119,6 +119,7 @@ export default {
       return this.$store.getters.subjectSimilar(params)
     },
     usedSoftware() {
+      return true
       // TODO сделать метод получения используемого ПО
     }
   },

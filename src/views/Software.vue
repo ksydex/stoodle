@@ -106,7 +106,7 @@
             v-for="soft in similarSoftware"
             :key="soft.name"
             :data="soft"
-            card_type="software"
+            cardType="software"
             color="transparent"
             class="text-main--text mb-3 search-card"
           />
@@ -138,6 +138,9 @@ export default {
         exceptName: this.software.name
       }
       return this.$store.getters.softwareSimilar(params)
+    },
+    usedOnSubjects() {
+      return true // TODO сделать подбор УП
     }
   },
   methods: {

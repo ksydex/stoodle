@@ -75,9 +75,8 @@ export default {
         .splice(0, 5) // возвращаем первые 5
 
       // если больше нет похожего ПО
-      if (firstTry.length === 5) {
-        return firstTry
-      } else if (firstTry.length !== 0) {
+      if (firstTry.length !== 0) return firstTry
+      /* else if (firstTry.length !== 0) {
         state.software
           .filter(item => item.name !== exceptName)
           .splice(0, 5 - firstTry.length)
@@ -85,7 +84,7 @@ export default {
             firstTry.push(item)
           })
         return firstTry
-      } else
+      } */ else
         return state.software
           .filter(item => item.name !== exceptName)
           .splice(0, 5)

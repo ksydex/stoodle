@@ -10,12 +10,13 @@
           align-center
           xs12
           md6
-          mb-4
-          :mt-4="!$vuetify.breakpoint.xs"
+          d-flex
+          pa-4
+          :mt-4="$vuetify.breakpoint.xs"
         >
           <v-img
+            max-height="300px"
             :src="faculty.img"
-            height="200px"
             contain
           />
         </v-flex>
@@ -127,72 +128,12 @@ export default {
     }
   },
   data() {
-    return {
-      faculties: [
-        {
-          name: 'Факультет вычислительной техники',
-          short_name: 'ФВТ',
-          description:
-            'На ФВТ сосредоточена подготовка специалистов в области компьютерной техники, ее проектирования, эксплуатации, разработки программного обеспечения и применения новых информационных технологий во всех сферах деятельности, в том числе и в сфере управления.',
-          web_site: 'https://fvt.pnzgu.ru',
-          img: 'https://pp.userapi.com/c846021/v846021055/5cf17/rVTeUKKIirk.jpg'
-        }
-      ],
-      subjects: [
-        {
-          name: 'Информационные технологии в практической деятельности',
-          discipline: 'Информационные технологии',
-          faculty: 'Факультет вычислительной техники',
-          id: 1
-        },
-        {
-          name: 'Правовое обеспечение в практической деятельности',
-          discipline: 'Информационные технологии',
-          faculty: 'Факультет экономики и управления',
-          id: 2
-        },
-        {
-          name: 'Программирование С++',
-          discipline: 'Программирование',
-          faculty: 'Факультет вычислительной техники',
-          id: 3
-        }
-      ],
-      software: [
-        {
-          name: 'VS code',
-          type: 'IDE',
-          year: '2019',
-          card_type: 'Программное обеспечение',
-          description:
-            'Visual Studio Code - легкий редактор кода, разработанный корпорацией Microsoft на движке Electron с использваонием веб-технологий. Прямым конкурентом является Atom, PhpStorm, SublimeText, но VS code уже несколько лет удерживает первые позиции в топах пользователей.',
-          img:
-            'https://static1.squarespace.com/static/592e86ee9de4bb6e73d8c154/t/5a3e4ca653450ae78e8d4ed2/1514033170109/32078472-5053adea-baa7-11e7-9034-519002f12ac7.png'
-        },
-        {
-          name: 'XAMMP',
-          type: 'Web-server',
-          year: '2017',
-          card_type: 'Программное обеспечение',
-          description:
-            'XAMMP - локальный сервер, который предоставляет стандартный набор функций для развертки виртуального сервера на вашей машине. Apache, PHP7, nginx и PhpMyAdmin.',
-          img:
-            'http://www.stickpng.com/assets/images/58482973cef1014c0b5e49fd.png'
-        },
-        {
-          name: 'КонсультантПлюс',
-          type: 'Справочная система',
-          year: '2019',
-          card_type: 'Программное обеспечение',
-          img:
-            'https://i.mycdn.me/i?r=AzGBqNaF5OQp2lMpnhRx4DEF706jHoH1H2CXoquhh2AuTaLFvi7hJtcHqXO0a8CV9Zo'
-        }
-      ]
-    }
+    return {}
   },
   computed: {
     faculty() {
-      return this.faculties.find(item => item.name == this.name)
+      const name = this.name
+      return this.$store.getters.facultyByName(name)
     }
   },
   methods: {
@@ -202,3 +143,9 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+#ss {
+  background-color: red !important;
+}
+</style>

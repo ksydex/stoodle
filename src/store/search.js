@@ -8,7 +8,7 @@ export default {
       const searchQuery = query
       result.software = getters.softwareSearch(searchQuery)
       result.subject = getters.subjectSearch(searchQuery)
-      result.faculty = null
+      result.faculty = getters.facultySearch(searchQuery)
       return result
     },
   },

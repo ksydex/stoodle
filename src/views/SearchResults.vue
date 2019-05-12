@@ -4,8 +4,8 @@
     :class="query.length !== 0 ? 'mx-0 px-0 pt-0 pa-0' : ''"
   >
     <v-layout
-      column
       v-if="query.length !== 0"
+      column
     >
       <v-layout row>
         <v-flex
@@ -45,9 +45,9 @@
           xl5
         >
           <div
-            class="mb-2"
             v-for="item in query"
             :key="item.title"
+            class="mb-2"
           >
             <h3 class="text-main--text subheading ml-2">
               {{ item.title }}
@@ -57,22 +57,21 @@
                 class="mx-2"
                 inset
                 vertical
-              ></v-divider>
+              />
               <v-layout
-                column
                 v-if="result[item.type].length !== 0"
+                column
               >
                 <search-card
                   v-for="subItem in result[item.type]"
                   :key="subItem.name"
                   :data="subItem"
-                  :card_type="item.type"
+                  :cardType="item.type"
                   class="mb-2 search-card"
                 />
               </v-layout>
             </v-layout>
           </div>
-
         </v-flex>
       </v-layout>
     </v-layout>

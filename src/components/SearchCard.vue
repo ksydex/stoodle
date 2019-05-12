@@ -13,21 +13,21 @@
             >
               <div
                 class="headline mr-3 link text-main--text"
-                @click="$router.push(`/${card_type}/${title}`)"
+                @click="$router.push(`/${cardType}/${title}`)"
               >
                 {{ title }}
               </div>
               <div
-                class="text-main--text text--lighten-2 headline mr-3"
                 v-if="subTitle !== null"
+                class="text-main--text text--lighten-2 headline mr-3"
               >
                 {{ subTitle }}
               </div>
             </v-flex>
             <div class="text-main--text text--lighten-2 subheading">
               <span
-                class="mr-3"
                 v-if="body !== null"
+                class="mr-3"
               >
                 {{ body }}
               </span>
@@ -39,6 +39,7 @@
         </v-card-title>
       </v-flex>
       <v-flex
+        v-if="img !== null"
         id="software-link"
         mr-3
         xs2
@@ -46,8 +47,7 @@
         lg1
         d-flex
         align-center
-        v-if="img !== null"
-        @click="$router.push(`/${card_type}/${title}`)"
+        @click="$router.push(`/${cardType}/${title}`)"
       >
         <v-img
           :src="img"
@@ -66,7 +66,7 @@ export default {
       type: Object,
       required: true
     },
-    card_type: {
+    cardType: {
       type: String,
       required: true
     }
@@ -79,25 +79,25 @@ export default {
       const subTitle = {
         software: this.data.year,
         subject: null,
-        faculty: this.short_name
+        faculty: null
       }
-      return subTitle[this.card_type]
+      return subTitle[this.cardType]
     },
     body() {
       const body = {
         software: this.data.type,
         subject: this.data.discipline,
-        faculty: null // TODO тут что то должно быть
+        faculty: this.data.short_name
       }
-      return body[this.card_type]
+      return body[this.cardType]
     },
     subBody() {
       const subBody = {
-        software: this.data.card_type,
+        software: this.data.cardType,
         subject: this.data.faculty,
         faculty: null // TODO тут что то должно быть
       }
-      return subBody[this.card_type]
+      return subBody[this.cardType]
     },
     img() {
       if (this.data.img) return this.data.img
