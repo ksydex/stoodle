@@ -10,43 +10,66 @@
           sm0
           md2
           xl1
-        ></v-flex>
+        />
         <v-flex>
           <v-tabs slider-color="primary">
             <v-tab
               v-for="n in ['Все', 'Программное обеспечение', 'Договоры', 'Учебные программы', 'Факультеты']"
               :key="n"
-            >{{ n }}</v-tab>
+            >
+              {{ n }}
+            </v-tab>
           </v-tabs>
         </v-flex>
       </v-layout>
-      <v-divider class="primary lighten-4"></v-divider>
+      <v-divider class="primary lighten-4" />
       <v-layout
         row
         mt-2
       >
+        <!-- ### пустой блок для отступа ### -->
         <v-flex
           xs0
           sm1
           md2
           xl1
-        ></v-flex>
+        />
+        <!-- ### пустой блок для отступа ### -->
         <v-flex
           xs12
           sm10
-          md9
+          md7
           xl5
         >
-          <v-layout column>
-            <search-card
-              v-for="(soft, index) in software"
-              :key="index"
-              :soft="soft"
-              flat
-              color="transparent"
-              class="text-main--text mb-3 search-card"
-            />
-          </v-layout>
+          <div
+            class="mb-2"
+            v-for="item in query"
+            :key="item.title"
+          >
+            <h3 class="text-main--text subheading ml-2">
+              {{ item.title }}
+            </h3>
+            <v-layout row>
+              <v-divider
+                class="mx-2"
+                inset
+                vertical
+              ></v-divider>
+              <v-layout
+                column
+                v-if="result[item.type].length !== 0"
+              >
+                <search-card
+                  v-for="subItem in result[item.type]"
+                  :key="subItem.name"
+                  :data="subItem"
+                  :card_type="item.type"
+                  class="mb-2 search-card"
+                />
+              </v-layout>
+            </v-layout>
+          </div>
+
         </v-flex>
       </v-layout>
     </v-layout>
@@ -55,38 +78,44 @@
 
 <script>
 export default {
-  props: ['searchQuery'],
-  data() {
-    return {
-      software: [
-        {
-          name: 'VS code',
-          type: 'IDE',
-          year: '2019',
-          card_type: 'Программное обеспечение',
-          img:
-            'https://static1.squarespace.com/static/592e86ee9de4bb6e73d8c154/t/5a3e4ca653450ae78e8d4ed2/1514033170109/32078472-5053adea-baa7-11e7-9034-519002f12ac7.png'
-        },
-        {
-          name: 'XAMMP',
-          type: 'Web-server',
-          year: '2017',
-          card_type: 'Программное обеспечение',
-          img:
-            'http://www.stickpng.com/assets/images/58482973cef1014c0b5e49fd.png'
-        },
-        {
-          name: 'КонсультантПлюс',
-          type: 'Справочная система',
-          year: '2019',
-          card_type: 'Программное обеспечение',
-          img:
-            'https://i.mycdn.me/i?r=AzGBqNaF5OQp2lMpnhRx4DEF706jHoH1H2CXoquhh2AuTaLFvi7hJtcHqXO0a8CV9Zo'
-        }
-      ]
+  props: {
+    searchQuery: {
+      type: String,
+      required: true
     }
   },
-  computed: {},
+  data() {
+    return {}
+  },
+  computed: {
+    result() {
+      const query = this.searchQuery
+        .replace(/\s/g, '\x5cs{0,}')
+        .replace(/\+/g, '\x5c+')
+      const queryRegEx = new RegExp(query, 'gi')
+      return this.$store.getters.searchAll(queryRegEx)
+    },
+    query() {
+      // порядок вывода карточек
+      const resultsQuery = [
+        {
+          type: 'software',
+          title: 'Программное обеспечение'
+        },
+        {
+          type: 'subject',
+          title: 'Учебные программы'
+        },
+        {
+          type: 'faculty',
+          title: 'Факультеты'
+        }
+      ]
+      return resultsQuery.filter(item => {
+        return this.result[item.type] !== null
+      })
+    }
+  },
   methods: {}
 }
 </script>

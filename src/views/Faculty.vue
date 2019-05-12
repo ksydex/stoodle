@@ -9,10 +9,7 @@
         <v-flex
           align-center
           xs12
-          sm5
-          md3
-          xl2
-          mx-4
+          md6
           mb-4
           :mt-4="!$vuetify.breakpoint.xs"
         >
@@ -20,12 +17,11 @@
             :src="faculty.img"
             height="200px"
             contain
-          ></v-img>
+          />
         </v-flex>
         <v-flex
           xs12
-          md7
-          lg5
+          md6
         >
           <v-layout
             row
@@ -34,7 +30,9 @@
             mb-3
             justify-space-between
           >
-            <h1 class="display-1 text-main--text">{{faculty.name}}</h1>
+            <h1 class="display-1 text-main--text">
+              {{ faculty.name }}
+            </h1>
             <v-btn
               flat
               class="blue--text text--darken-1 px-2 mx-0"
@@ -44,37 +42,45 @@
               <v-icon
                 right
                 dark
-              >search</v-icon>
+              >
+                search
+              </v-icon>
             </v-btn>
           </v-layout>
           <v-layout
             row
             class="mb-2"
           >
-            <h2 class="title text-main--text text--lighten-2 mr-2">Веб-сайт -</h2>
+            <h2 class="title text-main--text text--lighten-2 mr-2">
+              Веб-сайт -
+            </h2>
             <a
               class="title primary--text"
               target="_blank"
               :href="faculty.web_site"
-            >{{faculty.web_site.replace(/https:\/\/|http:\/\//gi,'')}}</a>
+            >
+              {{ faculty.web_site.replace(/https:\/\/|http:\/\//gi,'') }}
+            </a>
           </v-layout>
 
-          <p class="subheading text-main--text">{{faculty.description}}</p>
+          <p class="subheading text-main--text">
+            {{ faculty.description }}
+          </p>
         </v-flex>
-        <v-flex lg1></v-flex>
       </v-layout>
-      <v-divider class="my-3"></v-divider>
+      <v-divider class="my-3" />
       <v-layout
         row
         wrap
         justify-center
       >
         <v-flex
+          xs12
           md6
-          lg5
-          xl4
         >
-          <h1 class="headline text-main--text mb-3">Используемое ПО</h1>
+          <h1 class="headline text-main--text mb-3">
+            Используемое ПО
+          </h1>
           <search-card
             v-for="(soft, index) in software"
             :key="index"
@@ -84,11 +90,12 @@
           />
         </v-flex>
         <v-flex
+          xs12
           md6
-          lg5
-          xl4
         >
-          <h1 class="headline text-main--text mb-3">Учебные программы</h1>
+          <h1 class="headline text-main--text mb-3">
+            Учебные программы
+          </h1>
           <v-list>
             <v-list-tile
               v-for="subject in subjects"
@@ -97,11 +104,11 @@
             >
               <v-list-tile-content>
                 <v-list-tile-title
-                  @click="$router.push('/subject/'+subject.name)"
                   id="link"
+                  @click="$router.push('/subject/'+subject.name)"
                   v-text="subject.name"
-                ></v-list-tile-title>
-                <v-list-tile-sub-title v-text="subject.faculty"></v-list-tile-sub-title>
+                />
+                <v-list-tile-sub-title v-text="subject.faculty" />
               </v-list-tile-content>
             </v-list-tile>
           </v-list>
@@ -113,7 +120,12 @@
 
 <script>
 export default {
-  props: ['name'],
+  props: {
+    name: {
+      type: String,
+      required: true
+    }
+  },
   data() {
     return {
       faculties: [

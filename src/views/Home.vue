@@ -6,7 +6,9 @@
     >
       <v-flex
         xs12
-        md5
+        md8
+        lg7
+        xl5
         style="margin-bottom: 100px !important"
         class="text-xs-center mb-5"
         justify-center
@@ -19,11 +21,8 @@
               @click="$router.push('/')"
             >
           </v-flex>
-          <v-flex
-            xs6
-            class="mt-5"
-          >
-            <search-input></search-input>
+          <v-flex class="mt-5">
+            <search-input />
           </v-flex>
           <v-layout
             row
@@ -36,7 +35,9 @@
               flat
               class="primary--text px-2 ml-0 mr-4"
               @click="$router.push(topic.link)"
-            >{{topic.name}}</v-btn>
+            >
+              {{ topic.name }}
+            </v-btn>
           </v-layout>
         </v-layout>
       </v-flex>

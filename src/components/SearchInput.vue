@@ -1,18 +1,17 @@
 <template>
   <v-flex>
     <v-autocomplete
+      v-model="model"
       solo
       append-outer-icon="search"
-      @click:append-outer="onSearch()"
-      @keyup.enter="onSearch()"
       single-line
       :placeholder="placeholder"
-      class="search-input"
-      v-model="model"
       :search-input.sync="search"
       hide-no-data
       :items="states"
       persistent-hint
+      @keyup.enter="onSearch()"
+      @click:append-outer="onSearch()"
     />
   </v-flex>
 </template>
@@ -43,16 +42,16 @@ export default {
       return this.$route.params.searchQuery
     }
   },
+  created() {
+    setTimeout(() => {
+      this.search = this.query
+    }, 1)
+  },
   methods: {
     onSearch() {
       if (this.search !== undefined && this.search !== '')
         this.$router.push('/search/' + this.search)
     }
-  },
-  created() {
-    setTimeout(() => {
-      this.search = this.query
-    }, 1)
   }
 }
 </script>
@@ -65,6 +64,14 @@ export default {
 }
 .v-input__slot {
   margin-bottom: 0;
+}
+.v-input__icon--append-outer {
+  position: absolute !important;
+  display: block;
+  margin-left: -45px;
+}
+.v-input__icon--append {
+  display: none;
 }
 </style>
 

@@ -1,6 +1,9 @@
 <template>
-  <v-container>
-    <v-layout column>
+  <v-container v-if="software && similarSoftware">
+    <v-layout
+      v-if="software"
+      column
+    >
       <v-layout
         justify-center
         row
@@ -8,23 +11,20 @@
       >
         <v-flex
           xs12
-          sm5
-          md3
-          xl2
-          mx-4
+          md6
+          px-5
           mb-4
           :mt-4="!$vuetify.breakpoint.xs"
         >
           <v-img
-            :src="soft.img"
+            :src="software.img"
             height="200px"
             contain
           />
         </v-flex>
         <v-flex
           xs12
-          md7
-          lg5
+          md6
         >
           <v-layout
             row
@@ -34,12 +34,12 @@
             justify-space-between
           >
             <h1 class="display-1 text-main--text">
-              {{ soft.name }}
+              {{ software.name }}
             </h1>
             <v-btn
               flat
               class="blue--text text--darken-1 px-2 mx-0"
-              @click="searchGoogle(soft.name)"
+              @click="searchGoogle(software.name)"
             >
               Поиск в Google
               <v-icon
@@ -51,20 +51,19 @@
             </v-btn>
           </v-layout>
           <h2 class="title text-main--text text--lighten-2 mb-1">
-            {{ `${soft.card_type} - ${soft.type}` }}
+            {{ `${software.card_type} - ${software.type}` }}
           </h2>
           <h2 class="title text-main--text text--lighten-2 mb-1">
-            {{ `Год - ${soft.year}` }}
+            {{ `Год - ${software.year}` }}
           </h2>
           <h2 class="title text-main--text text--lighten-2 mb-2">
-            {{ `Тип лицензии - ${soft.license}` }}
+            {{ `Тип лицензии - ${software.license}` }}
           </h2>
 
           <p class="subheading text-main--text">
-            {{ soft.description }}
+            {{ software.description }}
           </p>
         </v-flex>
-        <v-flex lg1 />
       </v-layout>
       <v-divider class="my-3" />
       <v-layout
@@ -73,10 +72,8 @@
         justify-center
       >
         <v-flex
-          sm5
+          xs12
           md6
-          lg5
-          xl4
         >
           <h1 class="headline text-main--text mb-3">
             Используется на учебных программах
@@ -99,18 +96,16 @@
           </v-list>
         </v-flex>
         <v-flex
-          sm6
+          xs12
           md6
-          lg5
-          xl4
         >
           <h1 class="headline text-main--text mb-3">
             Похожее программное обеспечение
           </h1>
           <search-card
-            v-for="(softItem, index) in software"
-            :key="index"
-            :soft="softItem"
+            v-for="soft in similarSoftware"
+            :key="soft.name"
+            :software="soft"
             color="transparent"
             class="text-main--text mb-3 search-card"
           />
@@ -129,65 +124,19 @@ export default {
     }
   },
   data() {
-    return {
-      subjects: [
-        {
-          name: 'Информационные технологии в практической деятельности',
-          discipline: 'Информационные технологии',
-          faculty: 'Факультет вычислительной техники',
-          id: 1
-        },
-        {
-          name: 'Правовое обеспечение в практической деятельности',
-          discipline: 'Информационные технологии',
-          faculty: 'Факультет экономики и управления',
-          id: 2
-        },
-        {
-          name: 'Программирование С++',
-          discipline: 'Программирование',
-          faculty: 'Факультет вычислительной техники',
-          id: 3
-        }
-      ],
-      software: [
-        {
-          name: 'VS code',
-          type: 'IDE',
-          year: '2019',
-          license: 'Freeware',
-          card_type: 'Программное обеспечение',
-          description:
-            'Visual Studio Code - легкий редактор кода, разработанный корпорацией Microsoft на движке Electron с использваонием веб-технологий. Прямым конкурентом является Atom, PhpStorm, SublimeText, но VS code уже несколько лет удерживает первые позиции в топах пользователей.',
-          img:
-            'https://static1.squarespace.com/static/592e86ee9de4bb6e73d8c154/t/5a3e4ca653450ae78e8d4ed2/1514033170109/32078472-5053adea-baa7-11e7-9034-519002f12ac7.png'
-        },
-        {
-          name: 'XAMMP',
-          type: 'Web-server',
-          license: 'Freeware',
-          year: '2017',
-          card_type: 'Программное обеспечение',
-          description:
-            'XAMMP - локальный сервер, который предоставляет стандартный набор функций для развертки виртуального сервера на вашей машине. Apache, PHP7, nginx и PhpMyAdmin.',
-          img:
-            'http://www.stickpng.com/assets/images/58482973cef1014c0b5e49fd.png'
-        },
-        {
-          name: 'КонсультантПлюс',
-          type: 'Справочная система',
-          license: 'Commercial',
-          year: '2019',
-          card_type: 'Программное обеспечение',
-          img:
-            'https://i.mycdn.me/i?r=AzGBqNaF5OQp2lMpnhRx4DEF706jHoH1H2CXoquhh2AuTaLFvi7hJtcHqXO0a8CV9Zo'
-        }
-      ]
-    }
+    return {}
   },
   computed: {
-    soft() {
-      return this.software.find(item => item.name == this.name)
+    software() {
+      const name = this.name
+      return this.$store.getters.softwareByName(name)
+    },
+    similarSoftware() {
+      const params = {
+        type: this.software.type,
+        exceptName: this.software.name
+      }
+      return this.$store.getters.softwareSimilar(params)
     }
   },
   methods: {

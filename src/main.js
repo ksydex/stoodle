@@ -3,12 +3,12 @@ import './plugins/vuetify'
 import App from './App.vue'
 import router from './router'
 import store from './store/store'
-import searchcard from './components/SearchResultCard.vue'
+import searchCard from './components/SearchCard'
 
 import search from '@/components/SearchInput'
 
 Vue.component('search-input', search)
-Vue.component('search-card', searchcard)
+Vue.component('search-card', searchCard)
 
 Vue.config.productionTip = false
 
