@@ -93,7 +93,7 @@ export default {
     },
     subBody() {
       const subBody = {
-        software: this.data.cardType,
+        software: this.data.card_type,
         subject: this.data.faculty,
         faculty: null // TODO тут что то должно быть
       }
