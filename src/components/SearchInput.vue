@@ -18,12 +18,11 @@
 </template>
 
 <script>
-import { setTimeout } from 'timers'
 export default {
   data() {
     return {
       model: null,
-      search: 's',
+      search: null,
       states: ['Alama', 'bas', 'sdsdssd', 'sdsdsds']
     }
   },

@@ -19,7 +19,7 @@
             :src="soft.img"
             height="200px"
             contain
-          ></v-img>
+          />
         </v-flex>
         <v-flex
           xs12
@@ -33,7 +33,9 @@
             mb-3
             justify-space-between
           >
-            <h1 class="display-1 text-main--text">{{soft.name}}</h1>
+            <h1 class="display-1 text-main--text">
+              {{ soft.name }}
+            </h1>
             <v-btn
               flat
               class="blue--text text--darken-1 px-2 mx-0"
@@ -43,19 +45,28 @@
               <v-icon
                 right
                 dark
-              >search</v-icon>
+              >
+                search
+              </v-icon>
             </v-btn>
           </v-layout>
-          <v-layout row></v-layout>
-          <h2 class="title text-main--text text--lighten-2 mb-1">{{`${soft.card_type} - ${soft.type}`}}</h2>
-          <h2 class="title text-main--text text--lighten-2 mb-1">{{`Год - ${soft.year}`}}</h2>
-          <h2 class="title text-main--text text--lighten-2 mb-2">{{`Тип лицензии - ${soft.license}`}}</h2>
+          <h2 class="title text-main--text text--lighten-2 mb-1">
+            {{ `${soft.card_type} - ${soft.type}` }}
+          </h2>
+          <h2 class="title text-main--text text--lighten-2 mb-1">
+            {{ `Год - ${soft.year}` }}
+          </h2>
+          <h2 class="title text-main--text text--lighten-2 mb-2">
+            {{ `Тип лицензии - ${soft.license}` }}
+          </h2>
 
-          <p class="subheading text-main--text">{{soft.description}}</p>
+          <p class="subheading text-main--text">
+            {{ soft.description }}
+          </p>
         </v-flex>
-        <v-flex lg1></v-flex>
+        <v-flex lg1 />
       </v-layout>
-      <v-divider class="my-3"></v-divider>
+      <v-divider class="my-3" />
       <v-layout
         row
         wrap
@@ -67,7 +78,9 @@
           lg5
           xl4
         >
-          <h1 class="headline text-main--text mb-3">Используется на учебных программах</h1>
+          <h1 class="headline text-main--text mb-3">
+            Используется на учебных программах
+          </h1>
           <v-list>
             <v-list-tile
               v-for="subject in subjects"
@@ -77,10 +90,10 @@
               <v-list-tile-content>
                 <v-list-tile-title
                   id="link"
-                  v-text="subject.name"
                   @click="$router.push('/subject/'+subject.name)"
-                ></v-list-tile-title>
-                <v-list-tile-sub-title v-text="subject.faculty"></v-list-tile-sub-title>
+                  v-text="subject.name"
+                />
+                <v-list-tile-sub-title v-text="subject.faculty" />
               </v-list-tile-content>
             </v-list-tile>
           </v-list>
@@ -91,11 +104,13 @@
           lg5
           xl4
         >
-          <h1 class="headline text-main--text mb-3">Похожее программное обеспечение</h1>
+          <h1 class="headline text-main--text mb-3">
+            Похожее программное обеспечение
+          </h1>
           <search-card
-            v-for="(soft, index) in software"
+            v-for="(softItem, index) in software"
             :key="index"
-            :soft="soft"
+            :soft="softItem"
             color="transparent"
             class="text-main--text mb-3 search-card"
           />
@@ -107,7 +122,12 @@
 
 <script>
 export default {
-  props: ['name'],
+  props: {
+    name: {
+      type: String,
+      required: true
+    }
+  },
   data() {
     return {
       subjects: [

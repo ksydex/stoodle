@@ -7,38 +7,46 @@
       <v-flex>
         <v-card-title>
           <div>
-            <v-flex d-inline-flex>
+            <v-flex
+              d-inline-flex
+              wrap
+            >
               <div
                 id="link"
                 class="headline mr-3"
                 @click="$router.push('/software/'+soft.name)"
-              >{{ soft.name }}</div>
-              <v-spacer></v-spacer>
-              <div class="text-main--text text--lighten-2 headline mr-3">{{ soft.year }}</div>
+              >
+                {{ soft.name }}
+              </div>
+              <div class="text-main--text text--lighten-2 headline mr-3">
+                {{ soft.year }}
+              </div>
             </v-flex>
             <div class="text-main--text text--lighten-2 subheading">
-              <span class="mr-3">{{soft.type}}</span>
-              <span>{{soft.card_type}}</span>
+              <span class="mr-3">
+                {{ soft.type }}
+              </span>
+              <span>
+                {{ soft.card_type }}
+              </span>
             </div>
-            <div></div>
           </div>
         </v-card-title>
       </v-flex>
       <v-flex
+        id="software-link"
         mr-4
-        ml-3
         xs2
         md1
         d-flex
         align-center
-        id="software-link"
         @click="$router.push('/software/'+soft.name)"
       >
         <v-img
           :src="soft.img"
           height="70px"
           contain
-        ></v-img>
+        />
       </v-flex>
     </v-layout>
   </v-card>
@@ -46,7 +54,12 @@
 
 <script>
 export default {
-  props: ['soft']
+  props: {
+    soft: {
+      type: Object,
+      required: true
+    }
+  }
 }
 </script>
 
