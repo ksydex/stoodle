@@ -1,9 +1,12 @@
 <template>
   <v-container
-    fluid
-    class="mx-0 px-0 pt-0 pa-0"
+    :fluid="query.length !== 0"
+    :class="query.length !== 0 ? 'mx-0 px-0 pt-0 pa-0' : ''"
   >
-    <v-layout column>
+    <v-layout
+      column
+      v-if="query.length !== 0"
+    >
       <v-layout row>
         <v-flex
           xs0
@@ -73,6 +76,45 @@
         </v-flex>
       </v-layout>
     </v-layout>
+    <v-layout
+      v-else
+      justify-center
+      mt-3
+    >
+      <v-layout
+        row
+        wrap
+        align-center
+      >
+        <v-flex
+          align-center
+          d-flex
+          justify-center
+          xs12
+          md3
+          xl2
+        >
+          <img src="../assets/nodata1.png">
+        </v-flex>
+        <v-flex
+          xs12
+          md4
+          wrap
+          class="text-xs-center"
+        >
+          <h3 class="display-1 text-main--text ma-4 text-xs-center">
+            По вашему запросу ничего не найдено!
+          </h3>
+          <v-btn
+            class="primary"
+            flat
+            @click="$router.push('/')"
+          >
+            На главную
+          </v-btn>
+        </v-flex>
+      </v-layout>
+    </v-layout>
   </v-container>
 </template>
 
@@ -111,9 +153,9 @@ export default {
           title: 'Факультеты'
         }
       ]
-      return resultsQuery.filter(item => {
-        return this.result[item.type] !== null
-      })
+      return resultsQuery.filter(
+        item => this.result[item.type] && this.result[item.type].length !== 0
+      )
     }
   },
   methods: {}

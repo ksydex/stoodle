@@ -70,13 +70,22 @@ export default {
       return state.software.find(item => item.name === name)
     },
     softwareSimilar: state => ({ type, exceptName }) => {
-      const firstTry = state.software
+      let firstTry = state.software
         .filter(item => item.type === type && item.name !== exceptName)
         .splice(0, 5) // возвращаем первые 5
 
       // если больше нет похожего ПО
-      if (firstTry.length !== 0) return firstTry
-      else
+      if (firstTry.length === 5) {
+        return firstTry
+      } else if (firstTry.length !== 0) {
+        state.software
+          .filter(item => item.name !== exceptName)
+          .splice(0, 5 - firstTry.length)
+          .forEach(item => {
+            firstTry.push(item)
+          })
+        return firstTry
+      } else
         return state.software
           .filter(item => item.name !== exceptName)
           .splice(0, 5)

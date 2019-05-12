@@ -105,7 +105,8 @@
           <search-card
             v-for="soft in similarSoftware"
             :key="soft.name"
-            :software="soft"
+            :data="soft"
+            card_type="software"
             color="transparent"
             class="text-main--text mb-3 search-card"
           />
