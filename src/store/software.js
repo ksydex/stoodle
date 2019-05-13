@@ -92,5 +92,11 @@ export default {
     softwareSearch: state => query => {
       return state.software.filter(item => item.name.match(query))
     },
+    softwareAutocomplete: state => query => {
+      if (query && !!query.trim()) {
+        const strings = state.software.map(item => item.name)
+        return strings.filter(item => item.match(new RegExp(query, 'gi')))
+      } else return []
+    },
   },
 }

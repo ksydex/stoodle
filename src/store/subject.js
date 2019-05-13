@@ -37,5 +37,11 @@ export default {
     subjectSearch: state => query => {
       return state.subject.filter(item => item.name.match(query))
     },
+    subjectAutocomplete: state => query => {
+      if (query && !!query.trim()) {
+        const strings = state.subject.map(item => item.name)
+        return strings.filter(item => item.match(new RegExp(query, 'gi')))
+      } else return []
+    },
   },
 }

@@ -7,8 +7,8 @@
       <v-flex>
         <v-card-title class="py-2">
           <div>
-            <v-flex
-              d-inline-flex
+            <v-layout
+              row
               wrap
             >
               <div
@@ -23,7 +23,7 @@
               >
                 {{ subTitle }}
               </div>
-            </v-flex>
+            </v-layout>
             <div class="text-main--text text--lighten-2 subheading">
               <span
                 v-if="body !== null"
@@ -52,6 +52,7 @@
         <v-img
           :src="img"
           height="70px"
+          min-width="40px"
           contain
         />
       </v-flex>

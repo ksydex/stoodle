@@ -11,5 +11,12 @@ export default {
       result.faculty = getters.facultySearch(searchQuery)
       return result
     },
+    searchAutocomplete: (state, getters) => query => {
+      let result = []
+      getters.softwareAutocomplete(query).forEach(item => result.push(item))
+      getters.subjectAutocomplete(query).forEach(item => result.push(item))
+      getters.facultyAutocomplete(query).forEach(item => result.push(item))
+      return result
+    },
   },
 }

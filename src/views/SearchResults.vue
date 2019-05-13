@@ -17,10 +17,11 @@
         <v-flex>
           <v-tabs slider-color="primary">
             <v-tab
-              v-for="n in ['Все', 'Программное обеспечение', 'Договоры', 'Учебные программы', 'Факультеты']"
-              :key="n"
+              v-for="type in typeSwitch"
+              :key="type.name"
+              @click="setType(type.name)"
             >
-              {{ n }}
+              {{ type.name }}
             </v-tab>
           </v-tabs>
         </v-flex>
@@ -49,7 +50,10 @@
             :key="item.title"
             class="mb-2"
           >
-            <h3 class="text-main--text subheading ml-2">
+            <h3
+              class="text-main--text subheading ml-2 link"
+              @click="$router.push('/'+item.type)"
+            >
               {{ item.title }}
             </h3>
             <v-layout row>
@@ -126,7 +130,15 @@ export default {
     }
   },
   data() {
-    return {}
+    return {
+      typeSwitch: [
+        { name: 'Все', sort: null },
+        { name: 'Программное обеспечение', sort: 'software' },
+        { name: 'Учебные программы', sort: 'subject' },
+        { name: 'Факультеты', sort: 'faculty' }
+      ],
+      currentType: { name: 'Все', sort: null }
+    }
   },
   computed: {
     result() {
@@ -152,11 +164,23 @@ export default {
           title: 'Факультеты'
         }
       ]
-      return resultsQuery.filter(
-        item => this.result[item.type] && this.result[item.type].length !== 0
-      )
+      if (this.currentType.sort)
+        return resultsQuery.filter(
+          item =>
+            this.result[item.type] &&
+            this.result[item.type].length !== 0 &&
+            this.currentType.sort === item.type
+        )
+      else
+        return resultsQuery.filter(
+          item => this.result[item.type] && this.result[item.type].length !== 0
+        )
     }
   },
-  methods: {}
+  methods: {
+    setType(name) {
+      this.currentType = this.typeSwitch.find(item => item.name === name)
+    }
+  }
 }
 </script>

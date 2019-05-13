@@ -8,7 +8,9 @@
       :placeholder="placeholder"
       :search-input.sync="search"
       hide-no-data
-      :items="states"
+      ref="autocomplete"
+      @focus="switchInput = true"
+      :items="(switchInput || $route.path.indexOf('search') !== 1) ? statesComputed : states"
       persistent-hint
       @keyup.enter="onSearch()"
       @click:append-outer="onSearch()"
@@ -17,12 +19,14 @@
 </template>
 
 <script>
+import { setTimeout } from 'timers'
 export default {
   data() {
     return {
       model: null,
       search: null,
-      states: ['Alama', 'bas', 'sdsdssd', 'sdsdsds']
+      switchInput: false,
+      states: []
     }
   },
   computed: {
@@ -40,6 +44,11 @@ export default {
     },
     query() {
       return this.$route.params.searchQuery
+    },
+    statesComputed() {
+      let queryu = this.search
+      let result = this.$store.getters.searchAutocomplete(queryu)
+      return result
     }
   },
   created() {
@@ -49,8 +58,10 @@ export default {
   },
   methods: {
     onSearch() {
-      if (this.search !== undefined && this.search !== '')
+      if (this.search !== undefined && this.search !== '') {
         this.$router.push('/search/' + this.search)
+        this.$refs.autocomplete.blur()
+      }
     }
   }
 }

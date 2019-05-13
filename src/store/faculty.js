@@ -47,5 +47,11 @@ export default {
         item => item.name.match(query) || item.short_name.match(query)
       )
     },
+    facultyAutocomplete: state => query => {
+      if (query && !!query.trim()) {
+        const strings = state.faculty.map(item => item.name)
+        return strings.filter(item => item.match(new RegExp(query, 'gi')))
+      } else return []
+    },
   },
 }

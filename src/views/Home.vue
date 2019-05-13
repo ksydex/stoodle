@@ -16,6 +16,7 @@
         <v-layout column>
           <v-flex xs6>
             <img
+              height="70px"
               class="logo-home"
               src="../assets/logo.webp"
               @click="$router.push('/')"
@@ -33,7 +34,7 @@
               v-for="topic in topics"
               :key="topic.name"
               flat
-              class="primary--text px-2 ml-0 mr-4"
+              class="primary--text px-2 ml-0"
               @click="$router.push(topic.link)"
             >
               {{ topic.name }}
