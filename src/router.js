@@ -2,9 +2,8 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Home from '@/views/Home'
 import SearchResults from '@/views/SearchResults'
-import Software from '@/views/Software'
-import Subject from '@/views/Subject'
-import Faculty from '@/views/Faculty'
+import ShowAll from '@/views/ShowAll'
+import DetailsPage from '@/views/DetailsPage'
 
 Vue.use(Router)
 
@@ -14,7 +13,7 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'home',
+      name: 'Home',
       component: Home,
     },
     {
@@ -24,21 +23,15 @@ export default new Router({
       props: true,
     },
     {
-      path: '/software/:name',
-      name: 'Software',
-      component: Software,
+      path: '/all/:type',
+      name: 'ShowAll',
+      component: ShowAll,
       props: true,
     },
     {
-      path: '/subject/:name',
-      name: 'Subject',
-      component: Subject,
-      props: true,
-    },
-    {
-      path: '/faculty/:name',
-      name: 'Faculty',
-      component: Faculty,
+      path: '/:type/:name',
+      name: 'Details',
+      component: DetailsPage,
       props: true,
     },
   ],

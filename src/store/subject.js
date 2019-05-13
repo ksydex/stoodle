@@ -26,6 +26,9 @@ export default {
   mutations: {},
   actions: {},
   getters: {
+    subjectAll: state => {
+      return state.subject
+    },
     subjectByName: state => name => {
       return state.subject.find(item => item.name === name)
     },

@@ -54,19 +54,19 @@ export default {
       topics: [
         {
           name: 'Программное обеспечение',
-          link: '/software'
+          link: '/all/software'
         },
         {
           name: 'Факультеты',
-          link: '/faculty'
+          link: '/all/faculty'
         },
         {
           name: 'Учебные программы',
-          link: '/subject'
+          link: '/all/subject'
         },
         {
           name: 'Договоры',
-          link: '/contract'
+          link: '/all/contract'
         }
       ]
     }

@@ -1,6 +1,7 @@
 <template>
   <v-flex>
     <v-autocomplete
+      ref="autocomplete"
       v-model="model"
       solo
       append-outer-icon="search"
@@ -8,10 +9,9 @@
       :placeholder="placeholder"
       :search-input.sync="search"
       hide-no-data
-      ref="autocomplete"
-      @focus="switchInput = true"
-      :items="(switchInput || $route.path.indexOf('search') !== 1) ? statesComputed : states"
       persistent-hint
+      :items="(switchInput || $route.path.indexOf('search') !== 1) ? statesComputed : states"
+      @focus="switchInput = true"
       @keyup.enter="onSearch()"
       @click:append-outer="onSearch()"
     />
@@ -46,8 +46,8 @@ export default {
       return this.$route.params.searchQuery
     },
     statesComputed() {
-      let queryu = this.search
-      let result = this.$store.getters.searchAutocomplete(queryu)
+      let query = this.search
+      let result = this.$store.getters.searchAutocomplete(query)
       return result
     }
   },

@@ -66,6 +66,9 @@ export default {
   mutations: {},
   actions: {},
   getters: {
+    softwareAll: state => {
+      return state.software
+    },
     softwareByName: state => name => {
       return state.software.find(item => item.name === name)
     },

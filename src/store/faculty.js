@@ -39,6 +39,9 @@ export default {
   mutations: {},
   actions: {},
   getters: {
+    facultyAll: state => {
+      return state.faculty
+    },
     facultyByName: state => name => {
       return state.faculty.find(item => item.name === name)
     },

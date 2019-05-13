@@ -42,8 +42,8 @@
         v-if="img !== null"
         id="software-link"
         mr-3
-        xs2
-        md2
+        xs3
+        md1
         lg1
         d-flex
         align-center
