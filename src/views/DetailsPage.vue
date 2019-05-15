@@ -49,12 +49,7 @@
             </v-btn>
           </v-layout>
           <!-- eslint-disable -->
-          <v-layout
-            row
-            class="mb-2"
-            v-html="data.info1"
-          >
-          </v-layout>
+          <v-layout row class="mb-2" v-html="data.info1"> </v-layout>
           <h2
             class="title text-main--text text--lighten-2 mb-2"
             v-if="data.info2 !== null"
@@ -77,57 +72,19 @@
       </v-layout>
       <v-divider class="my-3" />
       <!-- // TODO сделать кастомные блоки -->
-      <v-layout
-        row
-        wrap
-        justify-center
-      >
-        <v-flex
-          xs12
-          md6
-        >
-          <h1 class="headline text-main--text mb-3">
-            Используемое ПО
-          </h1>
-          <search-card
-            v-for="(soft, index) in software"
-            :key="index"
-            :soft="soft"
-            color="transparent"
-            class="text-main--text mb-3 search-card"
-          />
-        </v-flex>
-        <v-flex
-          xs12
-          md6
-        >
-          <h1 class="headline text-main--text mb-3">
-            Учебные программы
-          </h1>
-          <v-list>
-            <v-list-tile
-              v-for="subject in subjects"
-              :key="subject.name"
-              class="mb-2"
-            >
-              <v-list-tile-content>
-                <v-list-tile-title
-                  id="link"
-                  @click="$router.push('/subject/'+subject.name)"
-                  v-text="subject.name"
-                />
-                <v-list-tile-sub-title v-text="subject.faculty" />
-              </v-list-tile-content>
-            </v-list-tile>
-          </v-list>
-        </v-flex>
+      <v-layout row wrap>
+        <component :is="moreComponent.is" :data="moreComponent.data" />
       </v-layout>
     </v-layout>
   </v-container>
 </template>
 
 <script>
+import softwareMore from "../components/moreComponent/SoftwareMore.vue";
 export default {
+  components: {
+    softwareMore
+  },
   props: {
     type: {
       type: String,
@@ -141,21 +98,39 @@ export default {
     }
   },
   data() {
-    return {}
+    return {};
   },
   computed: {
+    moreComponent() {
+      const type = this.type;
+      const component = {
+        software: {
+          is: "softwareMore",
+          data: this.dataSet
+        },
+        subject: {
+          is: "subjectMore",
+          data: true
+        },
+        faculty: {
+          is: "facultyMore",
+          data: true
+        }
+      };
+      return component[type];
+    },
     dataSet() {
-      const type = this.type
-      const name = this.name
-      const types = {
-        software: this.$store.getters.softwareByName(name),
-        subject: this.$store.getters.subjectByName(name),
-        faculty: this.$store.getters.facultyByName(name)
-      }
-      return types[type]
+      const type = this.type;
+      const name = this.name;
+      const dataSet = {
+        software: () => this.$store.getters.softwareByName(name),
+        subject: () => this.$store.getters.subjectByName(name),
+        faculty: () => this.$store.getters.facultyByName(name)
+      };
+      return dataSet[type]();
     },
     data() {
-      const type = this.type
+      const type = this.type;
       const data = {
         software: () => {
           return {
@@ -167,7 +142,7 @@ export default {
             info3: `Тип лицензии - ${this.dataSet.license}`,
             description: this.dataSet.description,
             img: this.dataSet.img
-          }
+          };
         },
         subject: () => {
           return {
@@ -179,7 +154,7 @@ export default {
             info3: null,
             description: null,
             img: null
-          }
+          };
         },
         faculty: () => {
           return {
@@ -192,22 +167,22 @@ export default {
               target="_blank"
               href="${this.dataSet.web_site}"
             >
-              ${this.dataSet.web_site.replace(/https:\/\/|http:\/\//gi, '')}
+              ${this.dataSet.web_site.replace(/https:\/\/|http:\/\//gi, "")}
             </a>`,
             info2: null,
             info3: null,
             description: this.dataSet.description,
             img: this.dataSet.img
-          }
+          };
         }
-      }
-      return data[type]()
+      };
+      return data[type]();
     }
   },
   methods: {
     searchGoogle(name) {
-      window.open('https://www.google.com/search?q=' + name)
+      window.open("https://www.google.com/search?q=" + name);
     }
   }
-}
+};
 </script>

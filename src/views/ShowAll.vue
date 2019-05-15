@@ -1,18 +1,32 @@
 <template>
   <v-container>
-    <v-layout column>
-      <v-flex class="text-xs-center mb-3">
-        <h4 class="display-1 text-main--text mb-3">{{ currentType.title }}</h4>
-        <v-divider />
-      </v-flex>
-      <v-flex>
-        <search-card
-          v-for="item in data"
-          :key="item.name"
-          :data="item"
-          :card-type="currentType.type"
-          class="mb-2 search-card"
-        />
+    <v-layout
+      row
+      justify-center
+    >
+      <v-flex
+        xs12
+        md8
+        lg6
+      >
+        <v-layout column>
+          <v-flex
+            class="text-xs-center mb-3"
+            xs6
+          >
+            <h4 class="display-1 text-main--text mb-3">{{ currentType.title }}</h4>
+            <v-divider />
+          </v-flex>
+          <v-flex xs6>
+            <search-card
+              v-for="item in data"
+              :key="item.name"
+              :data="item"
+              :card-type="currentType.type"
+              class="mb-2 search-card"
+            />
+          </v-flex>
+        </v-layout>
       </v-flex>
     </v-layout>
   </v-container>
