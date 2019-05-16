@@ -1,7 +1,7 @@
 <template>
   <v-app class="white">
     <v-toolbar
-      v-if="($route.path != '/' && !$route.path.match(/test|software|subject|faculty/gi)) && !$vuetify.breakpoint.xs || ($vuetify.breakpoint.xs && $route.path.indexOf('search')!== -1)"
+      v-if="($route.path !== '/' && !$route.path.match(/test|software|subject|faculty/gi)) && !$vuetify.breakpoint.xs || ($vuetify.breakpoint.xs && $route.path.indexOf('search')!== -1)"
       class="elevation-0 white"
       style="z-index: 10 !important"
     >
@@ -17,6 +17,7 @@
             v-if="!this.$vuetify.breakpoint.xs"
             src="./assets/logo.webp"
             class="logo mr-4"
+            alt="Stoodle"
             @click="$router.push('/')"
           >
         </v-flex>
@@ -38,7 +39,7 @@
     </v-content>
 
     <v-footer
-      v-if="$route.path!=='/' && $route.path.indexOf('search') == -1"
+      v-if="$route.path!=='/' && $route.path.indexOf('search') === -1"
       class="pa-3"
       color="transparent"
     >
@@ -80,7 +81,7 @@ export default {
   border-radius: 10px;
   box-shadow: none;
   &:hover {
-    box-shadow: 0px 10px 20px #40405412;
+    box-shadow: 0 10px 20px #40405412;
   }
 }
 </style>

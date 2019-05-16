@@ -19,6 +19,7 @@
               height="70px"
               class="logo-home"
               src="../assets/logo.webp"
+              alt="Stoodle"
               @click="$router.push('/')"
             >
           </v-flex>
@@ -54,19 +55,19 @@ export default {
       topics: [
         {
           name: 'Программное обеспечение',
-          link: '/all/software'
+          link: '/software'
         },
         {
           name: 'Факультеты',
-          link: '/all/faculty'
+          link: '/faculty'
         },
         {
           name: 'Учебные программы',
-          link: '/all/subject'
+          link: '/subject'
         },
         {
           name: 'Договоры',
-          link: '/all/contract'
+          link: '/contract'
         }
       ]
     }

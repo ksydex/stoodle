@@ -1,10 +1,9 @@
 <template>
   <v-container
-    :fluid="query.length !== 0"
-    :class="query.length !== 0 ? 'mx-0 px-0 pt-0 pa-0' : ''"
+    fluid
+    class="mx-0 px-0 pt-0 pa-0"
   >
     <v-layout
-      v-if="query.length !== 0"
       column
     >
       <v-layout row>
@@ -28,6 +27,7 @@
       </v-layout>
       <v-divider class="primary lighten-4" />
       <v-layout
+        v-if="query.length !== 0"
         row
         mt-2
       >
@@ -78,44 +78,47 @@
           </div>
         </v-flex>
       </v-layout>
-    </v-layout>
-    <v-layout
-      v-else
-      justify-center
-      mt-3
-    >
       <v-layout
-        row
-        wrap
-        align-center
+        v-else
+        justify-center
+        ma-5
       >
-        <v-flex
-          align-center
-          d-flex
-          justify-center
-          xs12
-          md3
-          xl2
-        >
-          <img src="../assets/nodata1.png">
-        </v-flex>
-        <v-flex
-          xs12
-          md4
+        <v-layout
+          row
           wrap
-          class="text-xs-center"
+          align-center
         >
-          <h3 class="display-1 text-main--text ma-4 text-xs-center">
-            По вашему запросу ничего не найдено!
-          </h3>
-          <v-btn
-            class="primary"
-            flat
-            @click="$router.push('/')"
+          <v-flex
+            align-center
+            d-flex
+            justify-center
+            xs12
+            md3
+            xl2
           >
-            На главную
-          </v-btn>
-        </v-flex>
+            <img
+              src="../assets/nodata1.png"
+              alt="NoData.png"
+            >
+          </v-flex>
+          <v-flex
+            xs12
+            md4
+            wrap
+            class="text-xs-center"
+          >
+            <h3 class="display-1 text-main--text ma-4 text-xs-center">
+              По вашему запросу ничего не найдено!
+            </h3>
+            <v-btn
+              class="primary"
+              flat
+              @click="$router.push('/')"
+            >
+              На главную
+            </v-btn>
+          </v-flex>
+        </v-layout>
       </v-layout>
     </v-layout>
   </v-container>

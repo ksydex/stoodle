@@ -7,7 +7,7 @@
       <v-flex
         xs12
         md8
-        lg6
+        xl6
       >
         <v-layout column>
           <v-flex

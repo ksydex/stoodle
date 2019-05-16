@@ -101,5 +101,8 @@ export default {
         return strings.filter(item => item.match(new RegExp(query, 'gi')))
       } else return []
     },
+    softwareByQuery: state => ({ query, type }) => {
+      return state.software.filter(item => item[type] === query)
+    }
   },
 }

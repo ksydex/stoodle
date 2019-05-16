@@ -10,22 +10,15 @@
       <h1 class="headline text-main--text mb-3">
         Используется на учебных программах
       </h1>
-      <v-list>
-        <v-list-tile
-          v-for="subject in usedOnSubjects"
-          :key="subject.name"
-          class="mb-2"
-        >
-          <v-list-tile-content>
-            <v-list-tile-title
-              class="link"
-              @click="$router.push('/subject/'+subject.name)"
-              v-text="subject.name"
-            />
-            <v-list-tile-sub-title v-text="subject.faculty" />
-          </v-list-tile-content>
-        </v-list-tile>
-      </v-list>
+      <search-card
+
+        v-for="subject in usedOnSubjects"
+        :key="subject.name"
+        :data="subject"
+        card-type="subject"
+        color="transparent"
+        class="text-main--text mb-2 search-card"
+      />
     </v-flex>
     <v-flex
       xs12
@@ -35,12 +28,12 @@
         Похожее программное обеспечение
       </h1>
       <search-card
-        v-for="soft in similarSoftware"
-        :key="soft.name"
-        :data="soft"
+        v-for="software in similarSoftware"
+        :key="software.name"
+        :data="software"
         card-type="software"
         color="transparent"
-        class="text-main--text mb-3 search-card"
+        class="text-main--text mb-2 search-card"
       />
     </v-flex>
   </v-layout>

@@ -4,25 +4,29 @@
       <v-layout
         row
         :wrap="$vuetify.breakpoint.xs"
+        justify-center
       >
         <v-flex
           v-if="data.img !== null"
           align-center
           xs12
-          md6
+          sm4
+          lg3
           d-flex
           pa-4
+          mr-4
           :mt-4="$vuetify.breakpoint.xs"
         >
           <v-img
-            max-height="300px"
+            height="250"
             :src="data.img"
             contain
           />
         </v-flex>
         <v-flex
           xs12
-          md6
+          :md6="data.img"
+          :md9="!data.img"
         >
           <v-layout
             row
@@ -49,18 +53,36 @@
             </v-btn>
           </v-layout>
           <!-- eslint-disable -->
-          <v-layout row class="mb-2" v-html="data.info1"> </v-layout>
           <h2
-            class="title text-main--text text--lighten-2 mb-2"
-            v-if="data.info2 !== null"
+            :class="{
+              link: data.info1.link,
+              'title text-main--text text--lighten-2 mb-2': true
+            }"
+            v-if="data.info1 !== null"
+            @click="$router.push(data.info1.link)"
           >
-            {{ data.info2 }}
+            {{ data.info1.text }}
           </h2>
           <h2
+            :class="{
+              link: data.info2.link,
+              'title text-main--text text--lighten-2 mb-2': true
+            }"
+            v-if="data.info2 !== null"
+            @click="$router.push(data.info2.link)"
+          >
+            {{ data.info2.text }}
+          </h2>
+          <h2
+            :class="{
+              link: data.info3.link,
+              'title text-main--text text--lighten-2 mb-2': true
+            }"
             class="title text-main--text text--lighten-2 mb-2"
             v-if="data.info3 !== null"
+            @click="$router.push(data.info3.link)"
           >
-            {{ data.info3 }}
+            {{ data.info3.text }}
           </h2>
           <p
             class="subheading text-main--text"
@@ -71,7 +93,6 @@
         </v-flex>
       </v-layout>
       <v-divider class="my-3" />
-      <!-- // TODO сделать кастомные блоки -->
       <v-layout row wrap>
         <component :is="moreComponent.is" :data="moreComponent.data" />
       </v-layout>
@@ -80,10 +101,15 @@
 </template>
 
 <script>
-import softwareMore from "../components/moreComponent/SoftwareMore.vue";
+import softwareMore from '../components/moreComponent/SoftwareMore.vue'
+import subjectMore from '../components/moreComponent/SubjectMore.vue'
+import facultyMore from '../components/moreComponent/FacultyMore.vue'
+
 export default {
   components: {
-    softwareMore
+    softwareMore,
+    subjectMore,
+    facultyMore
   },
   props: {
     type: {
@@ -98,63 +124,73 @@ export default {
     }
   },
   data() {
-    return {};
+    return {}
   },
   computed: {
     moreComponent() {
-      const type = this.type;
+      const type = this.type
       const component = {
         software: {
-          is: "softwareMore",
+          is: 'softwareMore',
           data: this.dataSet
         },
         subject: {
-          is: "subjectMore",
-          data: true
+          is: 'subjectMore',
+          data: this.dataSet
         },
         faculty: {
-          is: "facultyMore",
-          data: true
+          is: 'facultyMore',
+          data: this.dataSet
         }
-      };
-      return component[type];
+      }
+      return component[type]
     },
     dataSet() {
-      const type = this.type;
-      const name = this.name;
+      const type = this.type
+      const name = this.name
       const dataSet = {
         software: () => this.$store.getters.softwareByName(name),
         subject: () => this.$store.getters.subjectByName(name),
         faculty: () => this.$store.getters.facultyByName(name)
-      };
-      return dataSet[type]();
+      }
+      return dataSet[type]()
     },
     data() {
-      const type = this.type;
+      const type = this.type
       const data = {
         software: () => {
           return {
             title: this.dataSet.name,
-            info1: `<h2 class="title text-main--text text--lighten-2"> Программное обеспечение - ${
-              this.dataSet.type
-            } </h2>`,
-            info2: `Год - ${this.dataSet.year}`,
-            info3: `Тип лицензии - ${this.dataSet.license}`,
+            info1: {
+              text: `Программное обеспечение - ${this.dataSet.type}`,
+              link: '/software/q=type-' + this.dataSet.type
+            },
+            info2: {
+              text: `Год - ${this.dataSet.year}`,
+              link: '/software/q=year-' + this.dataSet.year
+            },
+            info3: {
+              text: `Тип лицензии - ${this.dataSet.license}`,
+              link: '/software/q=license-' + this.dataSet.license
+            },
             description: this.dataSet.description,
             img: this.dataSet.img
-          };
+          }
         },
         subject: () => {
           return {
             title: this.dataSet.name,
-            info1: `<h2 class="title text-main--text text--lighten-2"> Дисциплина - ${
-              this.dataSet.discipline
-            } </h2>`,
-            info2: this.dataSet.faculty,
+            info1: {
+              text: `Дисциплина - ${this.dataSet.discipline}`
+            },
+            info2: {
+              text: this.dataSet.faculty,
+              link: '/faculty/' + this.dataSet.faculty
+            },
             info3: null,
             description: null,
             img: null
-          };
+          }
         },
         faculty: () => {
           return {
@@ -167,22 +203,22 @@ export default {
               target="_blank"
               href="${this.dataSet.web_site}"
             >
-              ${this.dataSet.web_site.replace(/https:\/\/|http:\/\//gi, "")}
+              ${this.dataSet.web_site.replace(/https:\/\/|http:\/\//gi, '')}
             </a>`,
             info2: null,
             info3: null,
             description: this.dataSet.description,
             img: this.dataSet.img
-          };
+          }
         }
-      };
-      return data[type]();
+      }
+      return data[type]()
     }
   },
   methods: {
     searchGoogle(name) {
-      window.open("https://www.google.com/search?q=" + name);
+      window.open('https://www.google.com/search?q=' + name)
     }
   }
-};
+}
 </script>

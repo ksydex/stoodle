@@ -4,6 +4,7 @@ import Home from '@/views/Home'
 import SearchResults from '@/views/SearchResults'
 import ShowAll from '@/views/ShowAll'
 import DetailsPage from '@/views/DetailsPage'
+import FilteredPage from '@/views/FilteredPage'
 
 Vue.use(Router)
 
@@ -23,16 +24,23 @@ export default new Router({
       props: true,
     },
     {
-      path: '/all/:type',
+      path: '/:type',
       name: 'ShowAll',
       component: ShowAll,
       props: true,
+    },
+    {
+      path: '/:type/q=:queryType-:query',
+      name: 'FilterPage',
+      component: FilteredPage,
+      props: true
     },
     {
       path: '/:type/:name',
       name: 'Details',
       component: DetailsPage,
       props: true,
+
     },
   ],
 })

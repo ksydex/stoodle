@@ -1,18 +1,19 @@
 <template>
   <v-card
-    class="search-card my-1"
+    class="search-card"
     flat
   >
     <v-layout>
-      <v-flex>
+      <v-flex style="align-self: center;">
         <v-card-title class="py-2">
-          <div>
+          <v-flex>
             <v-layout
               row
               wrap
+              :mb-1="$vuetify.breakpoint.xs"
             >
               <div
-                class="headline mr-3 link text-main--text"
+                :class="{'mobile-title': $vuetify.breakpoint.xs,'headline mr-3 link text-main--text':true}"
                 @click="$router.push(`/${cardType}/${title}`)"
               >
                 {{ title }}
@@ -35,14 +36,15 @@
                 {{ subBody }}
               </span>
             </div>
-          </div>
+          </v-flex>
         </v-card-title>
       </v-flex>
       <v-flex
         v-if="img !== null"
         id="software-link"
         mr-3
-        xs3
+        py-2
+        xs2
         md1
         lg1
         d-flex
@@ -107,4 +109,11 @@ export default {
   }
 }
 </script>
+
+<style lang="scss">
+  .mobile-title {
+    font-size: 18px !important;
+    line-height: 1.3 !important;
+  }
+</style>
 
