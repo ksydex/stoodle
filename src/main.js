@@ -4,11 +4,12 @@ import App from './App.vue'
 import router from './router'
 import store from './store/store'
 import searchCard from './components/SearchCard'
-
-import search from '@/components/SearchInput'
+import noData from './components/NoData'
+import search from './components/SearchInput'
 
 Vue.component('search-input', search)
 Vue.component('search-card', searchCard)
+Vue.component('no-data', noData)
 
 Vue.config.productionTip = false
 

@@ -38,6 +38,23 @@
       <router-view />
     </v-content>
 
+    <template v-if="error">
+      <v-snackbar
+        :multi-line="true"
+        :timeout="5000"
+        color="error"
+        :value="true"
+        @input="closeError()"
+      >
+        {{ error }}
+        <v-btn
+          dark
+          flat
+          @click="closeError()"
+        >Close</v-btn>
+      </v-snackbar>
+    </template>
+
     <v-footer
       v-if="$route.path!=='/' && $route.path.indexOf('search') === -1"
       class="pa-3"
@@ -60,6 +77,16 @@ export default {
   components: {},
   data() {
     return {}
+  },
+  computed: {
+    error() {
+      return this.$store.getters.error
+    }
+  },
+  methods: {
+    closeError() {
+      this.$store.dispatch("clearError")
+    },
   }
 }
 </script>
