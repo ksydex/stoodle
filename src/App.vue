@@ -1,7 +1,7 @@
 <template>
   <v-app class="white">
     <v-toolbar
-      v-if="($route.path !== '/' && !$route.path.match(/test|software|subject|faculty/gi)) && !$vuetify.breakpoint.xs || ($vuetify.breakpoint.xs && $route.path.indexOf('search')!== -1)"
+      v-if="($route.path !== '/' && !$route.path.match(/test|software|subject|faculty|new/gi)) && !$vuetify.breakpoint.xs || ($vuetify.breakpoint.xs && $route.path.indexOf('search')!== -1)"
       class="elevation-0 white"
       style="z-index: 10 !important"
     >
@@ -55,6 +55,23 @@
       </v-snackbar>
     </template>
 
+    <template v-if="success">
+      <v-snackbar
+        :multi-line="true"
+        :timeout="5000"
+        color="success"
+        :value="true"
+        @input="closeSuccess()"
+      >
+        {{ success }}
+        <v-btn
+          dark
+          flat
+          @click="closeError()"
+        >Close</v-btn>
+      </v-snackbar>
+    </template>
+
     <v-footer
       v-if="$route.path!=='/' && $route.path.indexOf('search') === -1"
       class="pa-3"
@@ -81,12 +98,18 @@ export default {
   computed: {
     error() {
       return this.$store.getters.error
+    },
+    success() {
+      return this.$store.getters.success
     }
   },
   methods: {
     closeError() {
       this.$store.dispatch("clearError")
     },
+    closeSuccess() {
+      this.$store.dispatch('clearSuccess')
+    }
   }
 }
 </script>

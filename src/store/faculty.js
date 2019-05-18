@@ -1,3 +1,15 @@
+import * as fb from 'firebase'
+class Faculty {
+  constructor(name, short_name, description, web_site, img, id = null){
+    this.name = name
+    this.short_name = short_name
+    this.description = description
+    this.web_site = web_site
+    this.img = img
+    this.id = id
+  }
+
+}
 export default {
   state: {
     faculty: [
@@ -36,8 +48,55 @@ export default {
       },
     ],
   },
-  mutations: {},
-  actions: {},
+  mutations: {
+    loadFaculty(state, payload) {
+      state.faculty = payload
+    }
+  },
+  actions: {
+    async facultyCreate({commit}, payload) {
+      commit('setLoading', true)
+      try {
+        const newFaculty = new Faculty(
+          payload.name,
+          payload.short_name,
+          payload.description,
+          payload.web_site,
+          payload.img
+        )
+        const faculty = await fb.database().ref('faculty').push(newFaculty)
+        commit('setLoading', false)
+      } catch (error) {
+        commit('setError', error)
+        commit('setLoading', false)
+        throw error
+      }
+    },
+    async fetchFaculty({commit}){
+      commit('setLoading', true)
+      const resultFaculty = []
+
+      try {
+        const fbVal = await fb.database().ref('faculty').once('value')
+        const facultyList = fbVal.val()
+        console.log(facultyList)
+        Object.keys(facultyList).forEach(key => {
+          const item = facultyList[key]
+          resultFaculty.push(
+            new Faculty(
+              item.name, item.short_name, item.description, item.web_site, item.img, key
+            )
+          )
+        })
+        commit('loadFaculty', resultFaculty)
+        commit('setLoading', false)
+      } catch (error) {
+        commit('setError', error)
+        commit('setLoading', false)
+        throw error
+      }
+    }
+  },
   getters: {
     facultyAll: state => {
       return state.faculty
@@ -56,5 +115,10 @@ export default {
         return strings.filter(item => item.match(new RegExp(query, 'gi')))
       } else return []
     },
+    facultyAllNameAndId: state => {
+      return state.faculty.map(item => {
+        return { name: item.name, id: item.id }
+      })
+    }
   },
 }

@@ -74,6 +74,9 @@ export default {
   border: 1px solid rgba(255, 82, 91, 0.337) !important;
 }
 .v-input__slot {
+  border-radius: 30px !important;
+  box-shadow: 0 5px 15px #ff525b17 !important;
+  border: 1px solid #ff525b56;
   margin-bottom: 0;
 }
 .v-input__icon--append-outer {
