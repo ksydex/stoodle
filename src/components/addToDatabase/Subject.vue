@@ -23,7 +23,7 @@
       :disabled="loading"
       :loading="loading"
       color="primary"
-      @click="show()"
+      @click="createNew()"
     >
       Добавить
     </v-btn>
