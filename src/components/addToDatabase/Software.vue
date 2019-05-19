@@ -6,7 +6,7 @@
       solo
     />
     <v-select
-      v-model="software.license"
+      v-model="software.type"
       :items="softwareTypeList"
       solo
       label="Тип ПО"
@@ -34,6 +34,8 @@
     />
     <v-btn
       depressed
+      round
+      class="ma-0"
       :disabled="loading"
       :loading="loading"
       color="primary"

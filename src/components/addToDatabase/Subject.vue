@@ -18,10 +18,12 @@
     />
     <v-btn
       depressed
+      round
+      class="ma-0"
       :disabled="loading"
       :loading="loading"
       color="primary"
-      @click="createNew()"
+      @click="show()"
     >
       Добавить
     </v-btn>
@@ -53,7 +55,7 @@
     },
     created() {
       this.$store
-        .dispatch('fetchFaculty')
+        .dispatch('facultyFetch')
         .then(() => {})
         .catch(() => {})
     },

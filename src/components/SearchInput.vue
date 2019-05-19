@@ -19,8 +19,9 @@
 </template>
 
 <script>
-import { setTimeout } from 'timers'
-export default {
+  import {setTimeout} from 'timers'
+
+  export default {
   data() {
     return {
       model: null,
@@ -47,8 +48,7 @@ export default {
     },
     statesComputed() {
       let query = this.search
-      let result = this.$store.getters.searchAutocomplete(query)
-      return result
+      return this.$store.getters.searchAutocomplete(query)
     }
   },
   created() {
@@ -69,7 +69,7 @@ export default {
 
 <style lang="scss">
 .v-menu__content {
-  border-radius: 30px !important;
+  border-radius: 25px !important;
   box-shadow: rgba(255, 82, 91, 0.09) 0px 5px 15px !important;
   border: 1px solid rgba(255, 82, 91, 0.337) !important;
 }

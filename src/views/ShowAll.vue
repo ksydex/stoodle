@@ -88,9 +88,9 @@ export default {
   },
   created() {
     const toFetch = {
-      software: 'fetchSoftware',
-      subject: 'fetchSubject',
-      faculty: 'fetchFaculty'
+      software: 'softwareFetch',
+      subject: 'subjectFetch',
+      faculty: 'facultyFetch'
     }
     this.$store.dispatch(toFetch[this.type])
   }

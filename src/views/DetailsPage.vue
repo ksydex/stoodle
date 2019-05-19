@@ -231,6 +231,20 @@ export default {
       return this.$store.getters.loading
     }
   },
+  created() {
+    const toLoad = {
+      software: () => {
+        this.$store.dispatch('softwareByName', this.name)
+      },
+      subject: () => {
+        this.$store.dispatch('subjectByName', this.name)
+      },
+      faculty: () => {
+        this.$store.dispatch('facultyByName', this.name)
+      }
+    }
+    toLoad[this.type]()
+  },
   methods: {
     searchGoogle(name) {
       window.open('https://www.google.com/search?q=' + name)

@@ -49,65 +49,15 @@ export default {
       'Математическая/бухгалтерская система'
     ],
     software: [
-      {
-        name: 'VS code',
-        type: 'IDE',
-        year: '2019',
-        license: 'Freeware',
-        description:
-          'Visual Studio Code - легкий редактор кода, разработанный корпорацией Microsoft на движке Electron с использваонием веб-технологий. Прямым конкурентом является Atom, PhpStorm, SublimeText, но VS code уже несколько лет удерживает первые позиции в топах пользователей.',
-        img:
-          'https://static1.squarespace.com/static/592e86ee9de4bb6e73d8c154/t/5a3e4ca653450ae78e8d4ed2/1514033170109/32078472-5053adea-baa7-11e7-9034-519002f12ac7.png'
-      },
-      {
-        name: 'XAMMP',
-        type: 'Web-server',
-        license: 'Freeware',
-        year: '2017',
-        description:
-          'XAMMP - локальный сервер, который предоставляет стандартный набор функций для развертки виртуального сервера на вашей машине. Apache, PHP7, nginx и PhpMyAdmin.',
-        img:
-          'http://www.stickpng.com/assets/images/58482973cef1014c0b5e49fd.png'
-      },
-      {
-        name: 'КонсультантПлюс',
-        type: 'Справочная система',
-        license: 'Commercial',
-        year: '2019',
-        img:
-          'https://i.mycdn.me/i?r=AzGBqNaF5OQp2lMpnhRx4DEF706jHoH1H2CXoquhh2AuTaLFvi7hJtcHqXO0a8CV9Zo'
-      },
-      {
-        name: 'VS codium',
-        type: 'IDE',
-        year: '2019',
-        license: 'Open-source',
-        description:
-          'Visual Studio Codium - является open-source версией VS code.',
-        img: 'https://avatars0.githubusercontent.com/u/40338071?v=4'
-      },
-      {
-        name: 'PhpStorm',
-        type: 'IDE',
-        year: '2019',
-        license: 'Commercial',
-        description: 'PhpStorm - мощный инструмент для веб-разработки.',
-        img:
-          'https://docs.typo3.org/typo3cms/extensions/th_rating/_images/phpstorm.png'
-      },
-      {
-        name: 'Кодекс',
-        type: 'Справочная система',
-        license: 'Commercial',
-        year: '2017',
-        img:
-          'https://msal.ru/upload/library/ebs_files/kodeks_logo_color_blue.jpg'
-      }
+
     ]
   },
   mutations: {
     loadSoftware(state, payload) {
       state.software = payload
+    },
+    addSoftware(state, payload) {
+      state.software.push(payload)
     }
   },
   actions: {
@@ -133,7 +83,7 @@ export default {
         throw error
       }
     },
-    async fetchSoftware({ commit }) {
+    async softwareFetch({ commit }) {
       commit('setLoading', true)
       const resultSoftware = []
 
@@ -163,6 +113,36 @@ export default {
         commit('setError', error)
         commit('setLoading', false)
         throw error
+      }
+    },
+    async softwareByName({ commit, getters }, name) {
+      if (!getters.softwareByName(name)) {
+        commit('setLoading', true)
+        const db = fb.database().ref()
+        try {
+          const fbVal = await db
+            .child('software')
+            .orderByChild('name')
+            .equalTo(name)
+            .once('value')
+          const key = Object.keys(fbVal.val())[0]
+          const item = fbVal.val()[key]
+          const softwareToReturn = new Software(
+            item.name,
+            item.type,
+            item.year,
+            item.license,
+            item.description,
+            item.img,
+            key
+          )
+          commit('addSoftware', softwareToReturn)
+          commit('setLoading', false)
+        } catch (error) {
+          commit('setError', error)
+          commit('setLoading', false)
+          throw error
+        }
       }
     }
   },

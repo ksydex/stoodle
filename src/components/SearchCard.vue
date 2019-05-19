@@ -115,7 +115,6 @@ export default {
 <style lang="scss">
   .mobile-title {
     font-size: 18px !important;
-    line-height: 1.3 !important;
   }
 </style>
 

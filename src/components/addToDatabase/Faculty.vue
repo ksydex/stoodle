@@ -27,6 +27,8 @@
     />
     <v-btn
       depressed
+      round
+      class="ma-0"
       :disabled="loading"
       :loading="loading"
       color="primary"
@@ -69,7 +71,7 @@
           short_name: this.faculty.short_name,
           description: this.faculty.description,
           web_site: this.faculty.web_site,
-          img: this.faculty.web_site
+          img: this.faculty.img
         }
         this.$store
           .dispatch('facultyCreate', faculty)

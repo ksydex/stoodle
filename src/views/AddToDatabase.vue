@@ -37,11 +37,27 @@ export default {
   data() {
     return {
       typeSwitcher: [
-        {type: 'software', title: 'Программное обеспечение', component: 'softwareForm'},
-        {type: 'subject', title: 'Учебная программа', component: 'subjectForm'},
-        {type: 'faculty', title: 'Факультет', component: 'facultyForm'}
+        {
+          type: 'software',
+          title: 'Программное обеспечение',
+          component: 'softwareForm'
+        },
+        {
+          type: 'subject',
+          title: 'Учебная программа',
+          component: 'subjectForm'
+        },
+        {
+          type: 'faculty',
+          title: 'Факультет',
+          component: 'facultyForm'
+        }
       ],
-      currentType: {type: 'software', title: 'Программное обеспечение', component: 'softwareForm'},
+      currentType: {
+        type: 'software',
+        title: 'Программное обеспечение',
+        component: 'softwareForm'
+      }
     }
   },
   computed: {
@@ -51,7 +67,7 @@ export default {
     loading() {
       return this.$store.getters.loading
     }
-  },
+  }
 }
 </script>
 

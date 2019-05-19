@@ -65,10 +65,6 @@ export default {
           name: 'Учебные программы',
           link: '/subject'
         },
-        {
-          name: 'Договоры',
-          link: '/contract'
-        }
       ]
     }
   }
