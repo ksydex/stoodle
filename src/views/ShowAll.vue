@@ -1,6 +1,7 @@
 <template>
   <v-container>
     <v-layout
+      v-if="!loading && data"
       row
       justify-center
     >
@@ -28,6 +29,18 @@
           </v-flex>
         </v-layout>
       </v-flex>
+    </v-layout>
+    <v-layout
+      v-else
+      justify-center
+    >
+      <v-progress-circular
+        class="mt-5"
+        :size="150"
+        :width="7"
+        color="primary"
+        indeterminate
+      />
     </v-layout>
   </v-container>
 </template>
@@ -68,7 +81,18 @@ export default {
         }
       }
       return types[type]()
+    },
+    loading() {
+      return this.$store.getters.loading
     }
+  },
+  created() {
+    const toFetch = {
+      software: 'fetchSoftware',
+      subject: 'fetchSubject',
+      faculty: 'fetchFaculty'
+    }
+    this.$store.dispatch(toFetch[this.type])
   }
 }
 </script>

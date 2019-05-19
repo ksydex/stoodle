@@ -29,8 +29,9 @@
           style="align-self: center;"
           :class="{ 'mt-3' : this.$vuetify.breakpoint.xs }"
         >
-          <search-input v-if="$route.path !== '/'" />
+          <search-input />
         </v-flex>
+        <v-spacer />
       </v-layout>
     </v-toolbar>
 
@@ -51,7 +52,7 @@
           dark
           flat
           @click="closeError()"
-        >Close</v-btn>
+        >Закрыть</v-btn>
       </v-snackbar>
     </template>
 
@@ -68,7 +69,7 @@
           dark
           flat
           @click="closeError()"
-        >Close</v-btn>
+        >Закрыть</v-btn>
       </v-snackbar>
     </template>
 

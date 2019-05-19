@@ -79,7 +79,6 @@ export default {
       try {
         const fbVal = await fb.database().ref('faculty').once('value')
         const facultyList = fbVal.val()
-        console.log(facultyList)
         Object.keys(facultyList).forEach(key => {
           const item = facultyList[key]
           resultFaculty.push(

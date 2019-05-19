@@ -13,7 +13,7 @@ Vue.component('search-input', search)
 Vue.component('search-card', searchCard)
 Vue.component('no-data', noData)
 
-Vue.config.productionTip = false
+Vue.config.productionTip = true
 
 new Vue({
   router,

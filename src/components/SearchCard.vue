@@ -14,33 +14,33 @@
             >
               <div
                 :class="{'mobile-title': $vuetify.breakpoint.xs,'headline mr-3 link text-main--text':true}"
-                @click="$router.push(`/${cardType}/${title}`)"
+                @click="$router.push(`/${cardType}/${dataSet.title}`)"
               >
-                {{ title }}
+                {{ dataSet.title }}
               </div>
               <div
-                v-if="subTitle !== null"
+                v-if="dataSet.subTitle !== null"
                 class="text-main--text text--lighten-2 headline mr-3"
               >
-                {{ subTitle }}
+                {{ dataSet.subTitle }}
               </div>
             </v-layout>
             <div class="text-main--text text--lighten-2 subheading">
               <span
-                v-if="body !== null"
+                v-if="dataSet.body !== null"
                 class="mr-3"
               >
-                {{ body }}
+                {{ dataSet.body }}
               </span>
-              <span v-if="subBody !== null">
-                {{ subBody }}
+              <span v-if="dataSet.subBody !== null">
+                {{ dataSet.subBody }}
               </span>
             </div>
           </v-flex>
         </v-card-title>
       </v-flex>
       <v-flex
-        v-if="img !== null"
+        v-if="dataSet.img !== null"
         id="software-link"
         mr-3
         py-2
@@ -49,10 +49,10 @@
         lg1
         d-flex
         align-center
-        @click="$router.push(`/${cardType}/${title}`)"
+        @click="$router.push(`/${cardType}/${dataSet.title}`)"
       >
         <v-img
-          :src="img"
+          :src="dataSet.img"
           height="70px"
           min-width="40px"
           contain
@@ -75,37 +75,39 @@ export default {
     }
   },
   computed: {
-    title() {
-      return this.data.name
-    },
-    subTitle() {
-      const subTitle = {
-        software: this.data.year,
-        subject: null,
-        faculty: null
+    dataSet() {
+      const type = this.cardType
+      const data = {
+        software: () => {
+          return {
+            title: this.data.name,
+            subTitle: this.data.year,
+            body: this.data.type,
+            subBody: 'Программное обеспечение',
+            img: this.data.img || null
+          }
+        },
+        subject: () => {
+          return {
+            title: this.data.name,
+            subTitle:null,
+            body: this.data.discipline,
+            subBody: this.data.faculty,
+            img: this.data.img || null
+          }
+        },
+        faculty: () => {
+          return {
+            title: this.data.name,
+            subTitle: null,
+            body: this.data.short_name,
+            subBody: null,
+            img: this.data.img || null
+          }
+        }
       }
-      return subTitle[this.cardType]
+      return data[type]()
     },
-    body() {
-      const body = {
-        software: this.data.type,
-        subject: this.data.discipline,
-        faculty: this.data.short_name
-      }
-      return body[this.cardType]
-    },
-    subBody() {
-      const subBody = {
-        software: this.data.card_type,
-        subject: this.data.faculty,
-        faculty: null // TODO тут что то должно быть
-      }
-      return subBody[this.cardType]
-    },
-    img() {
-      if (this.data.img) return this.data.img
-      else return null
-    }
   }
 }
 </script>
