@@ -11,26 +11,6 @@ class Subject {
 export default {
   state: {
     subject: [
-      // {
-      //   name: 'Информационные технологии в практической деятельности',
-      //   discipline: 'Информационные технологии',
-      //   faculty: 'Факультет вычислительной техники'
-      // },
-      // {
-      //   name: 'Правовое обеспечение в практической деятельности',
-      //   discipline: 'Информационные технологии',
-      //   faculty: 'Факультет экономики и управления'
-      // },
-      // {
-      //   name: 'Программирование С++',
-      //   discipline: 'Программирование',
-      //   faculty: 'Факультет вычислительной техники'
-      // },
-      // {
-      //   name: 'Объектно-ориентированное программирование',
-      //   discipline: 'Программирование',
-      //   faculty: 'Факультет вычислительной техники'
-      // }
     ]
   },
   mutations: {
@@ -50,10 +30,12 @@ export default {
           payload.discipline,
           payload.faculty
         )
-        const subject = await fb
-          .database()
-          .ref('subject')
+        const db = fb.database().ref()
+        const subject = await db
+          .child('subject')
           .push(newSubject)
+        const subjectOnFaculty = await db.child('faculty').child(payload.faculty).child('subjects').child(subject.key).set('1')
+        commit('addSubject', newSubject)
         commit('setLoading', false)
       } catch (error) {
         commit('setError', error)
@@ -114,6 +96,24 @@ export default {
           commit('setLoading', false)
           throw error
         }
+      }
+    },
+    async addSoftwareOnSubject ({ commit }, swsj){
+      commit('setLoading', true)
+      const db = fb.database().ref()
+      try {
+        const fbVal = await db.child('subject').child(swsj.subject).child('usedSoftware').child(swsj.software).once('value')
+        if(!fbVal.val()) {
+          db.child('subject').child(swsj.subject).child('usedSoftware').child(swsj.software).set('1')
+          commit('setSuccess', 'Запись успешно добавлена в таблицу!')
+        }
+        else
+          commit('setError', "ПО уже используется на учебной программе")
+        commit('setLoading', false)
+      } catch (error) {
+        commit('setLoading', false)
+        commit('setError', error)
+        throw error
       }
     }
   },

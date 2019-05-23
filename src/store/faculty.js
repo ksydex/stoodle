@@ -36,6 +36,7 @@ export default {
           .database()
           .ref('faculty')
           .push(newFaculty)
+        commit('addFaculty', newFaculty)
         commit('setLoading', false)
       } catch (error) {
         commit('setError', error)

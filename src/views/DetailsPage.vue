@@ -59,10 +59,16 @@
           <h2
             :class="{
               link: data.info1.link,
-              'title text-main--text text--lighten-2 mb-2': true
+              'title mb-2': true,
+              'primary--text': type === 'faculty',
+              'text-main--text text--lighten-2': type !== 'faculty'
             }"
             v-if="data.info1 !== null"
-            @click="$router.push(data.info1.link)"
+            @click="
+              type !== 'faculty'
+                ? $router.push(data.info1.link)
+                : openWindow(data.info1.link)
+            "
           >
             {{ data.info1.text }}
           </h2>
@@ -172,7 +178,7 @@ export default {
     },
     data() {
       const type = this.type
-      if(this.dataSet) {
+      if (this.dataSet) {
         const data = {
           software: () => {
             return {
@@ -212,7 +218,9 @@ export default {
             return {
               title: this.dataSet.name,
               info1: {
-                text: 'Сайт - ' + this.dataSet.web_site.replace(/https:\/\/|http:\/\//gi, ''),
+                text:
+                  'Сайт - ' +
+                  this.dataSet.web_site.replace(/https:\/\/|http:\/\//gi, ''),
                 link: this.dataSet.web_site
               },
               info2: null,
@@ -223,9 +231,7 @@ export default {
           }
         }
         return data[type]()
-      }
-      else
-        return null
+      } else return null
     },
     loading() {
       return this.$store.getters.loading
@@ -248,6 +254,9 @@ export default {
   methods: {
     searchGoogle(name) {
       window.open('https://www.google.com/search?q=' + name)
+    },
+    openWindow(url) {
+      window.open(url)
     }
   }
 }

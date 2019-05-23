@@ -37,6 +37,7 @@ export default {
     type: [
       'Операционная система',
       'Служебная программа(утилита)',
+      '3D графика',
       'Виртуальная машина',
       'IDE/Среда разработки',
       'Драйвер',
@@ -77,6 +78,7 @@ export default {
           .database()
           .ref('software')
           .push(newSoftware)
+        commit('addSoftware', newSoftware);
         commit('setLoading', false)
       } catch (error) {
         commit('setError', error)

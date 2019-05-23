@@ -35,7 +35,7 @@
     <v-btn
       depressed
       round
-      class="ma-0"
+      class="ma-0 mb-4"
       :disabled="loading"
       :loading="loading"
       color="primary"
@@ -43,6 +43,20 @@
     >
       Добавить
     </v-btn>
+
+    <v-data-table
+      :headers="headers"
+      :items="allSoftware"
+      class="elevation-0"
+      hide-actions
+    >
+      <template v-slot:items="props">
+        <td>{{ props.item.name }}</td>
+        <td class="text-xs-right">{{ props.item.type }}</td>
+        <td class="text-xs-right">{{ props.item.year }}</td>
+        <td class="text-xs-right">{{ props.item.license }}</td>
+      </template>
+    </v-data-table>
 
   </v-layout>
 </template>
@@ -64,7 +78,18 @@
           license: '',
           description: '',
           img: ''
-        }
+        },
+        headers: [
+          {
+            text: 'Программное обеспечение',
+            align: 'left',
+            sortable: false,
+            value: 'name'
+          },
+          { text: 'Тип', value: 'type', align: 'right'},
+          { text: 'Год', value: 'year', align: 'right' },
+          { text: 'Лицензия', value: 'license', align: 'right' }
+        ],
       }
     },
     computed: {
@@ -73,9 +98,13 @@
       },
       softwareLicenseList() {
         return this.$store.getters.softwareLicenseAll.map(item => item.name)
+      },
+      allSoftware() {
+        return this.$store.getters.softwareAll
       }
     },
     created() {
+      this.$store.dispatch('softwareFetch')
     },
     methods: {
       createNew() {

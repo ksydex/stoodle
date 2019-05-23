@@ -19,7 +19,7 @@
     <v-btn
       depressed
       round
-      class="ma-0"
+      class="ma-0 mb-4"
       :disabled="loading"
       :loading="loading"
       color="primary"
@@ -28,6 +28,18 @@
       Добавить
     </v-btn>
 
+    <v-data-table
+      :headers="headers"
+      :items="allSubject"
+      class="elevation-0"
+      hide-actions
+    >
+      <template v-slot:items="props">
+        <td>{{ props.item.name }}</td>
+        <td class="text-xs-right">{{ props.item.discipline }}</td>
+        <td class="text-xs-right">{{ props.item.faculty }}</td>
+      </template>
+    </v-data-table>
   </v-layout>
 </template>
 
@@ -45,17 +57,34 @@
           name: '',
           discipline: '',
           faculty: ''
-        }
+        },
+        headers: [
+          {
+            text: 'Учебная программа',
+            align: 'left',
+            sortable: false,
+            value: 'name'
+          },
+          { text: 'Дисциплина', value: 'discipline', align: 'right' },
+          { text: 'Факультет', value: 'faculty',align: 'right' }
+        ],
       }
     },
     computed: {
       facultyList() {
         return this.$store.getters.facultyAllNameAndId
       },
+      allSubject() {
+        return this.$store.getters.subjectAll
+      }
     },
     created() {
       this.$store
         .dispatch('facultyFetch')
+        .then(() => {})
+        .catch(() => {})
+      this.$store
+        .dispatch('subjectFetch')
         .then(() => {})
         .catch(() => {})
     },

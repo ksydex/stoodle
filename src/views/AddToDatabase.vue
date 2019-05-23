@@ -18,8 +18,21 @@
       <v-divider class="mb-3" />
       <component
         :is="currentType.component"
+        v-show="!loading"
         :loading="loading"
       />
+      <v-layout
+        v-show="loading"
+        justify-center
+      >
+        <v-progress-circular
+          class="mt-5"
+          :size="150"
+          :width="7"
+          color="primary"
+          indeterminate
+        />
+      </v-layout>
     </v-layout>
   </v-container>
 </template>
@@ -28,11 +41,13 @@
 import softwareForm from '../components/addToDatabase/Software'
 import subjectForm from '../components/addToDatabase/Subject'
 import facultyForm from '../components/addToDatabase/Faculty'
+import softwareOnSubject from '../components/addToDatabase/SoftwareOnSubject'
 export default {
   components: {
     softwareForm,
     subjectForm,
-    facultyForm
+    facultyForm,
+    softwareOnSubject
   },
   data() {
     return {
@@ -51,7 +66,12 @@ export default {
           type: 'faculty',
           title: 'Факультет',
           component: 'facultyForm'
-        }
+        },
+        {
+          type: 'swsj',
+          title: 'ПО на УП',
+          component: 'softwareOnSubject'
+        },
       ],
       currentType: {
         type: 'software',
@@ -61,9 +81,6 @@ export default {
     }
   },
   computed: {
-    facultyList() {
-      return this.$store.getters.facultyAllNameAndId
-    },
     loading() {
       return this.$store.getters.loading
     }
