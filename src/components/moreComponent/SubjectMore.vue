@@ -4,9 +4,9 @@
     wrap
   >
     <v-flex
+      v-if="!usedSoftware"
       xs12
       md6
-      v-if="!usedSoftware"
     >
       <h1 class="headline text-main--text mb-3">
         Похожие учебные программы
