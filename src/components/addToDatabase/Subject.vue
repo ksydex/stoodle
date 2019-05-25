@@ -93,7 +93,11 @@
         const subject = {
           name: this.subject.name,
           discipline: this.subject.discipline,
+          disciplineId: '2', //TODO сделать авто
           faculty: this.facultyList.find(
+            item => item.name === this.subject.faculty
+          ).name,
+          facultyId: this.facultyList.find(
             item => item.name === this.subject.faculty
           ).id
         }

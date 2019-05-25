@@ -72,7 +72,7 @@
         return this.$store.getters.subjectAll
       },
       similarFaculty() {
-        return this.$store.getters.facultyAll
+        return this.$store.getters.facultySimilar(this.data.id)
       }
     }
   }

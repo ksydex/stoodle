@@ -102,10 +102,6 @@
           .dispatch('facultyCreate', faculty)
           .then(() => {
             this.clearInput(this.faculty)
-            this.$store.dispatch(
-              'setSuccess',
-              'Запись успешно добавлена в таблицу!'
-            )
           })
           .catch(() => {})
       },

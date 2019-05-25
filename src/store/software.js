@@ -1,4 +1,5 @@
-import * as fb from 'firebase'
+import axios from 'axios'
+import { api } from './store.js'
 class Software {
   constructor(name, type, year, license, description, img, id = null) {
     this.name = name
@@ -50,9 +51,7 @@ export default {
       'Экспертная система',
       'Математическая/бухгалтерская система'
     ],
-    software: [
-
-    ]
+    software: []
   },
   mutations: {
     loadSoftware(state, payload) {
@@ -65,87 +64,98 @@ export default {
   actions: {
     async softwareCreate({ commit }, payload) {
       commit('setLoading', true)
-      try {
-        const newSoftware = new Software(
-          payload.name,
-          payload.type,
-          payload.year,
-          payload.license,
-          payload.description,
-          payload.img
-        )
-        const software = await fb
-          .database()
-          .ref('software')
-          .push(newSoftware)
-        commit('addSoftware', newSoftware);
-        commit('setLoading', false)
-      } catch (error) {
-        commit('setError', error)
-        commit('setLoading', false)
-        throw error
-      }
+      const newS = new Software(
+        payload.name,
+        payload.type,
+        payload.year,
+        payload.license,
+        payload.description,
+        payload.img
+      )
+      const sql = `INSERT INTO software (id, name, type, license, year, description, img) VALUES (NULL, '${
+        newS.name
+      }', '${newS.type}', '${newS.license}', '${newS.year}', '${
+        newS.description
+      }', '${newS.img}')`
+      axios
+        .post(api, {
+          type: 'set',
+          data: sql
+        })
+        .then(response => {
+          if (response.data.length > 1) {
+            return Promise.reject(response.data[1])
+          } else {
+            commit('addSoftware', newS)
+            commit('setSuccess', 'Запись успешно добавлена!')
+            commit('setLoading', false)
+          }
+        })
+        .catch(error => {
+          commit('setLoading', false)
+          commit('setError', error)
+          throw error
+        })
     },
     async softwareFetch({ commit }) {
       commit('setLoading', true)
-      const resultSoftware = []
-
-      try {
-        const fbVal = await fb
-          .database()
-          .ref('software')
-          .once('value')
-        const softwareList = fbVal.val()
-        Object.keys(softwareList).forEach(key => {
-          const item = softwareList[key]
-          resultSoftware.push(
-            new Software(
-              item.name,
-              item.type,
-              item.year,
-              item.license,
-              item.description,
-              item.img,
-              key
-            )
-          )
+      let resultSoftware = []
+      const sql = `SELECT * FROM software`
+      axios
+        .post(api, {
+          type: 'get',
+          data: sql
         })
-        commit('loadSoftware', resultSoftware)
-        commit('setLoading', false)
-      } catch (error) {
-        commit('setError', error)
-        commit('setLoading', false)
-        throw error
-      }
-    },
-    async softwareByName({ commit, getters }, name) {
-      if (!getters.softwareByName(name)) {
-        commit('setLoading', true)
-        const db = fb.database().ref()
-        try {
-          const fbVal = await db
-            .child('software')
-            .orderByChild('name')
-            .equalTo(name)
-            .once('value')
-          const key = Object.keys(fbVal.val())[0]
-          const item = fbVal.val()[key]
-          const softwareToReturn = new Software(
-            item.name,
-            item.type,
-            item.year,
-            item.license,
-            item.description,
-            item.img,
-            key
-          )
-          commit('addSoftware', softwareToReturn)
+        .then(response => {
+          response.data.forEach(data => {
+            const software = new Software(
+              data.name,
+              data.type,
+              data.year,
+              data.license,
+              data.description,
+              data.img,
+              data.id
+            )
+            resultSoftware.push(software)
+          })
+          commit('loadSoftware', resultSoftware)
           commit('setLoading', false)
-        } catch (error) {
+        })
+        .catch(error => {
           commit('setError', error)
           commit('setLoading', false)
           throw error
-        }
+        })
+    },
+    async softwareById({ commit, getters }, id) {
+      if (!getters.softwareById(id)) {
+        commit('setLoading', true)
+        const sql = `SELECT * FROM software WHERE id = ${id}`
+        axios
+          .post(api, {
+            type: 'get',
+            data: sql
+          })
+          .then(response => {
+            const data = response.data[0]
+            const software = new Software(
+              data.name,
+              data.type,
+              data.year,
+              data.license,
+              data.description,
+              data.img,
+              data.id
+            )
+            commit('addSoftware', software)
+            commit('setLoading', false)
+          })
+          .catch(error => {
+            commit('setError', error)
+            commit('setLoading', false)
+            throw error
+          })
       }
     }
   },
@@ -159,8 +169,8 @@ export default {
     softwareAll: state => {
       return state.software
     },
-    softwareByName: state => name => {
-      return state.software.find(item => item.name === name)
+    softwareById: state => id => {
+      return state.software.find(item => item.id === id)
     },
     softwareSimilar: state => ({ type, exceptName }) => {
       let firstTry = state.software
@@ -193,6 +203,15 @@ export default {
     },
     softwareByQuery: state => ({ query, type }) => {
       return state.software.filter(item => item[type] === query)
+    },
+    softwareUsedOnSubject: state => ids => {
+      let resultSoftware = []
+      if(ids) {
+        ids.forEach(id => {
+          resultSoftware.push(state.software.find(item => item.id === id))
+        })
+        return resultSoftware
+      }
     }
   }
 }

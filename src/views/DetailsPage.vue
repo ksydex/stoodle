@@ -138,7 +138,7 @@ export default {
       required: false,
       default: null
     },
-    name: {
+    id: {
       type: String,
       required: false,
       default: null
@@ -168,11 +168,11 @@ export default {
     },
     dataSet() {
       const type = this.type
-      const name = this.name
+      const id = this.id
       const dataSet = {
-        software: () => this.$store.getters.softwareByName(name),
-        subject: () => this.$store.getters.subjectByName(name),
-        faculty: () => this.$store.getters.facultyByName(name)
+        software: () => this.$store.getters.softwareById(id),
+        subject: () => this.$store.getters.subjectById(id),
+        faculty: () => this.$store.getters.facultyById(id)
       }
       return dataSet[type]()
     },
@@ -203,11 +203,12 @@ export default {
             return {
               title: this.dataSet.name,
               info1: {
-                text: `Дисциплина - ${this.dataSet.discipline}`
+                text: `Дисциплина - ${this.dataSet.discipline}`,
+                link: '/discipline/' + this.dataSet.disciplineId
               },
               info2: {
                 text: this.dataSet.faculty,
-                link: '/faculty/' + this.dataSet.faculty
+                link: '/faculty/' + this.dataSet.facultyId
               },
               info3: null,
               description: null,
@@ -240,13 +241,27 @@ export default {
   created() {
     const toLoad = {
       software: () => {
-        this.$store.dispatch('softwareByName', this.name)
+        this.$store.dispatch('softwareById', this.id)
       },
       subject: () => {
-        this.$store.dispatch('subjectByName', this.name)
+        this.$store.dispatch('subjectById', this.id)
       },
       faculty: () => {
-        this.$store.dispatch('facultyByName', this.name)
+        this.$store.dispatch('facultyById', this.id)
+      }
+    }
+    toLoad[this.type]()
+  },
+  updated() {
+    const toLoad = {
+      software: () => {
+        this.$store.dispatch('softwareById', this.id)
+      },
+      subject: () => {
+        this.$store.dispatch('subjectById', this.id)
+      },
+      faculty: () => {
+        this.$store.dispatch('facultyById', this.id)
       }
     }
     toLoad[this.type]()

@@ -8,6 +8,8 @@ import faculty from './faculty'
 
 Vue.use(Vuex)
 
+export var api = 'http://stoodle:81/api.php'
+
 export default new Vuex.Store({
   modules: {
     shared,

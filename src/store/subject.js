@@ -1,10 +1,14 @@
-import * as fb from 'firebase'
+import axios from 'axios'
+import {api} from './store'
+
 class Subject {
-  constructor(name, discipline, faculty, id = null) {
+  constructor(name, discipline, faculty, id = null, facultyId = null, disciplineId = null) {
     this.name = name
     this.discipline = discipline
     this.faculty = faculty
     this.id = id
+    this.facultyId = facultyId
+    this.disciplineId = disciplineId
   }
 }
 
@@ -23,110 +27,137 @@ export default {
   },
   actions: {
     async subjectCreate({ commit }, payload) {
+      const newS = new Subject(
+        payload.name,
+        payload.discipline,
+        payload.faculty,
+        null,
+        payload.facultyId,
+        payload.disciplineId
+      )
       commit('setLoading', true)
-      try {
-        const newSubject = new Subject(
-          payload.name,
-          payload.discipline,
-          payload.faculty
-        )
-        const db = fb.database().ref()
-        const subject = await db
-          .child('subject')
-          .push(newSubject)
-        const subjectOnFaculty = await db.child('faculty').child(payload.faculty).child('subjects').child(subject.key).set('1')
-        commit('addSubject', newSubject)
-        commit('setLoading', false)
-      } catch (error) {
-        commit('setError', error)
-        commit('setLoading', false)
-        throw error
-      }
+      const sql = `INSERT INTO subject (id, name, discipline, faculty) VALUES (NULL, '${newS.name}', '${newS.disciplineId}', '${newS.facultyId}')`
+      axios
+        .post(api, {
+          type: 'set',
+          data: sql
+        })
+        .then(response => {
+          if (response.data.length > 1) {
+            return Promise.reject(response.data[1])
+          } else {
+            commit('addSubject', newS)
+            commit('setSuccess', 'Запись успешно добавлена!')
+            commit('setLoading', false)
+          }
+        })
+        .catch(error => {
+          commit('setLoading', false)
+          commit('setError', error)
+          throw error
+        })
     },
     async subjectFetch({ commit }) {
       commit('setLoading', true)
-      const resultSubject = []
-      const db = fb.database().ref()
-      try {
-        const fbVal = await db.child('subject').once('value')
-        const subjectList = fbVal.val()
-        Object.keys(subjectList).forEach(async key => {
-          const item = subjectList[key]
-          const facultyId = item.faculty
-          const facultyName = await db
-            .child('faculty')
-            .child(facultyId)
-            .child('name')
-            .once('value')
-          resultSubject.push(
-            new Subject(item.name, item.discipline, facultyName.val(), key)
-          )
+      let resultSubject = []
+      const sql = `SELECT subject.id, subject.name, discipline.name AS discipline, faculty.name as faculty, discipline.id AS disciplineId, faculty.id AS facultyId
+        FROM subject LEFT JOIN faculty
+        ON subject.faculty = faculty.id
+        LEFT JOIN discipline
+        ON subject.discipline = discipline.id`
+      axios
+        .post(api, {
+          type: 'get',
+          data: sql
         })
-        commit('loadSubject', resultSubject)
-        commit('setLoading', false)
-      } catch (error) {
-        commit('setError', error)
-        commit('setLoading', false)
-        throw error
-      }
-    },
-    async subjectByName({ commit, getters }, name) {
-      if (!getters.subjectByName(name)) {
-        commit('setLoading', true)
-        const db = fb.database().ref()
-        try {
-          const fbVal = await db
-            .child('subject')
-            .orderByChild('name')
-            .equalTo(name).once('value')
-          const key = Object.keys(fbVal.val())[0]
-          const item = fbVal.val()[key]
-          const facultyId = item.faculty
-          const facultyName = await db
-            .child('faculty')
-            .child(facultyId)
-            .child('name')
-            .once('value')
-          const subjectToReturn = new Subject(item.name, item.discipline, facultyName.val(), key)
-
-          commit('addSubject', subjectToReturn)
+        .then(response => {
+          response.data.forEach(item => {
+            const subject = new Subject(
+              item.name,
+              item.discipline,
+              item.faculty,
+              item.id,
+              item.facultyId,
+              item.disciplineId
+            )
+            resultSubject.push(subject)
+          })
+          commit('loadSubject', resultSubject)
           commit('setLoading', false)
-        } catch (error) {
+        })
+        .catch(error => {
           commit('setError', error)
           commit('setLoading', false)
           throw error
-        }
+        })
+    },
+    async subjectById({ commit, getters }, id) {
+      if (!getters.subjectById(id)) {
+        commit('setLoading', true)
+        const sql = `SELECT subject.id, subject.name, discipline.name AS discipline, faculty.name as faculty, discipline.id AS disciplineId, faculty.id AS facultyId
+          FROM subject LEFT JOIN faculty
+          ON subject.faculty = faculty.id
+          LEFT JOIN discipline
+          ON subject.discipline = discipline.id
+          WHERE subject.id = ${id}`
+        axios
+          .post(api, {
+            type: 'get',
+            data: sql
+          })
+          .then(response => {
+            const item = response.data[0]
+            const subject = new Subject(
+              item.name,
+              item.discipline,
+              item.faculty,
+              item.id,
+              item.facultyId,
+              item.disciplineId
+            )
+            commit('addSubject', subject)
+            commit('setLoading', false)
+          })
+          .catch(error => {
+            commit('setError', error)
+            commit('setLoading', false)
+            throw error
+          })
       }
     },
     async addSoftwareOnSubject ({ commit }, swsj){
       commit('setLoading', true)
-      const db = fb.database().ref()
-      try {
-        const fbVal = await db.child('subject').child(swsj.subject).child('usedSoftware').child(swsj.software).once('value')
-        if(!fbVal.val()) {
-          db.child('subject').child(swsj.subject).child('usedSoftware').child(swsj.software).set('1')
-          commit('setSuccess', 'Запись успешно добавлена в таблицу!')
-        }
-        else
-          commit('setError', "ПО уже используется на учебной программе")
-        commit('setLoading', false)
-      } catch (error) {
-        commit('setLoading', false)
-        commit('setError', error)
-        throw error
-      }
+      const sql = `INSERT INTO softwareonsubject (id, software, subject) VALUES (NULL, ${swsj.software}, ${swsj.subject})`
+      axios
+        .post(api, {
+          type: 'set',
+          data: sql
+        })
+        .then(response => {
+          if (response.data.length > 1) {
+            return Promise.reject(response.data[1])
+          } else {
+            commit('setSuccess', 'Запись успешно добавлена!')
+            commit('setLoading', false)
+          }
+        })
+        .catch(error => {
+          commit('setLoading', false)
+          commit('setError', error)
+          throw error
+        })
     }
   },
   getters: {
     subjectAll: state => {
       return state.subject
     },
-    subjectByName: (state, dispatch) => name => {
-      return state.subject.find(item => item.name === name)
+    subjectById: (state) => id => {
+      return state.subject.find(item => item.id === id)
     },
-    subjectSimilar: state => ({ faculty, exceptName }) => {
+    subjectSimilar: state => ({ facultyId, exceptId }) => {
       return state.subject.filter(
-        item => item.faculty === faculty && item.name !== exceptName
+        item => item.facultyId === facultyId && item.id !== exceptId
       )
     },
     subjectSearch: state => query => {

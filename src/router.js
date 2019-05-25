@@ -42,7 +42,7 @@ export default new Router({
       props: true
     },
     {
-      path: '/:type/:name',
+      path: '/:type/:id',
       name: 'Details',
       component: DetailsPage,
       props: true,

@@ -1,4 +1,6 @@
-import * as fb from 'firebase'
+import axios from 'axios'
+import { api } from './store'
+
 class Faculty {
   constructor(name, short_name, description, web_site, img, id = null) {
     this.name = name
@@ -22,86 +24,94 @@ export default {
     }
   },
   actions: {
-    async facultyCreate({ commit }, payload) {
+    async facultyCreate({ commit }, item) {
       commit('setLoading', true)
-      try {
-        const newFaculty = new Faculty(
-          payload.name,
-          payload.short_name,
-          payload.description,
-          payload.web_site,
-          payload.img
-        )
-        const faculty = await fb
-          .database()
-          .ref('faculty')
-          .push(newFaculty)
-        commit('addFaculty', newFaculty)
-        commit('setLoading', false)
-      } catch (error) {
-        commit('setError', error)
-        commit('setLoading', false)
-        throw error
-      }
+      const newF = new Faculty(
+        item.name,
+        item.short_name,
+        item.description,
+        item.web_site,
+        item.img
+      )
+      const sql = `INSERT INTO faculty (id, name, short_name, description, img, web_site) VALUES (NULL, '${newF.name}', '${newF.short_name}', '${newF.description}', '${newF.img}', '${newF.web_site}')`
+      axios
+        .post(api, {
+          type: 'set',
+          data: sql
+        })
+        .then(response => {
+          if (response.data.length > 1) {
+            return Promise.reject(response.data[1])
+          } else {
+            console.log(response)
+            commit('addFaculty', newF)
+            commit('setSuccess', 'Запись успешно добавлена!')
+            commit('setLoading', false)
+          }
+        })
+        .catch(error => {
+          commit('setLoading', false)
+          commit('setError', error)
+          throw error
+        })
     },
     async facultyFetch({ commit }) {
       commit('setLoading', true)
-      const resultFaculty = []
-
-      try {
-        const fbVal = await fb
-          .database()
-          .ref('faculty')
-          .once('value')
-        const facultyList = fbVal.val()
-        Object.keys(facultyList).forEach(key => {
-          const item = facultyList[key]
-          resultFaculty.push(
-            new Faculty(
+      let resultFaculty = []
+      const sql = `SELECT * FROM faculty`
+      axios
+        .post(api, {
+          type: 'get',
+          data: sql
+        })
+        .then(response => {
+          response.data.forEach(item => {
+            const faculty = new Faculty(
               item.name,
               item.short_name,
               item.description,
               item.web_site,
               item.img,
-              key
+              item.id
             )
-          )
-        })
-        commit('loadFaculty', resultFaculty)
-        commit('setLoading', false)
-      } catch (error) {
-        commit('setError', error)
-        commit('setLoading', false)
-        throw error
-      }
-    },
-    async facultyByName({ commit, getters }, name) {
-      if (!getters.facultyByName(name)) {
-        commit('setLoading', true)
-        const db = fb.database().ref()
-        try {
-          const fbVal = await db
-            .child('faculty')
-            .orderByChild('name')
-            .equalTo(name)
-            .once('value')
-          const key = Object.keys(fbVal.val())[0]
-          const item = fbVal.val()[key]
-          const facultyToReturn = new Faculty(
-            item.name,
-            item.short_name,
-            item.description,
-            item.web_site,
-            item.img,
-            key
-          )
-          commit('addFaculty', facultyToReturn)
+            resultFaculty.push(faculty)
+          })
+          commit('loadFaculty', resultFaculty)
           commit('setLoading', false)
-        } catch (error) {
+        })
+        .catch(error => {
           commit('setError', error)
           commit('setLoading', false)
           throw error
-        }
+        })
+    },
+    async facultyById({ commit, getters }, id) {
+      if (!getters.facultyById(id)) {
+        commit('setLoading', true)
+        const sql = `SELECT * FROM faculty WHERE id = ${id}`
+        axios
+          .post(api, {
+            type: 'get',
+            data: sql
+          })
+          .then(response => {
+            const item = response.data[0]
+            const faculty = new Faculty(
+              item.name,
+              item.short_name,
+              item.description,
+              item.web_site,
+              item.img,
+              item.id
+            )
+            commit('addFaculty', faculty)
+            commit('setLoading', false)
+          })
+          .catch(error => {
+            commit('setError', error)
+            commit('setLoading', false)
+            throw error
+          })
       }
     }
   },
@@ -109,12 +119,17 @@ export default {
     facultyAll: state => {
       return state.faculty
     },
-    facultyByName: state => name => {
-      return state.faculty.find(item => item.name === name)
+    facultyById: state => id => {
+      return state.faculty.find(item => item.id === id)
     },
     facultySearch: state => query => {
       return state.faculty.filter(
         item => item.name.match(query) || item.short_name.match(query)
+      )
+    },
+    facultySimilar: state => exceptId => {
+      return state.faculty.filter(
+        item => item.id !== exceptId
       )
     },
     facultyAutocomplete: state => query => {

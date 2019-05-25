@@ -14,7 +14,7 @@
             >
               <div
                 :class="{'mobile-title': $vuetify.breakpoint.xs,'headline mr-3 link text-main--text':true}"
-                @click="$router.push(`/${cardType}/${dataSet.title}`)"
+                @click="$router.push(`/${cardType}/${data.id}`)"
               >
                 {{ dataSet.title }}
               </div>
@@ -49,7 +49,7 @@
         lg1
         d-flex
         align-center
-        @click="$router.push(`/${cardType}/${dataSet.title}`)"
+        @click="$router.push(`/${cardType}/${data.id}`)"
       >
         <v-img
           :src="dataSet.img"

@@ -120,10 +120,6 @@
           .dispatch('softwareCreate', software)
           .then(() => {
             this.clearInput(this.software)
-            this.$store.dispatch(
-              'setSuccess',
-              'Запись успешно добавлена в таблицу!'
-            )
           })
           .catch(() => {})
       },

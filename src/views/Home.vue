@@ -67,6 +67,11 @@ export default {
         },
       ]
     }
+  },
+  created() {
+    this.$store.dispatch('facultyFetch')
+    this.$store.dispatch('softwareFetch')
+    this.$store.dispatch('subjectFetch')
   }
 }
 </script>
