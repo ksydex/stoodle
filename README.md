@@ -1,3 +1,3 @@
 ### Vue.js
 ### Vuetify
-### -Firebase- mysql
+### ~~Firebase~~ mysql
