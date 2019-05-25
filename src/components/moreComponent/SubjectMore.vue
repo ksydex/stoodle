@@ -10,22 +10,14 @@
       <h1 class="headline text-main--text mb-3">
         Похожие учебные программы
       </h1>
-      <v-list>
-        <v-list-tile
-          v-for="subject in subjectsOnFaculty"
-          :key="subject.name"
-          class="mb-2"
-        >
-          <v-list-tile-content>
-            <v-list-tile-title
-              class="link"
-              @click="$router.push('/subject/'+subject.name)"
-              v-text="subject.name"
-            />
-            <v-list-tile-sub-title v-text="subject.faculty" />
-          </v-list-tile-content>
-        </v-list-tile>
-      </v-list>
+      <search-card
+        v-for="subject in subjectsOnFaculty"
+        :key="subject.name"
+        :data="subject"
+        card-type="subject"
+        color="transparent"
+        class="text-main--text mb-2 search-card"
+      />
     </v-flex>
     <v-flex
       xs12

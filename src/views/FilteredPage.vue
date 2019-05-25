@@ -25,7 +25,7 @@
           <v-flex xs6>
             <search-card
               v-for="item in data"
-              :key="item.name"
+              :key="item.id"
               :data="item"
               :card-type="currentType.type"
               class="mb-2 search-card"

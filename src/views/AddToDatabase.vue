@@ -63,6 +63,11 @@ export default {
           component: 'subjectForm'
         },
         {
+          type: 'discipline',
+          title: 'Дисциплина',
+          component: 'softwareOnSubject'
+        },
+        {
           type: 'faculty',
           title: 'Факультет',
           component: 'facultyForm'
@@ -71,7 +76,7 @@ export default {
           type: 'swsj',
           title: 'ПО на УП',
           component: 'softwareOnSubject'
-        },
+        }
       ],
       currentType: {
         type: 'software',
