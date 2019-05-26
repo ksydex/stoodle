@@ -46,67 +46,89 @@
 </template>
 
 <script>
-  import axios from 'axios'
+import axios from 'axios'
 
-  export default {
-    props: {
-      loading: {
-        type: Boolean,
-        required: true
-      }
-    },
-    data() {
-      return {
-        faculty: '',
-        swsj: {
-          subject: '',
-          software: ''
+export default {
+  props: {
+    loading: {
+      type: Boolean,
+      required: true
+    }
+  },
+  data() {
+    return {
+      faculty: '',
+      swsj: {
+        subject: '',
+        software: ''
+      },
+      softwareOnSubject: [{ software: 'blender', subject: '3д моделлинг' }],
+      headers: [
+        {
+          text: 'Программное обеспечение',
+          align: 'left',
+          sortable: false,
+          value: 'software'
         },
-        softwareOnSubject: [
-          { software: 'blender', subject: '3д моделлинг'}
-        ],
-        headers: [
-          {
-            text: 'Программное обеспечение',
-            align: 'left',
-            sortable: false,
-            value: 'software'
-          },
-          { text: 'Учебная программа', value: 'subject', align: 'right' }
-        ],
+        { text: 'Учебная программа', value: 'subject', align: 'right' }
+      ]
+    }
+  },
+  computed: {
+    subjectList() {
+      return this.$store.getters.subjectAll
+    },
+    softwareList() {
+      return this.$store.getters.softwareAll
+    },
+    facultyList() {
+      return this.$store.getters.facultyAll
+    },
+    validity() {
+      return this.swsj.subject && this.swsj.software
+    }
+  },
+  created() {
+    this.$store
+      .dispatch('subjectFetch')
+      .then(() => {})
+      .catch(() => {})
+    this.$store
+      .dispatch('softwareFetch')
+      .then(() => {})
+      .catch(() => {})
+    this.$store
+      .dispatch('facultyFetch')
+      .then(() => {})
+      .catch(() => {})
+    this.fetchCons()
+  },
+  methods: {
+    createNew() {
+      if (this.validity) {
+        const subjectName = this.swsj.subject
+        const softwareName = this.swsj.software
+        const swsj = {
+          subject: this.subjectList.find(item => item.name === subjectName).id,
+          software: this.softwareList.find(item => item.name === softwareName)
+            .id
+        }
+        this.$store
+          .dispatch('addSoftwareOnSubject', swsj)
+          .then(() => {
+            this.fetchCons()
+            this.clearInput(this.swsj)
+          })
+          .catch(() => {})
       }
     },
-    computed: {
-      subjectList() {
-        return this.$store.getters.subjectAll
-      },
-      softwareList() {
-        return this.$store.getters.softwareAll
-      },
-      facultyList() {
-        return this.$store.getters.facultyAll
-      },
-      validity() {
-        return this.swsj.subject && this.swsj.software
-      }
-    },
-    created() {
-      this.$store
-        .dispatch('subjectFetch')
-        .then(() => {})
-        .catch(() => {})
-      this.$store
-        .dispatch('softwareFetch')
-        .then(() => {})
-        .catch(() => {})
-      this.$store
-        .dispatch('facultyFetch')
-        .then(() => {})
-        .catch(() => {})
-      const sql = 'SELECT software.name AS software, subject.name AS subject FROM softwareonsubject \n' +
+    fetchCons() {
+      const sql =
+        'SELECT software.name AS software, subject.name AS subject FROM softwareonsubject \n' +
         'LEFT JOIN software ON softwareonsubject.software = software.id\n' +
         'LEFT JOIN subject ON softwareonsubject.subject = subject.id'
-      axios.post(this.$api, { type: 'get', data: sql })
+      axios
+        .post(this.$api, { type: 'get', data: sql })
         .then(response => {
           let result = []
           Object.keys(response.data).forEach(key => {
@@ -115,33 +137,18 @@
           this.softwareOnSubject = result
         })
         .catch(error => {
-          this.$store.dispatch('setError', 'Произошла ошибка при получении данных')
+          this.$store.dispatch(
+            'setError',
+            'Произошла ошибка при получении данных'
+          )
           throw error
         })
     },
-    methods: {
-      createNew() {
-        if(this.validity) {
-          const subjectName = this.swsj.subject
-          const softwareName = this.swsj.software
-          const swsj = {
-            subject: this.subjectList.find(item => item.name === subjectName).id,
-            software: this.softwareList.find(item => item.name === softwareName).id,
-          }
-          this.$store
-            .dispatch('addSoftwareOnSubject', swsj)
-            .then(() => {
-              this.softwareOnSubject.push(swsj)
-              this.clearInput(this.swsj)
-            })
-            .catch(() => {})
-        }
-      },
-      clearInput(object) {
-        Object.keys(object).forEach(key => {
-          object[key] = ''
-        })
-      }
+    clearInput(object) {
+      Object.keys(object).forEach(key => {
+        object[key] = ''
+      })
     }
   }
+}
 </script>

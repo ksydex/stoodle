@@ -17,7 +17,11 @@ $data = $json['data'];
 
 function getSql($query)
 {
-  return R::getAll($query);
+  try {
+    echo json_encode(R::getAll($query));
+  } catch (Exception $error) {
+    echo json_encode(['error', $error]);
+  }
 }
 
 function storeSql($query)
@@ -31,7 +35,7 @@ function storeSql($query)
 
 switch ($type) {
   case 'get':
-    echo json_encode(getSql($data));
+    getSql($data);
     break;
   case 'set':
     storeSql($data);

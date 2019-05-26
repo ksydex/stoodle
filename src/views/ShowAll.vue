@@ -60,7 +60,7 @@ export default {
         { type: 'software', title: 'Всё программное обеспечение' },
         { type: 'subject', title: 'Все учебные программы' },
         { type: 'faculty', title: 'Все факультеты' },
-        { type: 'discipline', title: 'Все дисциплины'}
+        { type: 'discipline', title: 'Все дисциплины' }
       ]
     }
   },
@@ -90,14 +90,22 @@ export default {
       return this.$store.getters.loading
     }
   },
+  mounted() {
+    this.loadData()
+  },
   created() {
-    const toFetch = {
-      software: 'softwareFetch',
-      subject: 'subjectFetch',
-      faculty: 'facultyFetch',
-      discipline: 'disciplineFetch'
+    this.loadData()
+  },
+  methods: {
+    loadData() {
+      const toFetch = {
+        software: 'softwareFetch',
+        subject: 'subjectFetch',
+        faculty: 'facultyFetch',
+        discipline: 'disciplineFetch'
+      }
+      this.$store.dispatch(toFetch[this.type])
     }
-    this.$store.dispatch(toFetch[this.type])
   }
 }
 </script>
