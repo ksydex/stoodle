@@ -8,11 +8,10 @@
       md6
     >
       <h1 class="headline text-main--text mb-3">
-        Используется на учебных программах
+        Учебные программы по дисицплине
       </h1>
       <search-card
-
-        v-for="subject in usedOnSubjects"
+        v-for="subject in subjectsOnDiscipline"
         :key="subject.id"
         :data="subject"
         card-type="subject"
@@ -25,15 +24,14 @@
       md6
     >
       <h1 class="headline text-main--text mb-3">
-        Похожее программное обеспечение
+        Ещё дисциплины
       </h1>
       <search-card
-        v-for="software in similarSoftware"
-        :key="software.id"
-        :data="software"
-        card-type="software"
-        color="transparent"
-        class="text-main--text mb-2 search-card"
+        v-for="discipline in similarDiscipline"
+        :key="discipline.id"
+        :data="discipline"
+        card-type="discipline"
+        class="mb-2"
       />
     </v-flex>
   </v-layout>
@@ -48,15 +46,13 @@
       }
     },
     computed: {
-      similarSoftware() {
-        const params = {
-          type: this.data.type,
-          exceptName: this.data.name
-        }
-        return this.$store.getters.softwareSimilar(params)
+      subjectsOnDiscipline() {
+        const disciplineId = this.data.id
+        return this.$store.getters.subjectsOnDisciplineById(disciplineId)
       },
-      usedOnSubjects() {
-        return this.$store.getters.subjectAll
+      similarDiscipline() {
+        const id = this.data.id
+        return this.$store.getters.disciplineSimilar(id)
       }
     }
   }

@@ -12,7 +12,7 @@
       </h1>
       <search-card
         v-for="subject in subjectsOnFaculty"
-        :key="subject.name"
+        :key="subject.id"
         :data="subject"
         card-type="subject"
         class="mb-2"
@@ -27,7 +27,7 @@
       </h1>
       <search-card
         v-for="software in usedSoftware"
-        :key="software.name"
+        :key="software.id"
         :data="software"
         card-type="software"
         color="transparent"
@@ -43,7 +43,7 @@
       </h1>
       <search-card
         v-for="faculty in similarFaculty"
-        :key="faculty.name"
+        :key="faculty.id"
         :data="faculty"
         card-type="faculty"
         class="mb-2"

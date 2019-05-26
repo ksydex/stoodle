@@ -13,14 +13,14 @@
               :mb-1="$vuetify.breakpoint.xs"
             >
               <div
-                :class="{'mobile-title': $vuetify.breakpoint.xs,'headline mr-3 link text-main--text':true}"
+                :class="{'mobile-title': $vuetify.breakpoint.xs,'headline mr-3 link text-main--text text--lighten-1':true}"
                 @click="$router.push(`/${cardType}/${data.id}`)"
               >
                 {{ dataSet.title }}
               </div>
               <div
                 v-if="dataSet.subTitle !== null"
-                class="text-main--text text--lighten-2 headline mr-3"
+                class="text-main--text text--lighten-3 headline mr-3"
               >
                 {{ dataSet.subTitle }}
               </div>
@@ -93,7 +93,7 @@ export default {
             subTitle:null,
             body: this.data.discipline,
             subBody: this.data.faculty,
-            img: this.data.img || null
+            img: null
           }
         },
         faculty: () => {
@@ -103,6 +103,15 @@ export default {
             body: this.data.short_name,
             subBody: null,
             img: this.data.img || null
+          }
+        },
+        discipline: () => {
+          return {
+            title: this.data.name,
+            subTitle: null,
+            body: null,
+            subBody: null,
+            img: null
           }
         }
       }

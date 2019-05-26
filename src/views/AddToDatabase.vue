@@ -41,12 +41,14 @@
 import softwareForm from '../components/addToDatabase/Software'
 import subjectForm from '../components/addToDatabase/Subject'
 import facultyForm from '../components/addToDatabase/Faculty'
+import disciplineForm from '../components/addToDatabase/Discipline'
 import softwareOnSubject from '../components/addToDatabase/SoftwareOnSubject'
 export default {
   components: {
     softwareForm,
     subjectForm,
     facultyForm,
+    disciplineForm,
     softwareOnSubject
   },
   data() {
@@ -65,7 +67,7 @@ export default {
         {
           type: 'discipline',
           title: 'Дисциплина',
-          component: 'softwareOnSubject'
+          component: 'disciplineForm'
         },
         {
           type: 'faculty',

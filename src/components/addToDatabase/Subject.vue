@@ -5,10 +5,11 @@
       label="Название"
       solo
     />
-    <v-text-field
+    <v-select
       v-model="subject.discipline"
-      label="Дисциплина"
+      :items="disciplineList.map(item => item.name)"
       solo
+      label="Дисциплина"
     />
     <v-select
       v-model="subject.faculty"
@@ -72,31 +73,32 @@
     },
     computed: {
       facultyList() {
-        return this.$store.getters.facultyAllNameAndId
+        return this.$store.getters.facultyAll.map(item => {
+          return {id: item.id, name: item.name}
+        })
+      },
+      disciplineList() {
+        return this.$store.getters.disciplineAll.map(item => {
+          return {id: item.id, name: item.name}
+        })
       },
       allSubject() {
         return this.$store.getters.subjectAll
       }
     },
     created() {
-      this.$store
-        .dispatch('facultyFetch')
-        .then(() => {})
-        .catch(() => {})
-      this.$store
-        .dispatch('subjectFetch')
-        .then(() => {})
-        .catch(() => {})
+      this.$store.dispatch('facultyFetch')
+      this.$store.dispatch('disciplineFetch')
+      this.$store.dispatch('subjectFetch')
     },
     methods: {
       createNew() {
         const subject = {
           name: this.subject.name,
           discipline: this.subject.discipline,
-          disciplineId: '2', //TODO сделать авто
-          faculty: this.facultyList.find(
-            item => item.name === this.subject.faculty
-          ).name,
+          disciplineId: this.disciplineList.find(
+            item => item.name === this.subject.discipline).id,
+          faculty: this.subject.faculty,
           facultyId: this.facultyList.find(
             item => item.name === this.subject.faculty
           ).id
@@ -105,10 +107,6 @@
           .dispatch('subjectCreate', subject)
           .then(() => {
             this.clearInput(this.subject)
-            this.$store.dispatch(
-              'setSuccess',
-              'Запись успешно добавлена в таблицу!'
-            )
           })
           .catch(() => {})
       },

@@ -65,6 +65,10 @@ export default {
           name: 'Учебные программы',
           link: '/subject'
         },
+        {
+          name: 'Дисциплины',
+          link: '/discipline'
+        }
       ]
     }
   },
@@ -72,6 +76,7 @@ export default {
     this.$store.dispatch('facultyFetch')
     this.$store.dispatch('softwareFetch')
     this.$store.dispatch('subjectFetch')
+    this.$store.dispatch('disciplineFetch')
   }
 }
 </script>

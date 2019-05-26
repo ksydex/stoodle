@@ -26,6 +26,7 @@
       v-model="software.description"
       label="Описание"
       solo
+      maxlength="500"
     />
     <v-text-field
       v-model="software.img"

@@ -53,7 +53,7 @@ export default {
         })
         .catch(error => {
           commit('setLoading', false)
-          commit('setError', error)
+          commit('setError', 'Ошибка при создании записи')
           throw error
         })
     },
@@ -156,9 +156,10 @@ export default {
       return state.subject.find(item => item.id === id)
     },
     subjectSimilar: state => ({ facultyId, exceptId }) => {
-      return state.subject.filter(
-        item => item.facultyId === facultyId && item.id !== exceptId
-      )
+      return state.subject.filter(item => item.id !== exceptId && item.facultyId === facultyId)
+    },
+    subjectsOnDisciplineById: state => id => {
+      return state.subject.filter(item => item.disciplineId === id)
     },
     subjectSearch: state => query => {
       return state.subject.filter(item => item.name.match(query))

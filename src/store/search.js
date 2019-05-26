@@ -9,6 +9,7 @@ export default {
       result.software = getters.softwareSearch(searchQuery)
       result.subject = getters.subjectSearch(searchQuery)
       result.faculty = getters.facultySearch(searchQuery)
+      result.discipline = getters.disciplineSearch(searchQuery)
       return result
     },
     searchAutocomplete: (state, getters) => query => {
@@ -16,6 +17,7 @@ export default {
       getters.softwareAutocomplete(query).forEach(item => result.push(item))
       getters.subjectAutocomplete(query).forEach(item => result.push(item))
       getters.facultyAutocomplete(query).forEach(item => result.push(item))
+      getters.disciplineAutocomplete(query).forEach(item => result.push(item))
       return result
     },
   },

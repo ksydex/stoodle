@@ -110,7 +110,8 @@ export default {
         { name: 'Все', sort: null },
         { name: 'Программное обеспечение', sort: 'software' },
         { name: 'Учебные программы', sort: 'subject' },
-        { name: 'Факультеты', sort: 'faculty' }
+        { name: 'Факультеты', sort: 'faculty' },
+        { name: 'Дисциплины', sort: 'discipline'}
       ],
       currentType: { name: 'Все', sort: null }
     }
@@ -137,6 +138,10 @@ export default {
         {
           type: 'faculty',
           title: 'Факультеты'
+        },
+        {
+          type: 'discipline',
+          title: 'Дисциплины'
         }
       ]
       if (this.currentType.sort)

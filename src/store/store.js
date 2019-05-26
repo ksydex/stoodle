@@ -5,6 +5,7 @@ import software from './software'
 import search from './search'
 import subject from './subject'
 import faculty from './faculty'
+import discipline from './discipline'
 
 Vue.use(Vuex)
 
@@ -17,6 +18,7 @@ export default new Vuex.Store({
     search,
     subject,
     faculty,
+    discipline
   },
   state: {},
   mutations: {},

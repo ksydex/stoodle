@@ -125,12 +125,14 @@
 import softwareMore from '../components/moreComponent/SoftwareMore.vue'
 import subjectMore from '../components/moreComponent/SubjectMore.vue'
 import facultyMore from '../components/moreComponent/FacultyMore.vue'
+import disciplineMore from '../components/moreComponent/DisciplineMore'
 
 export default {
   components: {
     softwareMore,
     subjectMore,
-    facultyMore
+    facultyMore,
+    disciplineMore
   },
   props: {
     type: {
@@ -162,6 +164,10 @@ export default {
         faculty: {
           is: 'facultyMore',
           data: this.dataSet
+        },
+        discipline: {
+          is: 'disciplineMore',
+          data: this.dataSet
         }
       }
       return component[type]
@@ -172,7 +178,8 @@ export default {
       const dataSet = {
         software: () => this.$store.getters.softwareById(id),
         subject: () => this.$store.getters.subjectById(id),
-        faculty: () => this.$store.getters.facultyById(id)
+        faculty: () => this.$store.getters.facultyById(id),
+        discipline: () => this.$store.getters.disciplineById(id)
       }
       return dataSet[type]()
     },
@@ -229,7 +236,17 @@ export default {
               description: this.dataSet.description,
               img: this.dataSet.img
             }
-          }
+          },
+          discipline: () => {
+            return {
+              title: this.dataSet.name,
+              info1: null,
+              info2: null,
+              info3: null,
+              description: this.dataSet.description,
+              img: null
+            }
+          },
         }
         return data[type]()
       } else return null
@@ -248,6 +265,9 @@ export default {
       },
       faculty: () => {
         this.$store.dispatch('facultyById', this.id)
+      },
+      discipline: () => {
+        this.$store.dispatch('disciplineById', this.id)
       }
     }
     toLoad[this.type]()
@@ -262,6 +282,9 @@ export default {
       },
       faculty: () => {
         this.$store.dispatch('facultyById', this.id)
+      },
+      discipline: () => {
+        this.$store.dispatch('disciplineById', this.id)
       }
     }
     toLoad[this.type]()

@@ -39,4 +39,3 @@ switch ($type) {
   default:
     break;
 }
-

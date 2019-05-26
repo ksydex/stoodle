@@ -51,7 +51,7 @@ export default {
         })
         .catch(error => {
           commit('setLoading', false)
-          commit('setError', error)
+          commit('setError', 'Ошибка при создании записи')
           throw error
         })
     },

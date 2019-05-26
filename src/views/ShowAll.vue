@@ -59,7 +59,8 @@ export default {
       types: [
         { type: 'software', title: 'Всё программное обеспечение' },
         { type: 'subject', title: 'Все учебные программы' },
-        { type: 'faculty', title: 'Все факультеты' }
+        { type: 'faculty', title: 'Все факультеты' },
+        { type: 'discipline', title: 'Все дисциплины'}
       ]
     }
   },
@@ -78,6 +79,9 @@ export default {
         },
         faculty: () => {
           return this.$store.getters.facultyAll
+        },
+        discipline: () => {
+          return this.$store.getters.disciplineAll
         }
       }
       return types[type]()
@@ -90,7 +94,8 @@ export default {
     const toFetch = {
       software: 'softwareFetch',
       subject: 'subjectFetch',
-      faculty: 'facultyFetch'
+      faculty: 'facultyFetch',
+      discipline: 'disciplineFetch'
     }
     this.$store.dispatch(toFetch[this.type])
   }

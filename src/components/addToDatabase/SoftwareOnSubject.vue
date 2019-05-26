@@ -31,10 +31,23 @@
       Добавить
     </v-btn>
 
+    <v-data-table
+      :headers="headers"
+      :items="softwareOnSubject"
+      class="elevation-0"
+      hide-actions
+    >
+      <template v-slot:items="props">
+        <td>{{ props.item.software }}</td>
+        <td class="text-xs-right">{{ props.item.subject }}</td>
+      </template>
+    </v-data-table>
   </v-layout>
 </template>
 
 <script>
+  import axios from 'axios'
+
   export default {
     props: {
       loading: {
@@ -48,7 +61,19 @@
         swsj: {
           subject: '',
           software: ''
-        }
+        },
+        softwareOnSubject: [
+          { software: 'blender', subject: '3д моделлинг'}
+        ],
+        headers: [
+          {
+            text: 'Программное обеспечение',
+            align: 'left',
+            sortable: false,
+            value: 'software'
+          },
+          { text: 'Учебная программа', value: 'subject', align: 'right' }
+        ],
       }
     },
     computed: {
@@ -78,6 +103,21 @@
         .dispatch('facultyFetch')
         .then(() => {})
         .catch(() => {})
+      const sql = 'SELECT software.name AS software, subject.name AS subject FROM softwareonsubject \n' +
+        'LEFT JOIN software ON softwareonsubject.software = software.id\n' +
+        'LEFT JOIN subject ON softwareonsubject.subject = subject.id'
+      axios.post(this.$api, { type: 'get', data: sql })
+        .then(response => {
+          let result = []
+          Object.keys(response.data).forEach(key => {
+            result.push(response.data[key])
+          })
+          this.softwareOnSubject = result
+        })
+        .catch(error => {
+          this.$store.dispatch('setError', 'Произошла ошибка при получении данных')
+          throw error
+        })
     },
     methods: {
       createNew() {
@@ -91,6 +131,7 @@
           this.$store
             .dispatch('addSoftwareOnSubject', swsj)
             .then(() => {
+              this.softwareOnSubject.push(swsj)
               this.clearInput(this.swsj)
             })
             .catch(() => {})

@@ -1,6 +1,6 @@
 import axios from 'axios'
-import { api } from './store.js'
-class Software {
+  import { api } from './store.js'
+  class Software {
   constructor(name, type, year, license, description, img, id = null) {
     this.name = name
     this.type = type
@@ -93,7 +93,7 @@ export default {
         })
         .catch(error => {
           commit('setLoading', false)
-          commit('setError', error)
+          commit('setError', 'Ошибка при создании записи')
           throw error
         })
     },
@@ -120,6 +120,36 @@ export default {
             resultSoftware.push(software)
           })
           commit('loadSoftware', resultSoftware)
+          commit('setLoading', false)
+        })
+        .catch(error => {
+          commit('setError', error)
+          commit('setLoading', false)
+          throw error
+        })
+    },
+    async softwareUsedOnSubject({ commit, getters }, subjectId) {
+      const sql = `SELECT software.id as id, software.name as name, software.type as type, software.license as license, software.year as year, software.description as description, software.img as img FROM softwareonsubject LEFT JOIN software ON softwareonsubject.software = software.id WHERE softwareonsubject.subject = ${subjectId}`
+      axios
+        .post(api, {
+          type: 'get',
+          data: sql
+        })
+        .then(response => {
+          response.data.forEach(data => {
+            if (!getters.softwareById(data.id)) {
+              const software = new Software(
+                data.name,
+                data.type,
+                data.year,
+                data.license,
+                data.description,
+                data.img,
+                data.id
+              )
+              commit('addSoftware', software)
+            }
+          })
           commit('setLoading', false)
         })
         .catch(error => {
@@ -206,7 +236,7 @@ export default {
     },
     softwareUsedOnSubject: state => ids => {
       let resultSoftware = []
-      if(ids) {
+      if (ids) {
         ids.forEach(id => {
           resultSoftware.push(state.software.find(item => item.id === id))
         })
