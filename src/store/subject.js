@@ -169,6 +169,6 @@ export default {
         const strings = state.subject.map(item => item.name)
         return strings.filter(item => item.match(new RegExp(query, 'gi')))
       } else return []
-    }
+    },
   }
 }
