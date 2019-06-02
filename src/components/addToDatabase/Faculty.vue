@@ -48,6 +48,21 @@
         <td>{{ props.item.name }}</td>
         <td class="text-xs-right">{{ props.item.short_name }}</td>
         <td class="text-xs-right">{{ props.item.web_site }}</td>
+        <td class="justify-center layout px-0">
+          <v-icon
+            small
+            class="mr-2"
+            @click="editItem(props.item)"
+          >
+            edit
+          </v-icon>
+          <v-icon
+            small
+            @click="deleteItem(props.item.id)"
+          >
+            delete
+          </v-icon>
+        </td>
       </template>
     </v-data-table>
   </v-layout>
@@ -105,6 +120,13 @@
             this.clearInput(this.faculty)
           })
           .catch(() => {})
+      },
+      deleteItem(id) {
+        const params = {
+          id: id,
+          type: 'faculty'
+        }
+        this.$store.dispatch('deleteFromDb', params)
       },
       clearInput(object) {
         Object.keys(object).forEach(key => {

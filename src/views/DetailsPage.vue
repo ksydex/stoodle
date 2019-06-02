@@ -126,13 +126,15 @@ import softwareMore from '../components/moreComponent/SoftwareMore.vue'
 import subjectMore from '../components/moreComponent/SubjectMore.vue'
 import facultyMore from '../components/moreComponent/FacultyMore.vue'
 import disciplineMore from '../components/moreComponent/DisciplineMore'
+import specialityMore from '../components/moreComponent/SpecialityMore'
 
 export default {
   components: {
     softwareMore,
     subjectMore,
     facultyMore,
-    disciplineMore
+    disciplineMore,
+    specialityMore
   },
   props: {
     type: {
@@ -168,6 +170,10 @@ export default {
         discipline: {
           is: 'disciplineMore',
           data: this.dataSet
+        },
+        speciality: {
+          is: 'specialityMore',
+          data: this.dataSet
         }
       }
       return component[type]
@@ -179,7 +185,8 @@ export default {
         software: () => this.$store.getters.softwareById(id),
         subject: () => this.$store.getters.subjectById(id),
         faculty: () => this.$store.getters.facultyById(id),
-        discipline: () => this.$store.getters.disciplineById(id)
+        discipline: () => this.$store.getters.disciplineById(id),
+        speciality: () => this.$store.getters.specialityById(id)
       }
       return dataSet[type]()
     },
@@ -214,8 +221,8 @@ export default {
                 link: '/discipline/' + this.dataSet.disciplineId
               },
               info2: {
-                text: this.dataSet.faculty,
-                link: '/faculty/' + this.dataSet.facultyId
+                text: 'Направление - ' + this.dataSet.speciality,
+                link: '/speciality/' + this.dataSet.specialityId
               },
               info3: null,
               description: null,
@@ -247,6 +254,19 @@ export default {
               img: null
             }
           },
+          speciality: () => {
+            return {
+              title: this.dataSet.name,
+              info1: { text: 'Номер - ' + this.dataSet.numbers },
+              info2: {
+                text: 'Факультет - ' + this.dataSet.faculty,
+                link: '/faculty/' + this.dataSet.facultyId
+              },
+              info3: null,
+              description: this.dataSet.description,
+              img: null
+            }
+          },
         }
         return data[type]()
       } else return null
@@ -256,40 +276,32 @@ export default {
     }
   },
   created() {
-    const toLoad = {
-      software: () => {
-        this.$store.dispatch('softwareById', this.id)
-      },
-      subject: () => {
-        this.$store.dispatch('subjectById', this.id)
-      },
-      faculty: () => {
-        this.$store.dispatch('facultyById', this.id)
-      },
-      discipline: () => {
-        this.$store.dispatch('disciplineById', this.id)
-      }
-    }
-    toLoad[this.type]()
+    this.loadData()
   },
   updated() {
-    const toLoad = {
-      software: () => {
-        this.$store.dispatch('softwareById', this.id)
-      },
-      subject: () => {
-        this.$store.dispatch('subjectById', this.id)
-      },
-      faculty: () => {
-        this.$store.dispatch('facultyById', this.id)
-      },
-      discipline: () => {
-        this.$store.dispatch('disciplineById', this.id)
-      }
-    }
-    toLoad[this.type]()
+    this.loadData()
   },
   methods: {
+    loadData() {
+      const toLoad = {
+        software: () => {
+          this.$store.dispatch('softwareById', this.id)
+        },
+        subject: () => {
+          this.$store.dispatch('subjectById', this.id)
+        },
+        faculty: () => {
+          this.$store.dispatch('facultyById', this.id)
+        },
+        discipline: () => {
+          this.$store.dispatch('disciplineById', this.id)
+        },
+        speciality: () => {
+          this.$store.dispatch('specialityById', this.id)
+        },
+      }
+      toLoad[this.type]()
+    },
     searchGoogle(name) {
       window.open('https://www.google.com/search?q=' + name)
     },

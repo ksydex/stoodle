@@ -2,12 +2,12 @@ import axios from 'axios'
 import {api} from './store'
 
 class Subject {
-  constructor(name, discipline, faculty, id = null, facultyId = null, disciplineId = null) {
+  constructor(name, discipline, speciality, id = null, specialityId = null, disciplineId = null) {
     this.name = name
     this.discipline = discipline
-    this.faculty = faculty
+    this.speciality = speciality
     this.id = id
-    this.facultyId = facultyId
+    this.specialityId = specialityId
     this.disciplineId = disciplineId
   }
 }
@@ -30,13 +30,13 @@ export default {
       const newS = new Subject(
         payload.name,
         payload.discipline,
-        payload.faculty,
+        payload.speciality,
         null,
-        payload.facultyId,
+        payload.specialityId,
         payload.disciplineId
       )
       commit('setLoading', true)
-      const sql = `INSERT INTO subject (id, name, discipline, faculty) VALUES (NULL, '${newS.name}', '${newS.disciplineId}', '${newS.facultyId}')`
+      const sql = `INSERT INTO subject (id, name, discipline, speciality) VALUES (NULL, '${newS.name}', '${newS.disciplineId}', '${newS.specialityId}')`
       axios
         .post(api, {
           type: 'set',
@@ -57,12 +57,43 @@ export default {
           throw error
         })
     },
+    async subjectUpdate({commit}, payload) {
+        const newS = new Subject(
+          payload.name,
+          payload.discipline,
+          payload.speciality,
+          payload.id,
+          payload.specialityId,
+          payload.disciplineId
+        )
+        commit('setLoading', true)
+        const sql = `UPDATE subject SET name = '${newS.name}', discipline = '${newS.disciplineId}', speciality = '${newS.specialityId}' WHERE id = ${newS}`
+        axios
+          .post(api, {
+            type: 'set',
+            data: sql
+          })
+          .then(response => {
+            if (response.data.length > 1) {
+              return Promise.reject(response.data[1])
+            } else {
+              commit('addSubject', newS)
+              commit('setSuccess', 'Запись успешно обновлена!')
+              commit('setLoading', false)
+            }
+          })
+          .catch(error => {
+            commit('setLoading', false)
+            commit('setError', 'Ошибка при обновлении записи.')
+            throw error
+          })
+    },
     async subjectFetch({ commit }) {
       commit('setLoading', true)
       let resultSubject = []
-      const sql = `SELECT subject.id, subject.name, discipline.name AS discipline, faculty.name as faculty, discipline.id AS disciplineId, faculty.id AS facultyId
-        FROM subject LEFT JOIN faculty
-        ON subject.faculty = faculty.id
+      const sql = `SELECT subject.id, subject.name, discipline.name AS discipline, speciality.name as speciality, discipline.id AS disciplineId, speciality.id AS specialityId
+        FROM subject LEFT JOIN speciality
+        ON subject.speciality = speciality.id
         LEFT JOIN discipline
         ON subject.discipline = discipline.id`
       axios
@@ -75,9 +106,9 @@ export default {
             const subject = new Subject(
               item.name,
               item.discipline,
-              item.faculty,
+              item.speciality,
               item.id,
-              item.facultyId,
+              item.specialityId,
               item.disciplineId
             )
             resultSubject.push(subject)
@@ -94,11 +125,11 @@ export default {
     async subjectById({ commit, getters }, id) {
       if (!getters.subjectById(id)) {
         commit('setLoading', true)
-        const sql = `SELECT subject.id, subject.name, discipline.name AS discipline, faculty.name as faculty, discipline.id AS disciplineId, faculty.id AS facultyId
-          FROM subject LEFT JOIN faculty
-          ON subject.faculty = faculty.id
-          LEFT JOIN discipline
-          ON subject.discipline = discipline.id
+        const sql = `SELECT subject.id, subject.name, discipline.name AS discipline, speciality.name as speciality, discipline.id AS disciplineId, speciality.id AS specialityId
+        FROM subject LEFT JOIN speciality
+        ON subject.speciality = speciality.id
+        LEFT JOIN discipline
+        ON subject.discipline = discipline.id
           WHERE subject.id = ${id}`
         axios
           .post(api, {
@@ -110,9 +141,9 @@ export default {
             const subject = new Subject(
               item.name,
               item.discipline,
-              item.faculty,
+              item.speciality,
               item.id,
-              item.facultyId,
+              item.specialityId,
               item.disciplineId
             )
             commit('addSubject', subject)
@@ -155,11 +186,14 @@ export default {
     subjectById: (state) => id => {
       return state.subject.find(item => item.id === id)
     },
-    subjectSimilar: state => ({ facultyId, exceptId }) => {
-      return state.subject.filter(item => item.id !== exceptId && item.facultyId === facultyId)
+    subjectSimilar: state => ({ specialityId, exceptId }) => {
+      return state.subject.filter(item => item.id !== exceptId && item.specialityId === specialityId)
     },
     subjectsOnDisciplineById: state => id => {
       return state.subject.filter(item => item.disciplineId === id)
+    },
+    subjectsOnSpecialityById: state => id => {
+      return state.subject.filter(item => item.specialityId === id)
     },
     subjectSearch: state => query => {
       return state.subject.filter(item => item.name.match(query))

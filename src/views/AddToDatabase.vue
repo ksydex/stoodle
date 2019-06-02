@@ -1,6 +1,39 @@
 <template>
-  <v-container>
-    <v-layout column>
+  <v-container :fill-height="!user.logged">
+    <v-layout
+      v-if="!user.logged"
+      class="align-center"
+    >
+      <v-flex class="align-center justify-center text-xs-center">
+        <h4 class="display-2 mb-3 text-main--text">Кто вы?</h4>
+        <v-btn
+          flat
+          class="primary--text px-2 ml-0"
+          @click="setUser('teacher')"
+        >
+          Преподаватель
+        </v-btn>
+        <v-btn
+          flat
+          class="primary--text px-2 ml-0"
+          @click="setUser('tech')"
+        >
+          Технический работник
+        </v-btn>
+        <v-btn
+          flat
+          class="primary--text px-2 ml-0"
+          @click="setUser('admin')"
+        >
+          Администратор
+        </v-btn>
+      </v-flex>
+
+    </v-layout>
+    <v-layout
+      v-else
+      column
+    >
       <h4 class="display-1 text-main--text mb-3">Добавить новую запись</h4>
       <v-tabs
         color="transparent"
@@ -43,53 +76,123 @@ import subjectForm from '../components/addToDatabase/Subject'
 import facultyForm from '../components/addToDatabase/Faculty'
 import disciplineForm from '../components/addToDatabase/Discipline'
 import softwareOnSubject from '../components/addToDatabase/SoftwareOnSubject'
+import specialityForm from '../components/addToDatabase/Speciality'
 export default {
   components: {
     softwareForm,
     subjectForm,
     facultyForm,
     disciplineForm,
-    softwareOnSubject
+    softwareOnSubject,
+    specialityForm
   },
   data() {
     return {
-      typeSwitcher: [
-        {
-          type: 'software',
-          title: 'Программное обеспечение',
-          component: 'softwareForm'
-        },
-        {
-          type: 'subject',
-          title: 'Учебная программа',
-          component: 'subjectForm'
-        },
-        {
-          type: 'discipline',
-          title: 'Дисциплина',
-          component: 'disciplineForm'
-        },
-        {
-          type: 'faculty',
-          title: 'Факультет',
-          component: 'facultyForm'
-        },
-        {
-          type: 'swsj',
-          title: 'ПО на УП',
-          component: 'softwareOnSubject'
-        }
-      ],
-      currentType: {
-        type: 'software',
-        title: 'Программное обеспечение',
-        component: 'softwareForm'
-      }
+      user:{
+        logged: false,
+        type: null
+      },
+      currentType: {}
     }
   },
   computed: {
     loading() {
       return this.$store.getters.loading
+    },
+    typeSwitcher() {
+      const types = {
+        teacher: [
+          {
+            type: 'software',
+            title: 'Программное обеспечение',
+            component: 'softwareForm'
+          },
+          {
+            type: 'subject',
+            title: 'Учебная программа',
+            component: 'subjectForm'
+          },
+          {
+            type: 'swsj',
+            title: 'ПО на УП',
+            component: 'softwareOnSubject'
+          }
+        ],
+        tech: [
+          {
+            type: 'discipline',
+            title: 'Дисциплина',
+            component: 'disciplineForm'
+          },
+          {
+            type: 'speciality',
+            title: 'Специальность',
+            component: 'specialityForm'
+          },
+          {
+            type: 'faculty',
+            title: 'Факультет',
+            component: 'facultyForm'
+          },
+        ],
+        admin: [
+          {
+            type: 'software',
+            title: 'Программное обеспечение',
+            component: 'softwareForm'
+          },
+          {
+            type: 'subject',
+            title: 'Учебная программа',
+            component: 'subjectForm'
+          },
+          {
+            type: 'discipline',
+            title: 'Дисциплина',
+            component: 'disciplineForm'
+          },
+          {
+            type: 'speciality',
+            title: 'Специальность',
+            component: 'specialityForm'
+          },
+          {
+            type: 'faculty',
+            title: 'Факультет',
+            component: 'facultyForm'
+          },
+          {
+            type: 'swsj',
+            title: 'ПО на УП',
+            component: 'softwareOnSubject'
+          }
+        ]
+      }
+      return types[this.user.type]
+    }
+  },
+  methods: {
+    setUser(user){
+      const currentType = {
+        teacher: {
+          type: 'software',
+          title: 'Программное обеспечение',
+          component: 'softwareForm'
+        },
+        tech: {
+          type: 'discipline',
+          title: 'Дисциплина',
+          component: 'disciplineForm'
+        },
+        admin: {
+          type: 'software',
+          title: 'Программное обеспечение',
+          component: 'softwareForm'
+        }
+      }
+      this.user.logged = true
+      this.user.type = user
+      this.currentType = currentType[user]
     }
   }
 }

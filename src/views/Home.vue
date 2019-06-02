@@ -58,17 +58,21 @@ export default {
           link: '/software'
         },
         {
-          name: 'Факультеты',
-          link: '/faculty'
-        },
-        {
           name: 'Учебные программы',
           link: '/subject'
         },
         {
           name: 'Дисциплины',
           link: '/discipline'
-        }
+        },
+        {
+          name: 'Направления',
+          link: '/speciality'
+        },
+        {
+          name: 'Факультеты',
+          link: '/faculty'
+        },
       ]
     }
   },
@@ -77,6 +81,7 @@ export default {
     this.$store.dispatch('softwareFetch')
     this.$store.dispatch('subjectFetch')
     this.$store.dispatch('disciplineFetch')
+    this.$store.dispatch('specialityFetch')
   }
 }
 </script>

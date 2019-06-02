@@ -60,7 +60,8 @@ export default {
         { type: 'software', title: 'Всё программное обеспечение' },
         { type: 'subject', title: 'Все учебные программы' },
         { type: 'faculty', title: 'Все факультеты' },
-        { type: 'discipline', title: 'Все дисциплины' }
+        { type: 'discipline', title: 'Все дисциплины' },
+        { type: 'speciality', title: 'Все специальности'}
       ]
     }
   },
@@ -82,6 +83,9 @@ export default {
         },
         discipline: () => {
           return this.$store.getters.disciplineAll
+        },
+        speciality: () => {
+          return this.$store.getters.specialityAll
         }
       }
       return types[type]()
@@ -102,7 +106,8 @@ export default {
         software: 'softwareFetch',
         subject: 'subjectFetch',
         faculty: 'facultyFetch',
-        discipline: 'disciplineFetch'
+        discipline: 'disciplineFetch',
+        speciality: 'specialityFetch'
       }
       this.$store.dispatch(toFetch[this.type])
     }

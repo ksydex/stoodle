@@ -12,10 +12,10 @@
       label="Дисциплина"
     />
     <v-select
-      v-model="subject.faculty"
-      :items="facultyList.map(item => item.name)"
+      v-model="subject.speciality"
+      :items="specialityList.map(item => item.name)"
       solo
-      label="Факультет"
+      label="Направление"
     />
     <v-btn
       depressed
@@ -29,6 +29,59 @@
       Добавить
     </v-btn>
 
+    <v-dialog
+      v-model="dialog"
+      max-width="700px"
+    >
+      <v-card>
+        <v-card-title>
+          <span class="headline">Изменить запись</span>
+        </v-card-title>
+
+        <v-card-text>
+          <v-container>
+            <v-layout wrap>
+              <v-flex
+                xs12
+              >
+                <v-text-field
+                  v-model="editedSubject.name"
+                  label="Название"
+                  solo
+                />
+                <v-select
+                  v-model="editedSubject.discipline"
+                  :items="disciplineList.map(item => item.name)"
+                  solo
+                  label="Дисциплина"
+                />
+                <v-select
+                  v-model="editedSubject.speciality"
+                  :items="specialityList.map(item => item.name)"
+                  solo
+                  label="Направление"
+                />
+              </v-flex>
+            </v-layout>
+          </v-container>
+        </v-card-text>
+
+        <v-card-actions>
+          <v-spacer />
+          <v-btn
+            color="grey darken-1"
+            flat
+            @click="dialog = false"
+          >Отмена</v-btn>
+          <v-btn
+            color="primary darken-1"
+            flat
+            @click="updateSubject()"
+          >Обновить</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+
     <v-data-table
       :headers="headers"
       :items="allSubject"
@@ -38,7 +91,22 @@
       <template v-slot:items="props">
         <td>{{ props.item.name }}</td>
         <td class="text-xs-right">{{ props.item.discipline }}</td>
-        <td class="text-xs-right">{{ props.item.faculty }}</td>
+        <td class="text-xs-right">{{ props.item.speciality }}</td>
+        <td class="justify-center layout px-0">
+          <v-icon
+            small
+            class="mr-2"
+            @click="editItem(props.item)"
+          >
+            edit
+          </v-icon>
+          <v-icon
+            small
+            @click="deleteItem(props.item.id)"
+          >
+            delete
+          </v-icon>
+        </td>
       </template>
     </v-data-table>
   </v-layout>
@@ -54,10 +122,16 @@
     },
     data() {
       return {
+        dialog: false,
         subject: {
           name: '',
           discipline: '',
-          faculty: ''
+          speciality: ''
+        },
+        editedSubject: {
+          name: '',
+          discipline: '',
+          speciality: ''
         },
         headers: [
           {
@@ -67,13 +141,13 @@
             value: 'name'
           },
           { text: 'Дисциплина', value: 'discipline', align: 'right' },
-          { text: 'Факультет', value: 'faculty',align: 'right' }
+          { text: 'Специальность', value: 'speciality',align: 'right' }
         ],
       }
     },
     computed: {
-      facultyList() {
-        return this.$store.getters.facultyAll.map(item => {
+      specialityList() {
+        return this.$store.getters.specialityAll.map(item => {
           return {id: item.id, name: item.name}
         })
       },
@@ -87,7 +161,7 @@
       }
     },
     created() {
-      this.$store.dispatch('facultyFetch')
+      this.$store.dispatch('specialityFetch')
       this.$store.dispatch('disciplineFetch')
       this.$store.dispatch('subjectFetch')
     },
@@ -98,9 +172,9 @@
           discipline: this.subject.discipline,
           disciplineId: this.disciplineList.find(
             item => item.name === this.subject.discipline).id,
-          faculty: this.subject.faculty,
-          facultyId: this.facultyList.find(
-            item => item.name === this.subject.faculty
+          speciality: this.subject.speciality,
+          specialityId: this.specialityList.find(
+            item => item.name === this.subject.speciality
           ).id
         }
         this.$store
@@ -110,10 +184,26 @@
           })
           .catch(() => {})
       },
+      editItem(prop) {
+        this.editedSubject.name = prop.name
+        this.editedSubject.discipline = prop.discipline
+        this.editedSubject.speciality = prop.speciality
+        this.dialog = true
+      },
+      deleteItem(id) {
+        const params = {
+          id: id,
+          type: 'subject'
+        }
+        this.$store.dispatch('deleteFromDb', params)
+      },
       clearInput(object) {
         Object.keys(object).forEach(key => {
           object[key] = ''
         })
+      },
+      updateSubject() {
+
       }
     }
   }

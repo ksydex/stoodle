@@ -4,12 +4,12 @@
     wrap
   >
     <v-flex
-      v-if="usedSoftware"
+      v-if="usedSoftware && usedSoftware.length > 0"
       xs12
       md6
     >
       <h1 class="headline text-main--text mb-3">
-        Используемое ПО
+        {{ 'Используемое ПО ('+usedSoftware.length+')' }}
       </h1>
       <search-card
         v-for="software in usedSoftware"
@@ -26,7 +26,7 @@
       md6
     >
       <h1 class="headline text-main--text mb-3">
-        Похожие учебные программы
+        Ещё учебные программы
       </h1>
       <search-card
         v-for="subject in subjectsSimilar"
@@ -59,9 +59,8 @@ import axios from 'axios'
         return this.$store.getters.softwareUsedOnSubject(this.usedSoftwareIds)
       },
       subjectsSimilar() {
-
         const params = {
-          facultyId: this.data.facultyId,
+          specialityId: this.data.specialityId,
           exceptId: this.data.id
         }
         return this.$store.getters.subjectSimilar(params)

@@ -1,7 +1,7 @@
 <template>
   <v-app class="white">
     <v-toolbar
-      v-if="($route.path !== '/' && !$route.path.match(/test|software|subject|faculty|new|discipline/gi)) && !$vuetify.breakpoint.xs || ($vuetify.breakpoint.xs && $route.path.indexOf('search')!== -1)"
+      v-if="($route.path !== '/' && !$route.path.match(/test|software|subject|faculty|new|discipline|speciality/gi)) && !$vuetify.breakpoint.xs || ($vuetify.breakpoint.xs && $route.path.indexOf('search')!== -1)"
       class="elevation-0 white"
       style="z-index: 10 !important"
     >

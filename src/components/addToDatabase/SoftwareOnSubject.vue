@@ -40,6 +40,21 @@
       <template v-slot:items="props">
         <td>{{ props.item.software }}</td>
         <td class="text-xs-right">{{ props.item.subject }}</td>
+        <td class="justify-center layout px-0">
+          <v-icon
+            small
+            class="mr-2"
+            @click="editItem(props.item)"
+          >
+            edit
+          </v-icon>
+          <v-icon
+            small
+            @click="deleteItem(props.item.id)"
+          >
+            delete
+          </v-icon>
+        </td>
       </template>
     </v-data-table>
   </v-layout>
@@ -143,6 +158,13 @@ export default {
           )
           throw error
         })
+    },
+    deleteItem(id) {
+      const params = {
+        id: id,
+        type: 'swsj'
+      }
+      this.$store.dispatch('deleteFromDb', params)
     },
     clearInput(object) {
       Object.keys(object).forEach(key => {

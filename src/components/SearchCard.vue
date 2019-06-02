@@ -92,7 +92,7 @@ export default {
             title: this.data.name,
             subTitle:null,
             body: this.data.discipline,
-            subBody: this.data.faculty,
+            subBody: this.data.speciality,
             img: null
           }
         },
@@ -111,6 +111,15 @@ export default {
             subTitle: null,
             body: null,
             subBody: null,
+            img: null
+          }
+        },
+        speciality: () => {
+          return {
+            title: this.data.name,
+            subTitle: null,
+            body: this.data.numbers,
+            subBody: this.data.faculty,
             img: null
           }
         }

@@ -111,7 +111,8 @@ export default {
         { name: 'Программное обеспечение', sort: 'software' },
         { name: 'Учебные программы', sort: 'subject' },
         { name: 'Факультеты', sort: 'faculty' },
-        { name: 'Дисциплины', sort: 'discipline'}
+        { name: 'Дисциплины', sort: 'discipline'},
+        { name: 'Направления', sort: 'speciality'}
       ],
       currentType: { name: 'Все', sort: null }
     }
@@ -135,14 +136,20 @@ export default {
           type: 'subject',
           title: 'Учебные программы'
         },
+
+        {
+          type: 'discipline',
+          title: 'Дисциплины'
+        },
+        {
+          type: 'speciality',
+          title: 'Направления'
+        },
         {
           type: 'faculty',
           title: 'Факультеты'
         },
-        {
-          type: 'discipline',
-          title: 'Дисциплины'
-        }
+
       ]
       if (this.currentType.sort)
         return resultsQuery.filter(

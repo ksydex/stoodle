@@ -56,6 +56,21 @@
         <td class="text-xs-right">{{ props.item.type }}</td>
         <td class="text-xs-right">{{ props.item.year }}</td>
         <td class="text-xs-right">{{ props.item.license }}</td>
+        <td class="justify-center layout px-0">
+          <v-icon
+            small
+            class="mr-2"
+            @click="editItem(props.item)"
+          >
+            edit
+          </v-icon>
+          <v-icon
+            small
+            @click="deleteItem(props.item.id)"
+          >
+            delete
+          </v-icon>
+        </td>
       </template>
     </v-data-table>
 
@@ -123,6 +138,13 @@
             this.clearInput(this.software)
           })
           .catch(() => {})
+      },
+      deleteItem(id) {
+        const params = {
+          id: id,
+          type: 'software'
+        }
+        this.$store.dispatch('deleteFromDb', params)
       },
       clearInput(object) {
         Object.keys(object).forEach(key => {
