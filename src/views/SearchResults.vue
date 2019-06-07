@@ -3,9 +3,7 @@
     fluid
     class="mx-0 px-0 pt-0 pa-0"
   >
-    <v-layout
-      column
-    >
+    <v-layout column>
       <v-layout row>
         <v-flex
           xs0
@@ -111,8 +109,8 @@ export default {
         { name: 'Программное обеспечение', sort: 'software' },
         { name: 'Учебные программы', sort: 'subject' },
         { name: 'Факультеты', sort: 'faculty' },
-        { name: 'Дисциплины', sort: 'discipline'},
-        { name: 'Направления', sort: 'speciality'}
+        { name: 'Дисциплины', sort: 'discipline' },
+        { name: 'Направления', sort: 'speciality' }
       ],
       currentType: { name: 'Все', sort: null }
     }
@@ -148,8 +146,7 @@ export default {
         {
           type: 'faculty',
           title: 'Факультеты'
-        },
-
+        }
       ]
       if (this.currentType.sort)
         return resultsQuery.filter(

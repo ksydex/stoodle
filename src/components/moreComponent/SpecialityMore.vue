@@ -25,13 +25,13 @@
       md6
     >
       <h1 class="headline text-main--text mb-3">
-        Ещё дисциплины
+        Ещё направления
       </h1>
       <search-card
-        v-for="discipline in similarDiscipline"
-        :key="discipline.id"
-        :data="discipline"
-        card-type="discipline"
+        v-for="speciality in similarSpeciality"
+        :key="speciality.id"
+        :data="speciality"
+        card-type="speciality"
         class="mb-2"
       />
     </v-flex>
@@ -39,22 +39,22 @@
 </template>
 
 <script>
-  export default {
-    props: {
-      data: {
-        type: Object,
-        required: true
-      }
+export default {
+  props: {
+    data: {
+      type: Object,
+      required: true
+    }
+  },
+  computed: {
+    subjectsOnSpeciality() {
+      const specialityId = this.data.id
+      return this.$store.getters.subjectsOnSpecialityById(specialityId)
     },
-    computed: {
-      subjectsOnSpeciality() {
-        const specialityId = this.data.id
-        return this.$store.getters.subjectsOnSpecialityById(specialityId)
-      },
-      similarDiscipline() {
-        const id = this.data.id
-        return this.$store.getters.disciplineSimilar(id)
-      }
+    similarSpeciality() {
+      const id = this.data.id
+      return this.$store.getters.specialityAll
     }
   }
+}
 </script>

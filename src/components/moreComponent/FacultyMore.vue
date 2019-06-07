@@ -8,13 +8,13 @@
       md6
     >
       <h1 class="headline text-main--text mb-3">
-        Учебные программы на факультете
+        Направления факультета
       </h1>
       <search-card
-        v-for="subject in subjectsOnFaculty"
-        :key="subject.id"
-        :data="subject"
-        card-type="subject"
+        v-for="speciality in specialityOnFaculty"
+        :key="speciality.id"
+        :data="speciality"
+        card-type="speciality"
         class="mb-2"
       />
     </v-flex>
@@ -53,27 +53,27 @@
 </template>
 
 <script>
-  export default {
-    props: {
-      data: {
-        type: Object,
-        required: true
+export default {
+  props: {
+    data: {
+      type: Object,
+      required: true
+    }
+  },
+  computed: {
+    usedSoftware() {
+      const params = {
+        type: this.data.type,
+        exceptName: this.data.name
       }
+      return this.$store.getters.softwareSimilar(params)
     },
-    computed: {
-      usedSoftware() {
-        const params = {
-          type: this.data.type,
-          exceptName: this.data.name
-        }
-        return this.$store.getters.softwareSimilar(params)
-      },
-      subjectsOnFaculty() {
-        return this.$store.getters.subjectAll
-      },
-      similarFaculty() {
-        return this.$store.getters.facultySimilar(this.data.id)
-      }
+    specialityOnFaculty() {
+      return this.$store.getters.specialityOnFaculty(this.data.id)
+    },
+    similarFaculty() {
+      return this.$store.getters.facultySimilar(this.data.id)
     }
   }
+}
 </script>

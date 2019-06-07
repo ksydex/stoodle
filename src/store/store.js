@@ -26,7 +26,7 @@ export default new Vuex.Store({
   state: {},
   mutations: {},
   actions: {
-    execSql({commit}, sql) {
+    execSql({ commit }, sql) {
       axios
         .post(api, {
           type: 'set',
@@ -46,9 +46,9 @@ export default new Vuex.Store({
           throw error
         })
     },
-    deleteFromDb({commit},{id, type}) {
+    async deleteFromDb({ commit }, { id, type }) {
       const sql = `DELETE FROM ${type} WHERE id=${id}`
-        axios
+      axios
         .post(api, {
           type: 'set',
           data: sql
@@ -67,5 +67,5 @@ export default new Vuex.Store({
           throw error
         })
     }
-  },
+  }
 })

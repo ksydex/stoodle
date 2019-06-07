@@ -1,7 +1,14 @@
 import axios from 'axios'
 import { api } from './store.js'
 class Speciality {
-  constructor(name, numbers, faculty, description, id = null, facultyId = null) {
+  constructor(
+    name,
+    numbers,
+    faculty,
+    description,
+    id = null,
+    facultyId = null
+  ) {
     this.name = name
     this.numbers = numbers
     this.faculty = faculty
@@ -11,7 +18,7 @@ class Speciality {
   }
 }
 export default {
-  state:{
+  state: {
     speciality: []
   },
   mutations: {
@@ -30,10 +37,12 @@ export default {
         payload.faculty,
         payload.description,
         null,
-        payload.facultyId,
+        payload.facultyId
       )
       commit('setLoading', true)
-      const sql = `INSERT INTO speciality (id, name, numbers, description, faculty) VALUES (NULL, '${newS.name}', '${newS.numbers}', '${newS.description}', '${newS.facultyId}')`
+      const sql = `INSERT INTO speciality (id, name, numbers, description, faculty) VALUES (NULL, '${
+        newS.name
+      }', '${newS.numbers}', '${newS.description}', '${newS.facultyId}')`
       axios
         .post(api, {
           type: 'set',
@@ -71,7 +80,7 @@ export default {
               item.faculty,
               item.description,
               item.id,
-              item.facultyId,
+              item.facultyId
             )
             resultSpeciality.push(speciality)
           })
@@ -102,7 +111,7 @@ WHERE speciality.id = ${id}`
               item.faculty,
               item.description,
               item.id,
-              item.facultyId,
+              item.facultyId
             )
             commit('addSpeciality', speciality)
             commit('setLoading', false)
@@ -125,11 +134,14 @@ WHERE speciality.id = ${id}`
     specialitySearch: state => query => {
       return state.speciality.filter(item => item.name.match(query))
     },
+    specialityOnFaculty: state => facultyId => {
+      return state.speciality.filter(item => item.facultyId === facultyId)
+    },
     specialityAutocomplete: state => query => {
       if (query && !!query.trim()) {
         const strings = state.speciality.map(item => item.name)
         return strings.filter(item => item.match(new RegExp(query, 'gi')))
       } else return []
-    },
+    }
   }
 }

@@ -6,6 +6,7 @@ import ShowAll from '@/views/ShowAll'
 import DetailsPage from '@/views/DetailsPage'
 import FilteredPage from '@/views/FilteredPage'
 import AddToDatabase from '@/views/AddToDatabase'
+import Report from '@/views/Report'
 
 Vue.use(Router)
 
@@ -22,6 +23,11 @@ export default new Router({
       path: '/new',
       name: 'AddToDatabase',
       component: AddToDatabase
+    },
+    {
+      path: '/report',
+      name: 'Report',
+      component: Report
     },
     {
       path: '/search/:searchQuery',

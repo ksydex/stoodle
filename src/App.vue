@@ -1,7 +1,7 @@
 <template>
   <v-app class="white">
     <v-toolbar
-      v-if="($route.path !== '/' && !$route.path.match(/test|software|subject|faculty|new|discipline|speciality/gi)) && !$vuetify.breakpoint.xs || ($vuetify.breakpoint.xs && $route.path.indexOf('search')!== -1)"
+      v-if="($route.path !== '/' && !$route.path.match(/test|software|subject|faculty|new|discipline|speciality|report/gi)) && !$vuetify.breakpoint.xs || ($vuetify.breakpoint.xs && $route.path.indexOf('search')!== -1)"
       class="elevation-0 white"
       style="z-index: 10 !important"
     >
@@ -80,6 +80,18 @@
     >
       <v-spacer />
       <div
+        class="link text-main--text mr-3"
+        @click="$router.push('/report')"
+      >
+        Получить отчёт
+      </div>
+      <div
+        class="link text-main--text mr-3"
+        @click="$router.push('/new')"
+      >
+        Панель управления
+      </div>
+      <div
         class="link text-main--text"
         @click="$router.push('/')"
       >
@@ -106,7 +118,7 @@ export default {
   },
   methods: {
     closeError() {
-      this.$store.dispatch("clearError")
+      this.$store.dispatch('clearError')
     },
     closeSuccess() {
       this.$store.dispatch('clearSuccess')

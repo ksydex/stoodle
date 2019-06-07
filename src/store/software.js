@@ -1,6 +1,6 @@
 import axios from 'axios'
-  import { api } from './store.js'
-  class Software {
+import { api } from './store.js'
+class Software {
   constructor(name, type, year, license, description, img, id = null) {
     this.name = name
     this.type = type
