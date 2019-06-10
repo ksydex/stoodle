@@ -26,26 +26,6 @@ export default new Vuex.Store({
   state: {},
   mutations: {},
   actions: {
-    execSql({ commit }, sql) {
-      axios
-        .post(api, {
-          type: 'set',
-          data: sql
-        })
-        .then(response => {
-          if (response.data.length > 1) {
-            return Promise.reject(response.data[1])
-          } else {
-            commit('setSuccess', 'Запрос успешно выполнен!')
-            commit('setLoading', false)
-          }
-        })
-        .catch(error => {
-          commit('setLoading', false)
-          commit('setError', 'Произошла ошибка при выполнении запроса!')
-          throw error
-        })
-    },
     async deleteFromDb({ commit }, { id, type }) {
       const sql = `DELETE FROM ${type} WHERE id=${id}`
       axios

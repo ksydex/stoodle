@@ -1,9 +1,6 @@
 <template>
   <v-container fill-height>
-    <v-layout
-      align-center
-      justify-center
-    >
+    <v-layout align-center justify-center>
       <v-flex
         xs12
         md8
@@ -24,22 +21,16 @@
             >
           </v-flex>
           <v-flex class="mt-5">
-            <search-input />
+            <search-input/>
           </v-flex>
-          <v-layout
-            row
-            wrap
-            justify-center
-          >
+          <v-layout row wrap justify-center>
             <v-btn
               v-for="topic in topics"
               :key="topic.name"
               flat
               class="primary--text px-2 ml-0"
               @click="$router.push(topic.link)"
-            >
-              {{ topic.name }}
-            </v-btn>
+            >{{ topic.name }}</v-btn>
           </v-layout>
         </v-layout>
       </v-flex>
@@ -72,7 +63,7 @@ export default {
         {
           name: 'Факультеты',
           link: '/faculty'
-        },
+        }
       ]
     }
   },

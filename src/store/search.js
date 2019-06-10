@@ -1,7 +1,4 @@
 export default {
-  state: {},
-  mutations: {},
-  actions: {},
   getters: {
     searchAll: (state, getters) => query => {
       let result = {}
@@ -21,6 +18,6 @@ export default {
       getters.disciplineAutocomplete(query).forEach(item => result.push(item))
       getters.specialityAutocomplete(query).forEach(item => result.push(item))
       return result
-    },
-  },
+    }
+  }
 }

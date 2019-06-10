@@ -1,34 +1,17 @@
 <template>
-  <v-layout
-    row
-    justify-center
-  >
-    <v-flex
-      xs12
-      md8
-      xl6
-      ml-3
-    >
+  <v-layout row justify-center>
+    <v-flex xs12 md8 xl6 ml-3>
       <v-layout column>
-        <v-flex
-          class="text-xs-left my-3"
-          xs6
-        >
+        <v-flex class="text-xs-left my-3" xs6>
           <v-layout row>
             <h4 class="display-1 text-main--text mb-3">Отчёт</h4>
-            <v-spacer />
-            <v-btn
-              depressed
-              color="primary"
-              @click="print()"
-            >Печать</v-btn>
+            <v-spacer/>
+            <v-btn depressed color="primary" @click="print()">Печать</v-btn>
           </v-layout>
-          <v-divider />
+          <v-divider/>
         </v-flex>
         <v-flex class="mb-3">
-          <h5 class="title mb-2">
-            {{ 'Программное обеспечение - всего ' + software.amount }}
-          </h5>
+          <h5 class="title mb-2">{{ 'Программное обеспечение - всего ' + software.amount }}</h5>
           <v-layout row>
             <v-flex>
               <h5 class="subheading mb-1 font-weight-medium">По типам</h5>
@@ -36,9 +19,7 @@
                 v-for="item in software.types"
                 :key="item.name"
                 class="body-1 mb-0"
-              >
-                {{ item.name + ' - ' + item.amount }}
-              </p>
+              >{{ item.name + ' - ' + item.amount }}</p>
             </v-flex>
             <v-flex>
               <h5 class="subheading mb-1 font-weight-medium">По лицензиям</h5>
@@ -46,9 +27,7 @@
                 v-for="item in software.licenses"
                 :key="item.name"
                 class="body-1 mb-0"
-              >
-                {{ item.name + ' - ' + item.amount }}
-              </p>
+              >{{ item.name + ' - ' + item.amount }}</p>
             </v-flex>
             <v-flex>
               <h5 class="subheading mb-1 font-weight-medium">По годам</h5>
@@ -56,23 +35,17 @@
                 v-for="item in software.years"
                 :key="item.name"
                 class="body-1 mb-0"
-              >
-                {{ item.name + ' - ' + item.amount }}
-              </p>
+              >{{ item.name + ' - ' + item.amount }}</p>
             </v-flex>
           </v-layout>
         </v-flex>
 
         <v-flex class="mb-3">
-          <h5 class="title mb-2">
-            {{ 'Факультеты - всего ' + faculty.amount }}
-          </h5>
+          <h5 class="title mb-2">{{ 'Факультеты - всего ' + faculty.amount }}</h5>
         </v-flex>
 
         <v-flex class="mb-3">
-          <h5 class="title mb-2">
-            {{ 'Направления - всего ' + speciality.amount }}
-          </h5>
+          <h5 class="title mb-2">{{ 'Направления - всего ' + speciality.amount }}</h5>
           <v-layout row>
             <v-flex>
               <h5 class="subheading mb-1 font-weight-medium">По факультетам</h5>
@@ -80,23 +53,17 @@
                 v-for="item in speciality.faculties"
                 :key="item.name"
                 class="body-1 mb-0"
-              >
-                {{ item.name + ' - ' + item.amount }}
-              </p>
+              >{{ item.name + ' - ' + item.amount }}</p>
             </v-flex>
           </v-layout>
         </v-flex>
 
         <v-flex class="mb-3">
-          <h5 class="title mb-2">
-            {{ 'Дисциплины - всего ' + discipline.amount }}
-          </h5>
+          <h5 class="title mb-2">{{ 'Дисциплины - всего ' + discipline.amount }}</h5>
         </v-flex>
 
         <v-flex class="mb-3">
-          <h5 class="title mb-2">
-            {{ 'Учебные программы - всего ' + subject.amount }}
-          </h5>
+          <h5 class="title mb-2">{{ 'Учебные программы - всего ' + subject.amount }}</h5>
           <v-layout row>
             <v-flex>
               <h5 class="subheading mb-1 font-weight-medium">По дисциплинам</h5>
@@ -104,9 +71,7 @@
                 v-for="item in subject.disciplines"
                 :key="item.name"
                 class="body-1 mb-0"
-              >
-                {{ item.name + ' - ' + item.amount }}
-              </p>
+              >{{ item.name + ' - ' + item.amount }}</p>
             </v-flex>
           </v-layout>
         </v-flex>
@@ -114,11 +79,11 @@
         <v-flex class="mb-3">
           <h5 class="title mb-2">
             {{
-              'Используется всего ' +
-                swsj.amount +
-                ' программного обеспечения на ' +
-                subject.amount +
-                ' учебных программах'
+            'Используется всего ' +
+            swsj.amount +
+            ' программного обеспечения на ' +
+            subject.amount +
+            ' учебных программах'
             }}
           </h5>
         </v-flex>

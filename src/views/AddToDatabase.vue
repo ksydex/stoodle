@@ -1,70 +1,27 @@
 <template>
   <v-container :fill-height="!user.logged">
-    <v-layout
-      v-if="!user.logged"
-      class="align-center"
-    >
+    <v-layout v-if="!user.logged" class="align-center">
       <v-flex class="align-center justify-center text-xs-center">
         <h4 class="display-2 mb-3 text-main--text">Кто вы?</h4>
-        <v-btn
-          flat
-          class="primary--text px-2 ml-0"
-          @click="setUser('teacher')"
-        >
-          Преподаватель
-        </v-btn>
-        <v-btn
-          flat
-          class="primary--text px-2 ml-0"
-          @click="setUser('tech')"
-        >
-          Технический работник
-        </v-btn>
-        <v-btn
-          flat
-          class="primary--text px-2 ml-0"
-          @click="setUser('admin')"
-        >
-          Администратор
-        </v-btn>
+        <v-btn flat class="primary--text px-2 ml-0" @click="setUser('teacher')">Преподаватель</v-btn>
+        <v-btn flat class="primary--text px-2 ml-0" @click="setUser('tech')">Технический работник</v-btn>
+        <v-btn flat class="primary--text px-2 ml-0" @click="setUser('admin')">Администратор</v-btn>
       </v-flex>
-
     </v-layout>
-    <v-layout
-      v-else
-      column
-    >
+    <v-layout v-else column>
       <h4 class="display-1 text-main--text mb-3">Добавить новую запись</h4>
-      <v-tabs
-        color="transparent"
-        slider-color="primary"
-      >
+      <v-tabs color="transparent" slider-color="primary">
         <v-tab
           v-for="type in typeSwitcher"
           :key="type.type"
           ripple
           @click="currentType = type"
-        >
-          {{ type.title }}
-        </v-tab>
+        >{{ type.title }}</v-tab>
       </v-tabs>
-      <v-divider class="mb-3" />
-      <component
-        :is="currentType.component"
-        v-show="!loading"
-        :loading="loading"
-      />
-      <v-layout
-        v-show="loading"
-        justify-center
-      >
-        <v-progress-circular
-          class="mt-5"
-          :size="150"
-          :width="7"
-          color="primary"
-          indeterminate
-        />
+      <v-divider class="mb-3"/>
+      <component :is="currentType.component" v-show="!loading" :loading="loading"/>
+      <v-layout v-show="loading" justify-center>
+        <v-progress-circular class="mt-5" :size="150" :width="7" color="primary" indeterminate/>
       </v-layout>
     </v-layout>
   </v-container>
@@ -88,7 +45,7 @@ export default {
   },
   data() {
     return {
-      user:{
+      user: {
         logged: false,
         type: null
       },
@@ -133,7 +90,7 @@ export default {
             type: 'faculty',
             title: 'Факультет',
             component: 'facultyForm'
-          },
+          }
         ],
         admin: [
           {
@@ -172,7 +129,7 @@ export default {
     }
   },
   methods: {
-    setUser(user){
+    setUser(user) {
       const currentType = {
         teacher: {
           type: 'software',

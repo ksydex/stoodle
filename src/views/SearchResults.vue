@@ -1,69 +1,32 @@
 <template>
-  <v-container
-    fluid
-    class="mx-0 px-0 pt-0 pa-0"
-  >
+  <v-container fluid class="mx-0 px-0 pt-0 pa-0">
     <v-layout column>
       <v-layout row>
-        <v-flex
-          xs0
-          sm0
-          md2
-          xl1
-        />
+        <v-flex xs0 sm0 md2 xl1/>
         <v-flex>
           <v-tabs slider-color="primary">
             <v-tab
               v-for="type in typeSwitch"
               :key="type.name"
               @click="setType(type.name)"
-            >
-              {{ type.name }}
-            </v-tab>
+            >{{ type.name }}</v-tab>
           </v-tabs>
         </v-flex>
       </v-layout>
-      <v-divider class="primary lighten-4" />
-      <v-layout
-        v-if="query.length !== 0"
-        row
-        mt-2
-      >
+      <v-divider class="primary lighten-4"/>
+      <v-layout v-if="query.length !== 0" row mt-2>
         <!-- ### пустой блок для отступа ### -->
-        <v-flex
-          xs0
-          sm1
-          md2
-          xl1
-        />
+        <v-flex xs0 sm1 md2 xl1/>
         <!-- ### пустой блок для отступа ### -->
-        <v-flex
-          xs12
-          sm10
-          md7
-          xl5
-        >
-          <div
-            v-for="item in query"
-            :key="item.title"
-            class="mb-2"
-          >
+        <v-flex xs12 sm10 md7 xl5>
+          <div v-for="item in query" :key="item.title" class="mb-2">
             <h3
               class="text-main--text subheading ml-2 link"
               @click="$router.push('/'+item.type)"
-            >
-              {{ item.title }}
-            </h3>
+            >{{ item.title }}</h3>
             <v-layout row>
-              <v-divider
-                class="mx-2"
-                inset
-                vertical
-              />
-              <v-layout
-                v-if="result[item.type].length !== 0"
-                column
-              >
+              <v-divider class="mx-2" inset vertical/>
+              <v-layout v-if="result[item.type].length !== 0" column>
                 <search-card
                   v-for="subItem in result[item.type]"
                   :key="subItem.name"
@@ -76,19 +39,9 @@
           </div>
         </v-flex>
       </v-layout>
-      <v-layout
-        v-else
-        justify-center
-        ma-5
-        row
-      >
-        <v-flex
-          xs0
-          sm0
-          md2
-          xl1
-        />
-        <no-data />
+      <v-layout v-else justify-center ma-5 row>
+        <v-flex xs0 sm0 md2 xl1/>
+        <no-data/>
       </v-layout>
     </v-layout>
   </v-container>

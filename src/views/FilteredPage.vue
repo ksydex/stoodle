@@ -1,26 +1,12 @@
 <template>
   <v-container>
-    <v-layout
-      row
-      justify-center
-    >
-      <v-flex
-        xs12
-        md8
-        xl6
-      >
+    <v-layout row justify-center>
+      <v-flex xs12 md8 xl6>
         <v-layout column>
-          <v-flex
-            class="text-xs-center mb-3"
-            xs6
-          >
-            <h4 class="display-1 text-main--text mb-3">
-              {{ currentType.title }}
-            </h4>
-            <h4 class="display-1 text-main--text mb-3">
-              {{ currentType.subTitle }}
-            </h4>
-            <v-divider />
+          <v-flex class="text-xs-center mb-3" xs6>
+            <h4 class="display-1 text-main--text mb-3">{{ currentType.title }}</h4>
+            <h4 class="display-1 text-main--text mb-3">{{ currentType.subTitle }}</h4>
+            <v-divider/>
           </v-flex>
           <v-flex xs6>
             <search-card
@@ -67,9 +53,21 @@ export default {
         year: `Год - ${this.query}`
       }
       const types = [
-        { type: 'software', title: `Программное обеспечение`, subTitle: title[this.queryType] },
-        { type: 'subject', title: 'Учебные программы', subTitle: title[this.queryType]},
-        { type: 'faculty', title: 'Факультеты', subTitle: title[this.queryType]}
+        {
+          type: 'software',
+          title: `Программное обеспечение`,
+          subTitle: title[this.queryType]
+        },
+        {
+          type: 'subject',
+          title: 'Учебные программы',
+          subTitle: title[this.queryType]
+        },
+        {
+          type: 'faculty',
+          title: 'Факультеты',
+          subTitle: title[this.queryType]
+        }
       ]
       return types.find(item => item.type === this.type)
     },

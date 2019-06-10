@@ -19,9 +19,9 @@
 </template>
 
 <script>
-  import {setTimeout} from 'timers'
+import { setTimeout } from 'timers'
 
-  export default {
+export default {
   data() {
     return {
       model: null,

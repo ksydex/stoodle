@@ -1,18 +1,19 @@
 <template>
   <v-app class="white">
     <v-toolbar
-      v-if="($route.path !== '/' && !$route.path.match(/test|software|subject|faculty|new|discipline|speciality|report/gi)) && !$vuetify.breakpoint.xs || ($vuetify.breakpoint.xs && $route.path.indexOf('search')!== -1)"
+      v-if="
+        ($route.path !== '/' &&
+          !$route.path.match(
+            /test|software|subject|faculty|new|discipline|speciality|report/gi
+          ) &&
+          !$vuetify.breakpoint.xs) ||
+          ($vuetify.breakpoint.xs && $route.path.indexOf('search') !== -1)
+      "
       class="elevation-0 white"
       style="z-index: 10 !important"
     >
       <v-layout row>
-        <v-flex
-          xs0
-          sm0
-          md2
-          xl1
-          style="align-self: center;display: flex; justify-content: flex-end"
-        >
+        <v-flex xs0 sm0 md2 xl1 style="align-self: center;display: flex; justify-content: flex-end">
           <img
             v-if="!this.$vuetify.breakpoint.xs"
             src="./assets/logo.webp"
@@ -27,16 +28,16 @@
           md7
           xl5
           style="align-self: center;"
-          :class="{ 'mt-3' : this.$vuetify.breakpoint.xs }"
+          :class="{ 'mt-3': this.$vuetify.breakpoint.xs }"
         >
-          <search-input />
+          <search-input/>
         </v-flex>
-        <v-spacer />
+        <v-spacer/>
       </v-layout>
     </v-toolbar>
 
     <v-content>
-      <router-view />
+      <router-view/>
     </v-content>
 
     <template v-if="error">
@@ -48,11 +49,7 @@
         @input="closeError()"
       >
         {{ error }}
-        <v-btn
-          dark
-          flat
-          @click="closeError()"
-        >Закрыть</v-btn>
+        <v-btn dark flat @click="closeError()">Закрыть</v-btn>
       </v-snackbar>
     </template>
 
@@ -65,38 +62,19 @@
         @input="closeSuccess()"
       >
         {{ success }}
-        <v-btn
-          dark
-          flat
-          @click="closeError()"
-        >Закрыть</v-btn>
+        <v-btn dark flat @click="closeError()">Закрыть</v-btn>
       </v-snackbar>
     </template>
 
     <v-footer
-      v-if="$route.path!=='/' && $route.path.indexOf('search') === -1"
+      v-if="$route.path !== '/' && $route.path.indexOf('search') === -1"
       class="pa-3"
       color="transparent"
     >
-      <v-spacer />
-      <div
-        class="link text-main--text mr-3"
-        @click="$router.push('/report')"
-      >
-        Получить отчёт
-      </div>
-      <div
-        class="link text-main--text mr-3"
-        @click="$router.push('/new')"
-      >
-        Панель управления
-      </div>
-      <div
-        class="link text-main--text"
-        @click="$router.push('/')"
-      >
-        Stoodle 2019
-      </div>
+      <v-spacer/>
+      <div class="link text-main--text mr-3" @click="$router.push('/report')">Получить отчёт</div>
+      <div class="link text-main--text mr-3" @click="$router.push('/new')">Панель управления</div>
+      <div class="link text-main--text" @click="$router.push('/')">Stoodle 2019</div>
     </v-footer>
   </v-app>
 </template>

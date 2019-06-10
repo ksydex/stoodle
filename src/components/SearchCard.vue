@@ -1,40 +1,22 @@
 <template>
-  <v-card
-    class="search-card"
-    flat
-  >
+  <v-card class="search-card" flat>
     <v-layout>
       <v-flex style="align-self: center;">
         <v-card-title class="py-2">
           <v-flex>
-            <v-layout
-              row
-              wrap
-              :mb-1="$vuetify.breakpoint.xs"
-            >
+            <v-layout row wrap :mb-1="$vuetify.breakpoint.xs">
               <div
                 :class="{'mobile-title': $vuetify.breakpoint.xs,'headline mr-3 link text-main--text text--lighten-1':true}"
                 @click="$router.push(`/${cardType}/${data.id}`)"
-              >
-                {{ dataSet.title }}
-              </div>
+              >{{ dataSet.title }}</div>
               <div
                 v-if="dataSet.subTitle !== null"
                 class="text-main--text text--lighten-3 headline mr-3"
-              >
-                {{ dataSet.subTitle }}
-              </div>
+              >{{ dataSet.subTitle }}</div>
             </v-layout>
             <div class="text-main--text text--lighten-2 subheading">
-              <span
-                v-if="dataSet.body !== null"
-                class="mr-3"
-              >
-                {{ dataSet.body }}
-              </span>
-              <span v-if="dataSet.subBody !== null">
-                {{ dataSet.subBody }}
-              </span>
+              <span v-if="dataSet.body !== null" class="mr-3">{{ dataSet.body }}</span>
+              <span v-if="dataSet.subBody !== null">{{ dataSet.subBody }}</span>
             </div>
           </v-flex>
         </v-card-title>
@@ -51,12 +33,7 @@
         align-center
         @click="$router.push(`/${cardType}/${data.id}`)"
       >
-        <v-img
-          :src="dataSet.img"
-          height="70px"
-          min-width="40px"
-          contain
-        />
+        <v-img :src="dataSet.img" height="70px" min-width="40px" contain/>
       </v-flex>
     </v-layout>
   </v-card>
@@ -90,7 +67,7 @@ export default {
         subject: () => {
           return {
             title: this.data.name,
-            subTitle:null,
+            subTitle: null,
             body: this.data.discipline,
             subBody: this.data.speciality,
             img: null
@@ -125,14 +102,14 @@ export default {
         }
       }
       return data[type]()
-    },
+    }
   }
 }
 </script>
 
-<style lang="scss">
-  .mobile-title {
-    font-size: 18px !important;
-  }
+<style>
+.mobile-title {
+  font-size: 18px !important;
+}
 </style>
 

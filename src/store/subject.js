@@ -1,8 +1,15 @@
 import axios from 'axios'
-import {api} from './store'
+import { api } from './store'
 
 class Subject {
-  constructor(name, discipline, speciality, id = null, specialityId = null, disciplineId = null) {
+  constructor(
+    name,
+    discipline,
+    speciality,
+    id = null,
+    specialityId = null,
+    disciplineId = null
+  ) {
     this.name = name
     this.discipline = discipline
     this.speciality = speciality
@@ -14,8 +21,7 @@ class Subject {
 
 export default {
   state: {
-    subject: [
-    ]
+    subject: []
   },
   mutations: {
     loadSubject(state, payload) {
@@ -36,7 +42,9 @@ export default {
         payload.disciplineId
       )
       commit('setLoading', true)
-      const sql = `INSERT INTO subject (id, name, discipline, speciality) VALUES (NULL, '${newS.name}', '${newS.disciplineId}', '${newS.specialityId}')`
+      const sql = `INSERT INTO subject (id, name, discipline, speciality) VALUES (NULL, '${
+        newS.name
+      }', '${newS.disciplineId}', '${newS.specialityId}')`
       axios
         .post(api, {
           type: 'set',
@@ -57,36 +65,38 @@ export default {
           throw error
         })
     },
-    async subjectUpdate({commit}, payload) {
-        const newS = new Subject(
-          payload.name,
-          payload.discipline,
-          payload.speciality,
-          payload.id,
-          payload.specialityId,
-          payload.disciplineId
-        )
-        commit('setLoading', true)
-        const sql = `UPDATE subject SET name = '${newS.name}', discipline = '${newS.disciplineId}', speciality = '${newS.specialityId}' WHERE id = ${newS}`
-        axios
-          .post(api, {
-            type: 'set',
-            data: sql
-          })
-          .then(response => {
-            if (response.data.length > 1) {
-              return Promise.reject(response.data[1])
-            } else {
-              commit('addSubject', newS)
-              commit('setSuccess', 'Запись успешно обновлена!')
-              commit('setLoading', false)
-            }
-          })
-          .catch(error => {
+    async subjectUpdate({ commit }, payload) {
+      const newS = new Subject(
+        payload.name,
+        payload.discipline,
+        payload.speciality,
+        payload.id,
+        payload.specialityId,
+        payload.disciplineId
+      )
+      commit('setLoading', true)
+      const sql = `UPDATE subject SET name = '${newS.name}', discipline = '${
+        newS.disciplineId
+      }', speciality = '${newS.specialityId}' WHERE id = ${newS}`
+      axios
+        .post(api, {
+          type: 'set',
+          data: sql
+        })
+        .then(response => {
+          if (response.data.length > 1) {
+            return Promise.reject(response.data[1])
+          } else {
+            commit('addSubject', newS)
+            commit('setSuccess', 'Запись успешно обновлена!')
             commit('setLoading', false)
-            commit('setError', 'Ошибка при обновлении записи.')
-            throw error
-          })
+          }
+        })
+        .catch(error => {
+          commit('setLoading', false)
+          commit('setError', 'Ошибка при обновлении записи.')
+          throw error
+        })
     },
     async subjectFetch({ commit }) {
       commit('setLoading', true)
@@ -156,9 +166,11 @@ export default {
           })
       }
     },
-    async addSoftwareOnSubject ({ commit }, swsj){
+    async addSoftwareOnSubject({ commit }, swsj) {
       commit('setLoading', true)
-      const sql = `INSERT INTO softwareonsubject (id, software, subject) VALUES (NULL, ${swsj.software}, ${swsj.subject})`
+      const sql = `INSERT INTO softwareonsubject (id, software, subject) VALUES (NULL, ${
+        swsj.software
+      }, ${swsj.subject})`
       axios
         .post(api, {
           type: 'set',
@@ -183,11 +195,13 @@ export default {
     subjectAll: state => {
       return state.subject
     },
-    subjectById: (state) => id => {
+    subjectById: state => id => {
       return state.subject.find(item => item.id === id)
     },
     subjectSimilar: state => ({ specialityId, exceptId }) => {
-      return state.subject.filter(item => item.id !== exceptId && item.specialityId === specialityId)
+      return state.subject.filter(
+        item => item.id !== exceptId && item.specialityId === specialityId
+      )
     },
     subjectsOnDisciplineById: state => id => {
       return state.subject.filter(item => item.disciplineId === id)
@@ -203,6 +217,6 @@ export default {
         const strings = state.subject.map(item => item.name)
         return strings.filter(item => item.match(new RegExp(query, 'gi')))
       } else return []
-    },
+    }
   }
 }

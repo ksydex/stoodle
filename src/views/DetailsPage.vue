@@ -1,14 +1,7 @@
 <template>
   <v-container>
-    <v-layout
-      v-if="!loading && data"
-      column
-    >
-      <v-layout
-        row
-        :wrap="$vuetify.breakpoint.xs"
-        justify-center
-      >
+    <v-layout v-if="!loading && data" column>
+      <v-layout row :wrap="$vuetify.breakpoint.xs" justify-center>
         <v-flex
           v-if="data.img !== null"
           align-center
@@ -20,39 +13,18 @@
           mr-4
           :mt-4="$vuetify.breakpoint.xs"
         >
-          <v-img
-            height="250"
-            :src="data.img"
-            contain
-          />
+          <v-img height="250" :src="data.img" contain/>
         </v-flex>
-        <v-flex
-          xs12
-          :md6="data.img"
-          :md9="!data.img"
-        >
-          <v-layout
-            row
-            wrap
-            align-center
-            mb-3
-            justify-space-between
-          >
-            <h1 class="display-1 text-main--text">
-              {{ data.title }}
-            </h1>
+        <v-flex xs12 :md6="data.img" :md9="!data.img">
+          <v-layout row wrap align-center mb-3 justify-space-between>
+            <h1 class="display-1 text-main--text">{{ data.title }}</h1>
             <v-btn
               flat
               class="blue--text text--darken-1 px-2 mx-0"
               @click="searchGoogle(data.title)"
             >
               Поиск в Google
-              <v-icon
-                right
-                dark
-              >
-                search
-              </v-icon>
+              <v-icon right dark>search</v-icon>
             </v-btn>
           </v-layout>
           <!-- eslint-disable -->
@@ -69,9 +41,7 @@
                 ? $router.push(data.info1.link)
                 : openWindow(data.info1.link)
             "
-          >
-            {{ data.info1.text }}
-          </h2>
+          >{{ data.info1.text }}</h2>
           <h2
             :class="{
               link: data.info2.link,
@@ -79,9 +49,7 @@
             }"
             v-if="data.info2 !== null"
             @click="$router.push(data.info2.link)"
-          >
-            {{ data.info2.text }}
-          </h2>
+          >{{ data.info2.text }}</h2>
           <h2
             :class="{
               link: data.info3.link,
@@ -90,33 +58,23 @@
             class="title text-main--text text--lighten-2 mb-2"
             v-if="data.info3 !== null"
             @click="$router.push(data.info3.link)"
-          >
-            {{ data.info3.text }}
-          </h2>
+          >{{ data.info3.text }}</h2>
           <p
             class="subheading text-main--text"
             v-if="data.description !== null"
-          >
-            {{ data.description }}
-          </p>
+          >{{ data.description }}</p>
         </v-flex>
       </v-layout>
-      <v-divider class="my-3" />
+      <v-divider class="my-3"/>
       <v-layout row wrap>
-        <component :is="moreComponent.is" :data="moreComponent.data" />
+        <component :is="moreComponent.is" :data="moreComponent.data"/>
       </v-layout>
     </v-layout>
     <v-layout v-else-if="loading" justify-center>
-      <v-progress-circular
-        class="mt-5"
-        :size="150"
-        :width="7"
-        color="primary"
-        indeterminate
-      />
+      <v-progress-circular class="mt-5" :size="150" :width="7" color="primary" indeterminate/>
     </v-layout>
     <v-layout v-else-if="!data">
-      <no-data />
+      <no-data/>
     </v-layout>
   </v-container>
 </template>
@@ -266,7 +224,7 @@ export default {
               description: this.dataSet.description,
               img: null
             }
-          },
+          }
         }
         return data[type]()
       } else return null
@@ -298,7 +256,7 @@ export default {
         },
         speciality: () => {
           this.$store.dispatch('specialityById', this.id)
-        },
+        }
       }
       toLoad[this.type]()
     },

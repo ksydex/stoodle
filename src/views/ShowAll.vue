@@ -1,22 +1,11 @@
 <template>
   <v-container>
-    <v-layout
-      v-if="!loading && data"
-      row
-      justify-center
-    >
-      <v-flex
-        xs12
-        md8
-        xl6
-      >
+    <v-layout v-if="!loading && data" row justify-center>
+      <v-flex xs12 md8 xl6>
         <v-layout column>
-          <v-flex
-            class="text-xs-center mb-3"
-            xs6
-          >
+          <v-flex class="text-xs-center mb-3" xs6>
             <h4 class="display-1 text-main--text mb-3">{{ currentType.title }}</h4>
-            <v-divider />
+            <v-divider/>
           </v-flex>
           <v-flex xs6>
             <search-card
@@ -30,17 +19,8 @@
         </v-layout>
       </v-flex>
     </v-layout>
-    <v-layout
-      v-else
-      justify-center
-    >
-      <v-progress-circular
-        class="mt-5"
-        :size="150"
-        :width="7"
-        color="primary"
-        indeterminate
-      />
+    <v-layout v-else justify-center>
+      <v-progress-circular class="mt-5" :size="150" :width="7" color="primary" indeterminate/>
     </v-layout>
   </v-container>
 </template>
@@ -61,7 +41,7 @@ export default {
         { type: 'subject', title: 'Все учебные программы' },
         { type: 'faculty', title: 'Все факультеты' },
         { type: 'discipline', title: 'Все дисциплины' },
-        { type: 'speciality', title: 'Все специальности'}
+        { type: 'speciality', title: 'Все специальности' }
       ]
     }
   },
